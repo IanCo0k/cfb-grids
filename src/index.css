@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.square {
+  width: 150px;
+  height: 150px;
+}
+
