@@ -36,12 +36,19 @@ import pacQB from './data/passing/2022-pac-passing';
 import macQB from './data/passing/2022-mac-passing';
 import accQB from './data/passing/2022-acc-passing';
 import b12QB from './data/passing/2022-b12-passing';
+
 import macWR from './data/receiving/2022-mac-receiving';
 import b1gWR from './data/receiving/2022-b1g-receiving';
 import pacWR from './data/receiving/2022-pac-receiving';
 import b12WR from './data/receiving/2022-b12-receiving';
 import accWR from './data/receiving/2022-acc-receiving';
 import secWR from './data/receiving/2022-sec-receiving';
+
+import macRB from './data/rushing/2022-mac-rushing';
+import b1gRB from './data/rushing/2022-b1g-rushing';
+import pacRB from './data/rushing/2022-pac-rushing';
+import b12RB from './data/rushing/2022-b12-rushing';
+import accRB from './data/rushing/2022-acc-rushing';
 
 export default function App() {
   const statTypes = ['INT', 'COMPLETIONS', 'TD', 'YDS', 'YPA', 'ATT', 'PCT'];
@@ -76,22 +83,22 @@ export default function App() {
 
   // Combine all QB data into one array
   const allQBData = [...secQB, ...b1gQB, ...pacQB, ...macQB, ...accQB, ...b12QB];
-
   const allWRData = [...secWR, ...b1gWR, ...pacWR, ...macWR, ...accWR, ...b12WR];
+  const allRBData = [...b1gRB, ...pacRB, ...macRB, ...accRB, ...b12RB];
 
 
 
   useEffect(() => {
     setPlayerGrid({
-      topLeftPlayers: getPlayers(leftColumnStatType, leftColumnThreshold, topRowConference),
-      topMiddlePlayers: getPlayers(middleColumnStatType, middleColumnThreshold, topRowConference),
-      topRightPlayers: getPlayers(rightColumnStatType, rightColumnThreshold, topRowConference),
-      middleLeftPlayers: getPlayers(leftColumnStatType, leftColumnThreshold, middleRowConference),
-      middleMiddlePlayers: getPlayers(middleColumnStatType, middleColumnThreshold, middleRowConference),
-      middleRightPlayers: getPlayers(rightColumnStatType, rightColumnThreshold, middleRowConference),
-      bottomLeftPlayers: getPlayers(leftColumnStatType, leftColumnThreshold, bottomRowConference),
-      bottomMiddlePlayers: getPlayers(middleColumnStatType, middleColumnThreshold, bottomRowConference),
-      bottomRightPlayers: getPlayers(rightColumnStatType, rightColumnThreshold, bottomRowConference),
+      topLeftPlayers: getQB(leftColumnStatType, leftColumnThreshold, topRowConference),
+      topMiddlePlayers: getWR(middleColumnStatType, middleColumnThreshold, topRowConference),
+      topRightPlayers: getRB(rightColumnStatType, rightColumnThreshold, topRowConference),
+      middleLeftPlayers: getQB(leftColumnStatType, leftColumnThreshold, middleRowConference),
+      middleMiddlePlayers: getWR(middleColumnStatType, middleColumnThreshold, middleRowConference),
+      middleRightPlayers: getRB(rightColumnStatType, rightColumnThreshold, middleRowConference),
+      bottomLeftPlayers: getQB(leftColumnStatType, leftColumnThreshold, bottomRowConference),
+      bottomMiddlePlayers: getWR(middleColumnStatType, middleColumnThreshold, bottomRowConference),
+      bottomRightPlayers: getRB(rightColumnStatType, rightColumnThreshold, bottomRowConference),
     });
   }, [leftColumnStatType, leftColumnThreshold, middleColumnStatType, middleColumnThreshold, rightColumnStatType, rightColumnThreshold, topRowConference, middleRowConference, bottomRowConference]);
 
@@ -214,12 +221,46 @@ export default function App() {
       return acc;
     }, []);
 
-  const getPlayers = (statType, threshold, conference) => {
-    return Quarterback.filter(player => {
-      const stat = player.stats.find((item) => item.statType === statType);
-      return stat.stat >= threshold && player.conference === conference;
-    });
-  };
+    const RunningBack = allRBData.reduce((acc, rb) => {
+      const existingPlayer = acc.find((item) => item.player === rb.player);
+      if (existingPlayer) {
+        existingPlayer.stats.push({ statType: rb.statType, stat: rb.stat });
+      } else {
+        acc.push({
+          player: rb.player,
+          team: rb.team,
+          conference: rb.conference,
+          stats: [{ statType: rb.statType, stat: rb.stat }],
+        });
+      }
+      return acc;
+    }, []);
+
+    const getQB = (statType, threshold, conference) => {
+      return Quarterback.filter(player => {
+        const stat = player.stats.find((item) => item.statType === statType);
+        if (!stat) return false; // if stat isn't found, exclude the player
+        return stat.stat >= threshold && player.conference === conference;
+      });
+    };
+
+    const getWR = (statType, threshold, conference) => {
+      return WideReceiver.filter(player => {
+        const stat = player.stats.find((item) => item.statType === statType);
+        if (!stat) return false; // if stat isn't found, exclude the player
+        return stat.stat >= threshold && player.conference === conference;
+      });
+    };
+
+    const getRB = (statType, threshold, conference) => {
+      return RunningBack.filter(player => {
+        const stat = player.stats.find((item) => item.statType === statType);
+        if (!stat) return false; // if stat isn't found, exclude the player
+        return stat.stat >= threshold && player.conference === conference;
+      });
+    };
+
+    
 
 
   const handleClick = (event) => {
@@ -308,13 +349,15 @@ export default function App() {
     }
   };
 
+  const allPlayers = [...Quarterback, ...WideReceiver];
+
   return (
     <div className="min-h-screen bg-gray-200 py-8">
       <div className="max-w-4xl flex-col items-center mx-auto p-4">
         <h1 className="text-6xl font-bold text-center mb-4">CFB Grids</h1>
         {focused && (
           <div className="mb-4 text-black">
-            <Dropdown onChange={handleDropdownChange} options={Quarterback.map(p => p.player)} />
+            <Dropdown onChange={handleDropdownChange} options={allPlayers.map(p => p.player)} />
           </div>
         )}
 
