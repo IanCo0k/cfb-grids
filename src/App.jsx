@@ -289,9 +289,8 @@ export default function App() {
 
     if (finalizedPlayer) {
       return (
-        <div className="text-center">
-          <img src={generateLogoUrl(finalizedPlayer.team)} alt={finalizedPlayer.team} className="w-100 mx-auto" />
-          <p className="text-sm mt-1">{finalizedPlayer.player}</p>
+        <div className="text-center" style={{backgroundImage: `url(${generateLogoUrl(finalizedPlayer.team)})`, backgroundSize: 'cover', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'center'}}>
+          <p className="mobile text-white mt-1 w-full bg-black">{finalizedPlayer.player}</p>
         </div>
       );
     }
@@ -311,7 +310,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gray-200 py-8">
-      <div className="max-w-4xl mx-auto p-4">
+      <div className="max-w-4xl flex-col items-center mx-auto p-4">
         <h1 className="text-6xl font-bold text-center mb-4">CFB Grids</h1>
         {focused && (
           <div className="mb-4 text-black">
@@ -319,6 +318,7 @@ export default function App() {
           </div>
         )}
 
+        <div className="grid-container w-screen m-auto">
         <div className="grid grid-cols-4 gap-2">
           <div className="flex items-center justify-center squarefont-bold text-gray-800" onClick={handleClick}></div>
           <div className="flex items-center justify-center square bg-blue-500 text-white" onClick={handleClick}>
@@ -366,6 +366,7 @@ export default function App() {
           <div className="border border-2 border-black flex items-center justify-center square" id='bottomRight' onClick={handleClick}>
             {getPlayerDisplayInfo('bottomRight')}
           </div>
+        </div>
         </div>
 
         
