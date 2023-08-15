@@ -30,6 +30,7 @@ import pacLogo from './pac.png';
 import macLogo from './mac.png';
 import accLogo from './acc.png';
 import secLogo from './sec.png';
+import b12Logo from './big12.png';
 
 import secQB from './data/passing/2022-sec-passing';
 import b1gQB from './data/passing/2022-b1g-passing';
@@ -335,6 +336,10 @@ export default function App() {
 
     if(conference === 'SEC'){
       logo = secLogo;
+    }
+
+    if(conference === 'Big 12'){
+      logo = b12Logo;
     }
 
     return logo;
