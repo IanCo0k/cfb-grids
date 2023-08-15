@@ -36,6 +36,8 @@ import pacQB from './data/passing/2022-pac-passing';
 import macQB from './data/passing/2022-mac-passing';
 import accQB from './data/passing/2022-acc-passing';
 import b12QB from './data/passing/2022-b12-passing';
+import qb2021 from './data/passing/2021-passing';
+import qb2020 from './data/passing/2020-passing';
 
 import macWR from './data/receiving/2022-mac-receiving';
 import b1gWR from './data/receiving/2022-b1g-receiving';
@@ -43,12 +45,16 @@ import pacWR from './data/receiving/2022-pac-receiving';
 import b12WR from './data/receiving/2022-b12-receiving';
 import accWR from './data/receiving/2022-acc-receiving';
 import secWR from './data/receiving/2022-sec-receiving';
+import wr2021 from './data/receiving/2021-receiving';
+import wr2020 from './data/receiving/2020-receiving';
 
 import macRB from './data/rushing/2022-mac-rushing';
 import b1gRB from './data/rushing/2022-b1g-rushing';
 import pacRB from './data/rushing/2022-pac-rushing';
 import b12RB from './data/rushing/2022-b12-rushing';
 import accRB from './data/rushing/2022-acc-rushing';
+import rb2021 from './data/rushing/2021-rushing';
+import rb2020 from './data/rushing/2020-rushing';
 
 export default function App() {
   const statTypes = ['INT', 'COMPLETIONS', 'TD', 'YDS', 'YPA', 'ATT', 'PCT'];
@@ -82,9 +88,9 @@ export default function App() {
   const [cellPlayerInfo, setCellPlayerInfo] = useState({});
 
   // Combine all QB data into one array
-  const allQBData = [...secQB, ...b1gQB, ...pacQB, ...macQB, ...accQB, ...b12QB];
-  const allWRData = [...secWR, ...b1gWR, ...pacWR, ...macWR, ...accWR, ...b12WR];
-  const allRBData = [...b1gRB, ...pacRB, ...macRB, ...accRB, ...b12RB];
+  const allQBData = [...secQB, ...b1gQB, ...pacQB, ...macQB, ...accQB, ...b12QB, ...qb2021, ...qb2020];
+  const allWRData = [...secWR, ...b1gWR, ...pacWR, ...macWR, ...accWR, ...b12WR, ...wr2021, ...wr2020];
+  const allRBData = [...b1gRB, ...pacRB, ...macRB, ...accRB, ...b12RB, ...rb2021, ...rb2020];
 
 
 
@@ -349,7 +355,11 @@ export default function App() {
     }
   };
 
-  const allPlayers = [...Quarterback, ...WideReceiver];
+  const allPlayers = [...Quarterback, ...WideReceiver, ...RunningBack];
+
+  const uniquePlayers = [...new Set(allPlayers.map(p => p.player))];
+
+
 
   return (
     <div className="min-h-screen bg-gray-200 py-8">
@@ -358,7 +368,7 @@ export default function App() {
         <p className="text-center mb-4"><span className='text-blue-500'>Passing</span> -- <span className='text-green-500'>Receiving</span> -- <span className='text-purple-500'>Rushing</span></p>
         {focused && (
           <div className="mb-4 text-black">
-            <Dropdown onChange={handleDropdownChange} options={allPlayers.map(p => p.player)} />
+            <Dropdown onChange={handleDropdownChange} options={uniquePlayers} />
           </div>
         )}
 
