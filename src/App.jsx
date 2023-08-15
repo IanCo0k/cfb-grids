@@ -248,27 +248,45 @@ export default function App() {
 
     const getQB = (statType, threshold, conference) => {
       return Quarterback.filter(player => {
-        const stat = player.stats.find((item) => item.statType === statType);
-        if (!stat) return false; // if stat isn't found, exclude the player
-        return stat.stat >= threshold && player.conference === conference;
+        const matchingStats = player.stats.filter(item => item.statType === statType);
+    
+        if (matchingStats.length === 0) {
+          return false; // If stat isn't found, exclude the player
+        }
+    
+        const highestStat = matchingStats.reduce((maxStat, stat) => Math.max(maxStat, stat.stat), -Infinity);
+        return highestStat >= threshold && player.conference === conference;
       });
     };
+    
 
     const getWR = (statType, threshold, conference) => {
       return WideReceiver.filter(player => {
-        const stat = player.stats.find((item) => item.statType === statType);
-        if (!stat) return false; // if stat isn't found, exclude the player
-        return stat.stat >= threshold && player.conference === conference;
+        const matchingStats = player.stats.filter(item => item.statType === statType);
+    
+        if (matchingStats.length === 0) {
+          return false; // If stat isn't found, exclude the player
+        }
+    
+        const highestStat = matchingStats.reduce((maxStat, stat) => Math.max(maxStat, stat.stat), -Infinity);
+        return highestStat >= threshold && player.conference === conference;
       });
     };
+    
 
     const getRB = (statType, threshold, conference) => {
       return RunningBack.filter(player => {
-        const stat = player.stats.find((item) => item.statType === statType);
-        if (!stat) return false; // if stat isn't found, exclude the player
-        return stat.stat >= threshold && player.conference === conference;
+        const matchingStats = player.stats.filter(item => item.statType === statType);
+    
+        if (matchingStats.length === 0) {
+          return false; // If stat isn't found, exclude the player
+        }
+    
+        const highestStat = matchingStats.reduce((maxStat, stat) => Math.max(maxStat, stat.stat), -Infinity);
+        return highestStat >= threshold && player.conference === conference;
       });
     };
+    
 
     
 
@@ -327,6 +345,8 @@ export default function App() {
       teamName = 'southern-california';
     } else if (teamName === 'NC State') {
       teamName = 'north-carolina-state';
+    } else if (teamName === 'LSU'){
+      teamName = 'louisiana-state';
     } else {
       // Remove leading/trailing spaces and convert the name to lowercase
       teamName = teamName.trim().toLowerCase();
