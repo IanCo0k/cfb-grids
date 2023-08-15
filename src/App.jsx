@@ -355,6 +355,7 @@ export default function App() {
     <div className="min-h-screen bg-gray-200 py-8">
       <div className="max-w-4xl flex-col items-center mx-auto p-4">
         <h1 className="text-6xl font-bold text-center mb-4">CFB Grids</h1>
+        <p className="text-center mb-4"><span className='text-blue-500'>Passing</span> -- <span className='text-green-500'>Receiving</span> -- <span className='text-purple-500'>Rushing</span></p>
         {focused && (
           <div className="mb-4 text-black">
             <Dropdown onChange={handleDropdownChange} options={allPlayers.map(p => p.player)} />
