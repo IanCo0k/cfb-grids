@@ -30,8 +30,11 @@ export default function Dropdown({ options, onChange }) {
         className="block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-200 focus:border-blue-500"
       />
       {filteredOptions.length > 0 && (
-        <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg">
-          {filteredOptions.slice(0, 10).map((option, index) => (
+        <ul
+          className="absolute z-10 mt-1 w-full max-h-60 overflow-y-auto bg-white border border-gray-300 rounded-md shadow-lg"
+          // Adjust the max height as needed (max-h-48 in this example)
+        >
+          {filteredOptions.map((option, index) => (
             <li
               key={index}
               onClick={() => handleSelect(option)}
