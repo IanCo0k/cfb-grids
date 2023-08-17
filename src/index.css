@@ -46,6 +46,10 @@
   border-radius: 1em;
 }
 
+.guess:hover{
+  background: #fff;
+}
+
 /* Adjust font size based on viewport width for added responsiveness */
 .square img {
   max-width: 100%;  /* Ensure images don't overflow */

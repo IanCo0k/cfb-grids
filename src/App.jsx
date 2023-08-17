@@ -41,6 +41,7 @@ import b12QB from './data/passing/2022-b12-passing';
 import qb2021 from './data/passing/2021-passing';
 import qb2020 from './data/passing/2020-passing';
 import qb2019 from './data/passing/2019-passing';
+import qb2018 from './data/passing/2018-passing';
 
 import macWR from './data/receiving/2022-mac-receiving';
 import b1gWR from './data/receiving/2022-b1g-receiving';
@@ -51,6 +52,7 @@ import secWR from './data/receiving/2022-sec-receiving';
 import wr2021 from './data/receiving/2021-receiving';
 import wr2020 from './data/receiving/2020-receiving';
 import wr2019 from './data/receiving/2019-receiving';
+import wr2018 from './data/receiving/2018-receiving';
 
 import macRB from './data/rushing/2022-mac-rushing';
 import b1gRB from './data/rushing/2022-b1g-rushing';
@@ -60,6 +62,7 @@ import accRB from './data/rushing/2022-acc-rushing';
 import rb2021 from './data/rushing/2021-rushing';
 import rb2020 from './data/rushing/2020-rushing';
 import rb2019 from './data/rushing/2019-rushing';
+import rb2018 from './data/rushing/2018-rushing';
 
 export default function App() {
   const statTypes = ['INT', 'COMPLETIONS', 'TD', 'YDS', 'YPA', 'ATT', 'PCT'];
@@ -93,9 +96,9 @@ export default function App() {
   const [cellPlayerInfo, setCellPlayerInfo] = useState({});
 
   // Combine all QB data into one array
-  const allQBData = [...secQB, ...b1gQB, ...pacQB, ...macQB, ...accQB, ...b12QB, ...qb2021, ...qb2020, ...qb2019];
-  const allWRData = [...secWR, ...b1gWR, ...pacWR, ...macWR, ...accWR, ...b12WR, ...wr2021, ...wr2020, ...wr2019];
-  const allRBData = [...b1gRB, ...pacRB, ...macRB, ...accRB, ...b12RB, ...rb2021, ...rb2020, ...rb2019];
+  const allQBData = [...secQB, ...b1gQB, ...pacQB, ...macQB, ...accQB, ...b12QB, ...qb2021, ...qb2020, ...qb2019, ...qb2018];
+  const allWRData = [...secWR, ...b1gWR, ...pacWR, ...macWR, ...accWR, ...b12WR, ...wr2021, ...wr2020, ...wr2019, ...wr2018];
+  const allRBData = [...b1gRB, ...pacRB, ...macRB, ...accRB, ...b12RB, ...rb2021, ...rb2020, ...rb2019, ...rb2018];
 
 
 
@@ -398,7 +401,7 @@ export default function App() {
     <div className="min-h-screen bg-gray-200 py-8">
       <div className="max-w-4xl flex-col items-center mx-auto p-4">
         <h1 className="text-6xl font-bold text-center mb-4">CFB Grids</h1>
-        <p className="text-center mb-4">Players from 2019-2020 season up to 2022-2023</p>
+        <p className="text-center mb-4">Players from 2018-2019 season up to 2022-2023</p>
         <p className="text-center mb-4"><span className='text-blue-500'>Passing</span> -- <span className='text-green-500'>Receiving</span> -- <span className='text-purple-500'>Rushing</span></p>
         {focused && (
           <div className="mb-4 text-black">
@@ -421,37 +424,37 @@ export default function App() {
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
             <img src={logoUrl(topRowConference)} alt="" />
           </div>
-          <div className="border border-2 border-black flex items-center justify-center square" id='topLeft' onClick={handleClick}>
+          <div className="border border-2 guess border-black flex items-center justify-center square" id='topLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('topLeft')}
           </div>
-          <div className="border border-2 border-black flex items-center justify-center square" id='topMiddle' onClick={handleClick}>
+          <div className="border border-2 guess border-black flex items-center justify-center square" id='topMiddle' onClick={handleClick}>
             {getPlayerDisplayInfo('topMiddle')}
           </div>
-          <div className="border border-2 border-black flex items-center justify-center square" id='topRight' onClick={handleClick}>
+          <div className="border border-2 guess border-black flex items-center justify-center square" id='topRight' onClick={handleClick}>
             {getPlayerDisplayInfo('topRight')}
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
             <img src={logoUrl(middleRowConference)} alt="" />
           </div>
-          <div className="border border-2 border-black flex items-center justify-center square" id='middleLeft' onClick={handleClick}>
+          <div className="border border-2 guess border-black flex items-center justify-center square" id='middleLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('middleLeft')}
           </div>
-          <div className="border border-2 border-black flex items-center justify-center square" id='middleMiddle' onClick={handleClick}>
+          <div className="border border-2 guess border-black flex items-center justify-center square" id='middleMiddle' onClick={handleClick}>
             {getPlayerDisplayInfo('middleMiddle')}
           </div>
-          <div className="border border-2 border-black flex items-center justify-center square" id='middleRight' onClick={handleClick}>
+          <div className="border border-2 guess border-black flex items-center justify-center square" id='middleRight' onClick={handleClick}>
             {getPlayerDisplayInfo('middleRight')}
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
             <img src={logoUrl(bottomRowConference)} alt="" />
           </div>
-          <div className="border border-2 border-black flex items-center justify-center square" id='bottomLeft' onClick={handleClick}>
+          <div className="border border-2 guess border-black flex items-center justify-center square" id='bottomLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('bottomLeft')}
           </div>
-          <div className="border border-2 border-black flex items-center justify-center square" id='bottomMiddle' onClick={handleClick}>
+          <div className="border border-2 guess border-black flex items-center justify-center square" id='bottomMiddle' onClick={handleClick}>
             {getPlayerDisplayInfo('bottomMiddle')}
           </div>
-          <div className="border border-2 border-black flex items-center justify-center square" id='bottomRight' onClick={handleClick}>
+          <div className="border border-2 guess border-black flex items-center justify-center square" id='bottomRight' onClick={handleClick}>
             {getPlayerDisplayInfo('bottomRight')}
           </div>
         </div>
