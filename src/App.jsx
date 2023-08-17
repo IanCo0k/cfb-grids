@@ -4,7 +4,7 @@ import Dropdown from './components/Dropdown';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -42,6 +42,7 @@ import qb2021 from './data/passing/2021-passing';
 import qb2020 from './data/passing/2020-passing';
 import qb2019 from './data/passing/2019-passing';
 import qb2018 from './data/passing/2018-passing';
+import qb2017 from './data/passing/2017-passing'
 
 import macWR from './data/receiving/2022-mac-receiving';
 import b1gWR from './data/receiving/2022-b1g-receiving';
@@ -53,6 +54,7 @@ import wr2021 from './data/receiving/2021-receiving';
 import wr2020 from './data/receiving/2020-receiving';
 import wr2019 from './data/receiving/2019-receiving';
 import wr2018 from './data/receiving/2018-receiving';
+import wr2017 from './data/receiving/2017-receiving';
 
 import macRB from './data/rushing/2022-mac-rushing';
 import b1gRB from './data/rushing/2022-b1g-rushing';
@@ -63,9 +65,10 @@ import rb2021 from './data/rushing/2021-rushing';
 import rb2020 from './data/rushing/2020-rushing';
 import rb2019 from './data/rushing/2019-rushing';
 import rb2018 from './data/rushing/2018-rushing';
+import rb2017 from './data/rushing/2017-rushing';
 
 export default function App() {
-  const statTypes = ['INT', 'COMPLETIONS', 'TD', 'YDS', 'YPA', 'ATT', 'PCT'];
+
   const [finalizedCellPlayers, setFinalizedCellPlayers] = useState({});
   const [focused, setFocused] = useState(false);
   const [activeCell, setActiveCell] = useState('');
@@ -77,11 +80,34 @@ export default function App() {
   const [rightColumnStatType, setRightColumnStatType] = useState('INT');
   const [rightColumnThreshold, setRightColumnThreshold] = useState();
 
+  const [cellPercentages, setCellPercentages] = useState({
+    topLeft: 0,
+    topMiddle: 0,
+    topRight: 0,
+    middleLeft: 0,
+    middleMiddle: 0,
+    middleRight: 0,
+    bottomLeft: 0,
+    bottomMiddle: 0,
+    bottomRight: 0
+  });
+
+  const [rarityScore, setRarityScore] = useState(0);
+
+  // Calculate the rarity score whenever cell percentages change
+  useEffect(() => {
+    const totalPercentage = Object.values(cellPercentages).reduce(
+      (sum, percentage) => sum + percentage,
+      0
+    );
+    setRarityScore(totalPercentage.toFixed(1));
+  }, [cellPercentages]);
+
   const [topRowConference, setTopRowConference] = useState();
   const [middleRowConference, setMiddleRowConference] = useState();
   const [bottomRowConference, setBottomRowConference] = useState();
   const [selectedPlayer, setSelectedPlayer] = useState(null);
-  const [logo, setLogo] = useState();
+  
   const [playerGrid, setPlayerGrid] = useState({
     topLeftPlayers: [],
     topMiddlePlayers: [],
@@ -96,9 +122,9 @@ export default function App() {
   const [cellPlayerInfo, setCellPlayerInfo] = useState({});
 
   // Combine all QB data into one array
-  const allQBData = [...secQB, ...b1gQB, ...pacQB, ...macQB, ...accQB, ...b12QB, ...qb2021, ...qb2020, ...qb2019, ...qb2018];
-  const allWRData = [...secWR, ...b1gWR, ...pacWR, ...macWR, ...accWR, ...b12WR, ...wr2021, ...wr2020, ...wr2019, ...wr2018];
-  const allRBData = [...b1gRB, ...pacRB, ...macRB, ...accRB, ...b12RB, ...rb2021, ...rb2020, ...rb2019, ...rb2018];
+  const allQBData = [...secQB, ...b1gQB, ...pacQB, ...macQB, ...accQB, ...b12QB, ...qb2021, ...qb2020, ...qb2019, ...qb2018, ...qb2017];
+  const allWRData = [...secWR, ...b1gWR, ...pacWR, ...macWR, ...accWR, ...b12WR, ...wr2021, ...wr2020, ...wr2019, ...wr2018, ...wr2017];
+  const allRBData = [...b1gRB, ...pacRB, ...macRB, ...accRB, ...b12RB, ...rb2021, ...rb2020, ...rb2019, ...rb2018, ...rb2017];
 
 
 
@@ -154,6 +180,7 @@ export default function App() {
         const db = getFirestore(app);
         const dailyThresholdsDocRef = doc(db, "dailyThresholds", "thresholds");
         const dailyThresholdsDocSnapshot = await getDoc(dailyThresholdsDocRef);
+
 
         if (dailyThresholdsDocSnapshot.exists()) {
           const thresholdsData = dailyThresholdsDocSnapshot.data();
@@ -311,12 +338,69 @@ export default function App() {
   
     if (selectedPlayerInfo) {
       setCellPlayerInfo(selectedPlayerInfo);
-      // Finalize the answer for the active cell
       setFinalizedCellPlayers(prevState => ({ ...prevState, [activeCell]: selectedPlayerInfo }));
+  
+      // Assuming you have a database update function, e.g., updateDatabase(activeCell, selectedPlayerInfo);
+      updateDatabase(activeCell, selectedPlayerInfo);
+      
       console.log(selectedPlayerInfo);
     }
   };
 
+  const updateDatabase = async (activeCell, selectedPlayerInfo) => {
+    const db = getFirestore();
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'rarity');
+  
+    try {
+      // Fetch current data from the database
+      const docSnapshot = await getDoc(dailyThresholdsRef);
+      const currentData = docSnapshot.data();
+  
+      // Create a copy of the current data for updates
+      const updatedData = { ...currentData };
+  
+      // Increment the corresponding field and update the map conditionally
+      const squareKey = `square${activeCell}`;
+      const playerKey = `square${activeCell}Players`;
+  
+      if (!(squareKey in updatedData)) {
+        updatedData[squareKey] = 1;
+      } else {
+        updatedData[squareKey]++;
+      }
+  
+      if (!(playerKey in updatedData)) {
+        updatedData[playerKey] = {};
+      }
+  
+      if (selectedPlayerInfo.player in updatedData[playerKey]) {
+        updatedData[playerKey][selectedPlayerInfo.player]++;
+      } else {
+        updatedData[playerKey][selectedPlayerInfo.player] = 1;
+      }
+  
+      // Calculate the percentage
+      const playerGuesses = updatedData[playerKey][selectedPlayerInfo.player];
+      const totalGuesses = updatedData[squareKey];
+      const percentage = (playerGuesses / totalGuesses) * 100;
+
+      setCellPercentages(prevPercentages => ({
+        ...prevPercentages,
+        [activeCell]: percentage,
+      }));
+      
+      
+  
+      // Write the updated data back to the database
+      await updateDoc(dailyThresholdsRef, updatedData);
+  
+      console.log(`Player ${selectedPlayerInfo.player} has been guessed ${playerGuesses} times, which is ${percentage}% of the total guesses for square ${activeCell}.`);
+    } catch (error) {
+      console.error("Error updating database:", error);
+    }
+  };
+  
+  
   const logoUrl = (conference) => {
 
     var logo;
@@ -368,15 +452,20 @@ export default function App() {
 
   const getPlayerDisplayInfo = (cellId) => {
     const finalizedPlayer = finalizedCellPlayers[cellId];
-    const currentPlayerInfo = Object.keys(cellPlayerInfo).length !== 0 ? cellPlayerInfo : selectedPlayer;
+  const currentPlayerInfo = Object.keys(cellPlayerInfo).length !== 0 ? cellPlayerInfo : selectedPlayer;
 
-    if (finalizedPlayer) {
-      return (
-        <div className="text-center" style={{backgroundImage: `url(${generateLogoUrl(finalizedPlayer.team)})`, backgroundSize: 'cover', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'center'}}>
-          <p className="mobile text-white mt-1 w-full bg-black">{finalizedPlayer.player}</p>
-        </div>
-      );
-    }
+  const displayedPercentage = cellPercentages[cellId]; // Get the stored percentage for the cell
+
+  if (finalizedPlayer) {
+    return (
+      <div className="text-center relative" style={{backgroundImage: `url(${generateLogoUrl(finalizedPlayer.team)})`, backgroundSize: 'cover', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'center'}}>
+        <span className="text-white bg-black p-1 rounded text-xs absolute top-0 right-0">
+          {displayedPercentage.toFixed(1)}%
+        </span>
+        <p className="mobile text-white mt-1 w-full bg-black">{finalizedPlayer.player}</p>
+      </div>
+    );
+  }
 
     if (!currentPlayerInfo || activeCell !== cellId) return null;
 
@@ -411,7 +500,7 @@ export default function App() {
 
         <div className="grid-container w-screen m-auto">
         <div className="grid grid-cols-4 gap-2">
-          <div className="flex items-center justify-center squarefont-bold text-gray-800" onClick={handleClick}></div>
+          <div className="flex items-center justify-center squarefont-bold text-gray-800" onClick={handleClick}>Rarity Score: {rarityScore}</div>
           <div className="flex items-center justify-center square bg-blue-500 text-white" onClick={handleClick}>
             {leftColumnThreshold} {leftColumnStatType}
           </div>

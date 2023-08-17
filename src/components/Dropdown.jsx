@@ -31,7 +31,7 @@ export default function Dropdown({ options, onChange }) {
       />
       {filteredOptions.length > 0 && (
         <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg">
-          {filteredOptions.map((option, index) => (
+          {filteredOptions.slice(0, 10).map((option, index) => (
             <li
               key={index}
               onClick={() => handleSelect(option)}
