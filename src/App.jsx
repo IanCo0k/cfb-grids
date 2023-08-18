@@ -439,7 +439,10 @@ export default function App() {
       teamName = 'north-carolina-state';
     } else if (teamName === 'LSU'){
       teamName = 'louisiana-state';
-    } else {
+    } else if(teamName === 'TCU'){
+      teamName = 'texas-christian'
+    } 
+    else {
       // Remove leading/trailing spaces and convert the name to lowercase
       teamName = teamName.trim().toLowerCase();
       // Replace spaces with dashes to match the pattern
