@@ -42,7 +42,11 @@ import qb2021 from './data/passing/2021-passing';
 import qb2020 from './data/passing/2020-passing';
 import qb2019 from './data/passing/2019-passing';
 import qb2018 from './data/passing/2018-passing';
-import qb2017 from './data/passing/2017-passing'
+import qb2017 from './data/passing/2017-passing';
+import qb2016 from './data/passing/2016-passing';
+import qb2015 from './data/passing/2015-passing';
+
+
 
 import macWR from './data/receiving/2022-mac-receiving';
 import b1gWR from './data/receiving/2022-b1g-receiving';
@@ -55,6 +59,9 @@ import wr2020 from './data/receiving/2020-receiving';
 import wr2019 from './data/receiving/2019-receiving';
 import wr2018 from './data/receiving/2018-receiving';
 import wr2017 from './data/receiving/2017-receiving';
+import wr2016 from './data/receiving/2016-receiving';
+import wr2015 from './data/receiving/2015-receiving';
+
 
 import macRB from './data/rushing/2022-mac-rushing';
 import b1gRB from './data/rushing/2022-b1g-rushing';
@@ -66,6 +73,8 @@ import rb2020 from './data/rushing/2020-rushing';
 import rb2019 from './data/rushing/2019-rushing';
 import rb2018 from './data/rushing/2018-rushing';
 import rb2017 from './data/rushing/2017-rushing';
+import rb2016 from './data/rushing/2016-rushing';
+import rb2015 from './data/rushing/2015-rushing';
 
 export default function App() {
 
@@ -92,15 +101,26 @@ export default function App() {
     bottomRight: 0
   });
 
+  const [showTweetButton, setShowTweetButton] = useState(true);
+  const [tweetText, setTweetText] = useState();
+
+
+
   const [rarityScore, setRarityScore] = useState(0);
 
-  // Calculate the rarity score whenever cell percentages change
   useEffect(() => {
-    const totalPercentage = Object.values(cellPercentages).reduce(
-      (sum, percentage) => sum + percentage,
-      0
-    );
-    setRarityScore(totalPercentage.toFixed(1));
+    // Calculate the rarity score based on cellPercentages
+    const updatedRarityScore = Object.values(cellPercentages).reduce((total, percentage) => total + percentage, 0);
+  
+    // Check if any cellPercentage value is equal to 0
+    const hasZeroPercentage = Object.values(cellPercentages).some(percentage => percentage === 0);
+  
+    setShowTweetButton(!hasZeroPercentage);
+  
+    setTweetText(`CFB Grids\n\nRarity Score: ${updatedRarityScore.toFixed(1)}\n\n@cfbgrids / cfbgrids.com`);
+  
+    // Update the rarity score in the state
+    setRarityScore(updatedRarityScore.toFixed(1));
   }, [cellPercentages]);
 
   const [topRowConference, setTopRowConference] = useState();
@@ -122,9 +142,9 @@ export default function App() {
   const [cellPlayerInfo, setCellPlayerInfo] = useState({});
 
   // Combine all QB data into one array
-  const allQBData = [...secQB, ...b1gQB, ...pacQB, ...macQB, ...accQB, ...b12QB, ...qb2021, ...qb2020, ...qb2019, ...qb2018, ...qb2017];
-  const allWRData = [...secWR, ...b1gWR, ...pacWR, ...macWR, ...accWR, ...b12WR, ...wr2021, ...wr2020, ...wr2019, ...wr2018, ...wr2017];
-  const allRBData = [...b1gRB, ...pacRB, ...macRB, ...accRB, ...b12RB, ...rb2021, ...rb2020, ...rb2019, ...rb2018, ...rb2017];
+  const allQBData = [...secQB, ...b1gQB, ...pacQB, ...macQB, ...accQB, ...b12QB, ...qb2021, ...qb2020, ...qb2019, ...qb2018, ...qb2017, ...qb2016, ...qb2015];
+  const allWRData = [...secWR, ...b1gWR, ...pacWR, ...macWR, ...accWR, ...b12WR, ...wr2021, ...wr2020, ...wr2019, ...wr2018, ...wr2017, ...wr2016, ...wr2015];
+  const allRBData = [...b1gRB, ...pacRB, ...macRB, ...accRB, ...b12RB, ...rb2021, ...rb2020, ...rb2019, ...rb2018, ...rb2017, ...rb2016, ...rb2015];
 
 
 
@@ -441,7 +461,11 @@ export default function App() {
       teamName = 'louisiana-state';
     } else if(teamName === 'TCU'){
       teamName = 'texas-christian'
-    } 
+    } else if(teamName === 'Texas A&M'){
+      teamName = 'texas-am';
+    } else if(teamName === 'Ole Miss'){
+      teamName = 'mississippi';
+    }
     else {
       // Remove leading/trailing spaces and convert the name to lowercase
       teamName = teamName.trim().toLowerCase();
@@ -493,7 +517,7 @@ export default function App() {
     <div className="min-h-screen bg-gray-200 py-8">
       <div className="max-w-4xl flex-col items-center mx-auto p-4">
         <h1 className="text-6xl font-bold text-center mb-4">CFB Grids</h1>
-        <p className="text-center mb-4">Players from 2018-2019 season up to 2022-2023</p>
+        <p className="text-center mb-4">Players from 2015-2016 season up to 2022-2023</p>
         <p className="text-center mb-4"><span className='text-blue-500'>Passing</span> -- <span className='text-green-500'>Receiving</span> -- <span className='text-purple-500'>Rushing</span></p>
         {focused && (
           <div className="mb-4 text-black">
@@ -551,6 +575,18 @@ export default function App() {
           </div>
         </div>
         </div>
+
+        <div className="text-center mt-5">
+        {showTweetButton && (
+          <a
+            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <button className="rounded bg-black text-white py-2 px-4">Tweet Score</button>
+          </a>
+        )}
+      </div>
 
         
       </div>
