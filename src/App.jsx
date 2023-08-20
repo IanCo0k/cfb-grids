@@ -3,7 +3,6 @@ import Dropdown from './components/Dropdown';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -23,7 +22,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 
 import b1gLogo from './b1g.png';
 import pacLogo from './pac.png';
@@ -32,49 +30,9 @@ import accLogo from './acc.png';
 import secLogo from './sec.png';
 import b12Logo from './big12.png';
 
-import secQB from './data/passing/2022-sec-passing';
-import b1gQB from './data/passing/2022-b1g-passing';
-import pacQB from './data/passing/2022-pac-passing';
-import macQB from './data/passing/2022-mac-passing';
-import accQB from './data/passing/2022-acc-passing';
-import b12QB from './data/passing/2022-b12-passing';
-import qb2021 from './data/passing/2021-passing';
-import qb2020 from './data/passing/2020-passing';
-import qb2019 from './data/passing/2019-passing';
-import qb2018 from './data/passing/2018-passing';
-import qb2017 from './data/passing/2017-passing';
-import qb2016 from './data/passing/2016-passing';
-import qb2015 from './data/passing/2015-passing';
-
-
-
-import macWR from './data/receiving/2022-mac-receiving';
-import b1gWR from './data/receiving/2022-b1g-receiving';
-import pacWR from './data/receiving/2022-pac-receiving';
-import b12WR from './data/receiving/2022-b12-receiving';
-import accWR from './data/receiving/2022-acc-receiving';
-import secWR from './data/receiving/2022-sec-receiving';
-import wr2021 from './data/receiving/2021-receiving';
-import wr2020 from './data/receiving/2020-receiving';
-import wr2019 from './data/receiving/2019-receiving';
-import wr2018 from './data/receiving/2018-receiving';
-import wr2017 from './data/receiving/2017-receiving';
-import wr2016 from './data/receiving/2016-receiving';
-import wr2015 from './data/receiving/2015-receiving';
-
-
-import macRB from './data/rushing/2022-mac-rushing';
-import b1gRB from './data/rushing/2022-b1g-rushing';
-import pacRB from './data/rushing/2022-pac-rushing';
-import b12RB from './data/rushing/2022-b12-rushing';
-import accRB from './data/rushing/2022-acc-rushing';
-import rb2021 from './data/rushing/2021-rushing';
-import rb2020 from './data/rushing/2020-rushing';
-import rb2019 from './data/rushing/2019-rushing';
-import rb2018 from './data/rushing/2018-rushing';
-import rb2017 from './data/rushing/2017-rushing';
-import rb2016 from './data/rushing/2016-rushing';
-import rb2015 from './data/rushing/2015-rushing';
+import qb from './data/passing';
+import wr from './data/receiving';
+import rb from './data/running';
 
 export default function App() {
 
@@ -141,204 +99,145 @@ export default function App() {
   });
   const [cellPlayerInfo, setCellPlayerInfo] = useState({});
 
-  // Combine all QB data into one array
-  const allQBData = [...secQB, ...b1gQB, ...pacQB, ...macQB, ...accQB, ...b12QB, ...qb2021, ...qb2020, ...qb2019, ...qb2018, ...qb2017, ...qb2016, ...qb2015];
-  const allWRData = [...secWR, ...b1gWR, ...pacWR, ...macWR, ...accWR, ...b12WR, ...wr2021, ...wr2020, ...wr2019, ...wr2018, ...wr2017, ...wr2016, ...wr2015];
-  const allRBData = [...b1gRB, ...pacRB, ...macRB, ...accRB, ...b12RB, ...rb2021, ...rb2020, ...rb2019, ...rb2018, ...rb2017, ...rb2016, ...rb2015];
-
-
-
-  useEffect(() => {
-    setPlayerGrid({
-      topLeftPlayers: getQB(leftColumnStatType, leftColumnThreshold, topRowConference),
-      topMiddlePlayers: getWR(middleColumnStatType, middleColumnThreshold, topRowConference),
-      topRightPlayers: getRB(rightColumnStatType, rightColumnThreshold, topRowConference),
-      middleLeftPlayers: getQB(leftColumnStatType, leftColumnThreshold, middleRowConference),
-      middleMiddlePlayers: getWR(middleColumnStatType, middleColumnThreshold, middleRowConference),
-      middleRightPlayers: getRB(rightColumnStatType, rightColumnThreshold, middleRowConference),
-      bottomLeftPlayers: getQB(leftColumnStatType, leftColumnThreshold, bottomRowConference),
-      bottomMiddlePlayers: getWR(middleColumnStatType, middleColumnThreshold, bottomRowConference),
-      bottomRightPlayers: getRB(rightColumnStatType, rightColumnThreshold, bottomRowConference),
-    });
-  }, [leftColumnStatType, leftColumnThreshold, middleColumnStatType, middleColumnThreshold, rightColumnStatType, rightColumnThreshold, topRowConference, middleRowConference, bottomRowConference]);
-
-  
-
   useEffect(() => {
     setSelectedPlayer(null);
   }, [activeCell]);
 
   useEffect(() => {
-    async function logConferenceData() {
-      try {
-        const db = getFirestore(app);
-        const dailyConferencesDocRef = doc(db, "dailyConferences", "conferences");
-        const dailyConferencesDocSnapshot = await getDoc(dailyConferencesDocRef);
+    const db = getFirestore(app);
 
-        if (dailyConferencesDocSnapshot.exists()) {
-          const conferencesData = dailyConferencesDocSnapshot.data();
-          const topRowConference = conferencesData.topRowConference;
-          const middleRowConference = conferencesData.middleRowConference;
-          const bottomRowConference = conferencesData.bottomRowConference;
-
-          console.log("Top Row Conference: ", topRowConference);
-          console.log("Middle Row Conference: ", middleRowConference);
-          console.log("Bottom Row Conference: ", bottomRowConference);
-          setTopRowConference(topRowConference);
-          setMiddleRowConference(middleRowConference);
-          setBottomRowConference(bottomRowConference);
-        } else {
-          console.log("Document not found.");
+    async function fetchData() {
+        // Fetch stat types
+        try {
+            const dailyStatTypesDocRef = doc(db, "dailyStatTypes", "statTypes");
+            const dailyStatTypesDocSnapshot = await getDoc(dailyStatTypesDocRef);
+        
+            if (dailyStatTypesDocSnapshot.exists()) {
+                const statTypesData = dailyStatTypesDocSnapshot.data();
+                setLeftColumnStatType(statTypesData.leftColumn);
+                setMiddleColumnStatType(statTypesData.middleColumn);
+                setRightColumnStatType(statTypesData.rightColumn);
+            } else {
+                console.log("Stat types document not found.");
+            }
+        } catch (error) {
+            console.error("Error fetching stat types: ", error);
         }
-      } catch (error) {
-        console.error("Error fetching conferences: ", error);
-      }
-    }
 
-    async function logThresholdData() {
-      try {
-        const db = getFirestore(app);
-        const dailyThresholdsDocRef = doc(db, "dailyThresholds", "thresholds");
-        const dailyThresholdsDocSnapshot = await getDoc(dailyThresholdsDocRef);
+        // Fetch threshold data
+        try {
+            const dailyThresholdsDocRef = doc(db, "dailyThresholds", "thresholds");
+            const dailyThresholdsDocSnapshot = await getDoc(dailyThresholdsDocRef);
 
-
-        if (dailyThresholdsDocSnapshot.exists()) {
-          const thresholdsData = dailyThresholdsDocSnapshot.data();
-          const left = thresholdsData.left;
-          const middle = thresholdsData.middle;
-          const right = thresholdsData.right;
-
-          setLeftColumnThreshold(left);
-          setMiddleColumnThreshold(middle);
-          setRightColumnThreshold(right);
-        } else {
-          console.log("Document not found.");
+            if (dailyThresholdsDocSnapshot.exists()) {
+                const thresholdsData = dailyThresholdsDocSnapshot.data();
+                setLeftColumnThreshold(thresholdsData.left);
+                setMiddleColumnThreshold(thresholdsData.middle);
+                setRightColumnThreshold(thresholdsData.right);
+            } else {
+                console.log("Thresholds document not found.");
+            }
+        } catch (error) {
+            console.error("Error fetching thresholds: ", error);
         }
-      } catch (error) {
-        console.error("Error fetching conferences: ", error);
-      }
-    }
 
-    async function logStatTypes() {
-      console.log('LOGGING STAT TYPES')
-      try {
-        const db = getFirestore(app);
-        const dailyStatTypesDocRef = doc(db, "dailyStatTypes", "statTypes");
-        const dailyStatTypesDocSnapshot = await getDoc(dailyStatTypesDocRef);
-    
-        if (dailyStatTypesDocSnapshot.exists()) {
-          console.log('THIS EXISTS')
-          const statTypesData = dailyStatTypesDocSnapshot.data();
-          const leftColumnStatType = statTypesData.leftColumn;
-          const middleColumnStatType = statTypesData.middleColumn;
-          const rightColumnStatType = statTypesData.rightColumn;
-    
-          setLeftColumnStatType(leftColumnStatType);
-          setMiddleColumnStatType(middleColumnStatType);
-          setRightColumnStatType(rightColumnStatType);
-        } else {
-          console.log("Document not found.");
+        // Fetch conference data
+        try {
+            const dailyConferencesDocRef = doc(db, "dailyConferences", "conferences");
+            const dailyConferencesDocSnapshot = await getDoc(dailyConferencesDocRef);
+
+            if (dailyConferencesDocSnapshot.exists()) {
+                const conferencesData = dailyConferencesDocSnapshot.data();
+                setTopRowConference(conferencesData.topRowConference);
+                setMiddleRowConference(conferencesData.middleRowConference);
+                setBottomRowConference(conferencesData.bottomRowConference);
+            } else {
+                console.log("Conferences document not found.");
+            }
+        } catch (error) {
+            console.error("Error fetching conferences: ", error);
         }
-      } catch (error) {
-        console.error("Error fetching stat types: ", error);
-      }
     }
     
+    fetchData();
+}, []);
 
 
-    logStatTypes();
-    logThresholdData();
-    logConferenceData();
-  }, []); // The empty dependency array ensures this effect runs only once, similar to componentDidMount
 
-    // Transform the data to group stats for each player
-    const Quarterback = allQBData.reduce((acc, qb) => {
-      const existingPlayer = acc.find((item) => item.player === qb.player);
-      if (existingPlayer) {
-        existingPlayer.stats.push({ statType: qb.statType, stat: qb.stat });
-      } else {
-        acc.push({
-          player: qb.player,
-          team: qb.team,
-          conference: qb.conference,
-          stats: [{ statType: qb.statType, stat: qb.stat }],
-        });
-      }
-      return acc;
-    }, []);
+  const getPlayers = (position, statType, threshold, conference) => {
+    const filteredPlayers = [];
 
-    const WideReceiver = allWRData.reduce((acc, wr) => {
-      const existingPlayer = acc.find((item) => item.player === wr.player);
-      if (existingPlayer) {
-        existingPlayer.stats.push({ statType: wr.statType, stat: wr.stat });
-      } else {
-        acc.push({
-          player: wr.player,
-          team: wr.team,
-          conference: wr.conference,
-          stats: [{ statType: wr.statType, stat: wr.stat }],
-        });
-      }
-      return acc;
-    }, []);
+    if (position === 'qb') {
+        for (const playerIndex in qb) {
+            const player = qb[playerIndex];
 
-    const RunningBack = allRBData.reduce((acc, rb) => {
-      const existingPlayer = acc.find((item) => item.player === rb.player);
-      if (existingPlayer) {
-        existingPlayer.stats.push({ statType: rb.statType, stat: rb.stat });
-      } else {
-        acc.push({
-          player: rb.player,
-          team: rb.team,
-          conference: rb.conference,
-          stats: [{ statType: rb.statType, stat: rb.stat }],
-        });
-      }
-      return acc;
-    }, []);
+            if (conference && player.conference !== conference) {
+                continue;
+            }
 
-    const getQB = (statType, threshold, conference) => {
-      return Quarterback.filter(player => {
-        const matchingStats = player.stats.filter(item => item.statType === statType);
-    
-        if (matchingStats.length === 0) {
-          return false; // If stat isn't found, exclude the player
+            if (player.stats && player.stats[statType]) {  // Ensure the statType exists for the player
+                const statValues = player.stats[statType];
+                if (statValues.some(value => value >= threshold)) {
+                    filteredPlayers.push(player);
+                }
+            }
         }
-    
-        const highestStat = matchingStats.reduce((maxStat, stat) => Math.max(maxStat, stat.stat), -Infinity);
-        return highestStat >= threshold && player.conference === conference;
-      });
-    };
-    
+    } 
+    else if (position === 'wr') {
+        for (const playerIndex in wr) {
+            const player = wr[playerIndex];
 
-    const getWR = (statType, threshold, conference) => {
-      return WideReceiver.filter(player => {
-        const matchingStats = player.stats.filter(item => item.statType === statType);
-    
-        if (matchingStats.length === 0) {
-          return false; // If stat isn't found, exclude the player
+            if (conference && player.conference !== conference) {
+                continue;
+            }
+
+            if (player.stats && player.stats[statType]) {  // Ensure the statType exists for the player
+                const statValues = player.stats[statType];
+                if (statValues.some(value => value >= threshold)) {
+                    filteredPlayers.push(player);
+                }
+            }
         }
-    
-        const highestStat = matchingStats.reduce((maxStat, stat) => Math.max(maxStat, stat.stat), -Infinity);
-        return highestStat >= threshold && player.conference === conference;
-      });
-    };
-    
+    } 
+    else if (position === 'rb') {
+        for (const playerIndex in rb) {
+            const player = rb[playerIndex];
 
-    const getRB = (statType, threshold, conference) => {
-      return RunningBack.filter(player => {
-        const matchingStats = player.stats.filter(item => item.statType === statType);
-    
-        if (matchingStats.length === 0) {
-          return false; // If stat isn't found, exclude the player
+            if (conference && player.conference !== conference) {
+                continue;
+            }
+
+            if (player.stats && player.stats[statType]) {  // Ensure the statType exists for the player
+                const statValues = player.stats[statType];
+                if (statValues.some(value => value >= threshold)) {
+                    filteredPlayers.push(player);
+                }
+            }
         }
-    
-        const highestStat = matchingStats.reduce((maxStat, stat) => Math.max(maxStat, stat.stat), -Infinity);
-        return highestStat >= threshold && player.conference === conference;
-      });
-    };
-    
+    }
 
+    return filteredPlayers;
+};
+
+    
+  useEffect(() => {
+
+    console.log(leftColumnStatType + " " + leftColumnThreshold)
+
+    setPlayerGrid({
+      topLeftPlayers: getPlayers('qb', leftColumnStatType, leftColumnThreshold, topRowConference),
+      topMiddlePlayers: getPlayers('wr', middleColumnStatType, middleColumnThreshold, topRowConference),
+      topRightPlayers: getPlayers('rb', rightColumnStatType, rightColumnThreshold, topRowConference),
+      middleLeftPlayers: getPlayers('qb', leftColumnStatType, leftColumnThreshold, middleRowConference),
+      middleMiddlePlayers: getPlayers('wr', middleColumnStatType, middleColumnThreshold, middleRowConference),
+      middleRightPlayers: getPlayers('rb', rightColumnStatType, rightColumnThreshold, middleRowConference),
+      bottomLeftPlayers: getPlayers('qb', leftColumnStatType, leftColumnThreshold, bottomRowConference),
+      bottomMiddlePlayers: getPlayers('wr', middleColumnStatType, middleColumnThreshold, bottomRowConference),
+      bottomRightPlayers: getPlayers('rb', rightColumnStatType, rightColumnThreshold, bottomRowConference),
+    });
+
+    console.log(playerGrid);
+  }, [leftColumnStatType, leftColumnThreshold, middleColumnStatType, middleColumnThreshold, rightColumnStatType, rightColumnThreshold, topRowConference, middleRowConference, bottomRowConference]);
     
 
 
@@ -507,7 +406,7 @@ export default function App() {
     }
   };
 
-  const allPlayers = [...Quarterback, ...WideReceiver, ...RunningBack];
+  const allPlayers = [...qb, ...wr, ...rb];
 
   const uniquePlayers = [...new Set(allPlayers.map(p => p.player))];
 
