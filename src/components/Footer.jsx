@@ -21,14 +21,6 @@ const Footer = () => {
         >
           <FaSpotify />
         </a>
-        <a
-          href="https://www.instagram.com/ianco0k/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-4xl hover:text-red-400"
-        >
-          <FaInstagram />
-        </a>
         <a href="mailto:ianscook19@gmail.com" className="text-4xl hover:text-yellow-400">
           <FaEnvelope />
         </a>
