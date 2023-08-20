@@ -19,7 +19,7 @@ function Modal() {
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
           <div className="bg-white p-6 rounded shadow-md z-10">
-          <p className="text-center mb-4">Similar to Immaculate Grid, the goal is to find players each cell that match the criteria of the row and column.</p>
+          <p className="text-center mb-4">Similar to Immaculate Grid, the goal is to find players for each cell that match the criteria of the row and column.</p>
           <p className="text-center mb-4">Players from 2005-2006 season up to 2022-2023</p>
           <p className="text-center mb-4">Draft players are between 2010-2021, for now</p>
         <p className="text-center mb-4">Ellipses represents any conference not in the Power 5</p>
