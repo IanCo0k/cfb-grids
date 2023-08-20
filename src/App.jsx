@@ -186,11 +186,11 @@ const getPlayersByOverallAndConference = (data, overallThreshold, targetConferen
       middleRightPlayers: getPlayersByOverallAndConference(draft, 100, middleRowConference),
       bottomLeftPlayers: getPlayers('qb', leftColumnStatType, leftColumnThreshold, bottomRowConference),
       bottomMiddlePlayers: getPlayers('wr', middleColumnStatType, middleColumnThreshold, bottomRowConference),
-      bottomRightPlayers: getPlayersByOverallAndConference(draft, 100, topRowConference)
+      bottomRightPlayers: getPlayersByOverallAndConference(draft, 100, bottomRowConference)
     });
 
     console.log(playerGrid);
-  }, [leftColumnStatType, leftColumnThreshold, middleColumnStatType, middleColumnThreshold, rightColumnStatType, rightColumnThreshold, topRowConference, middleRowConference, bottomRowConference]);
+  }, []);
     
 
 
