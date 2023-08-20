@@ -416,7 +416,7 @@ export default function App() {
     <div className="min-h-screen bg-gray-200 py-8">
       <div className="max-w-4xl flex-col items-center mx-auto p-4">
         <h1 className="text-6xl font-bold text-center mb-4">CFB Grids</h1>
-        <p className="text-center mb-4">Players from 2015-2016 season up to 2022-2023</p>
+        <p className="text-center mb-4">Players from 2005-2006 season up to 2022-2023</p>
         <p className="text-center mb-4"><span className='text-blue-500'>Passing</span> -- <span className='text-green-500'>Receiving</span> -- <span className='text-purple-500'>Rushing</span></p>
         {focused && (
           <div className="mb-4 text-black">
