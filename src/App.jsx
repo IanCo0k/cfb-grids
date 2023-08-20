@@ -25,10 +25,11 @@ const app = initializeApp(firebaseConfig);
 
 import b1gLogo from './b1g.png';
 import pacLogo from './pac.png';
-import macLogo from './mac.png';
 import accLogo from './acc.png';
 import secLogo from './sec.png';
 import b12Logo from './big12.png';
+import other from './other.png';
+
 
 import qb from './data/passing';
 import wr from './data/receiving';
@@ -164,60 +165,44 @@ export default function App() {
 
 
 
-  const getPlayers = (position, statType, threshold, conference) => {
-    const filteredPlayers = [];
+const getPlayers = (position, statType, threshold, conference) => {
+  const filteredPlayers = [];
+  const datasets = {
+      'qb': qb,
+      'wr': wr,
+      'rb': rb
+  };
 
-    if (position === 'qb') {
-        for (const playerIndex in qb) {
-            const player = qb[playerIndex];
+  const majorConferences = ['Big Ten', 'Pac-12', 'Pac-10', 'Big 12', 'ACC', 'SEC'];
 
-            if (conference && player.conference !== conference) {
-                continue;
-            }
+  const data = datasets[position];
 
-            if (player.stats && player.stats[statType]) {  // Ensure the statType exists for the player
-                const statValues = player.stats[statType];
-                if (statValues.some(value => value >= threshold)) {
-                    filteredPlayers.push(player);
-                }
-            }
-        }
-    } 
-    else if (position === 'wr') {
-        for (const playerIndex in wr) {
-            const player = wr[playerIndex];
+  for (const playerIndex in data) {
+      const player = data[playerIndex];
 
-            if (conference && player.conference !== conference) {
-                continue;
-            }
+      // If the player's conference is 'Pac-10', consider it as 'Pac-12'
+      const playerConference = player.conference === 'Pac-10' ? 'Pac-12' : player.conference;
 
-            if (player.stats && player.stats[statType]) {  // Ensure the statType exists for the player
-                const statValues = player.stats[statType];
-                if (statValues.some(value => value >= threshold)) {
-                    filteredPlayers.push(player);
-                }
-            }
-        }
-    } 
-    else if (position === 'rb') {
-        for (const playerIndex in rb) {
-            const player = rb[playerIndex];
+      if (conference === 'other') {
+          if (majorConferences.includes(playerConference)) {
+              continue;
+          }
+      } else if (conference && playerConference !== conference) {
+          continue;
+      }
 
-            if (conference && player.conference !== conference) {
-                continue;
-            }
+      if (player.stats && player.stats[statType]) {  // Ensure the statType exists for the player
+          const statValues = player.stats[statType];
+          if (statValues.some(value => value >= threshold)) {
+              filteredPlayers.push(player);
+          }
+      }
+  }
 
-            if (player.stats && player.stats[statType] && (player.conference === conference)) {  // Ensure the statType exists for the player
-                const statValues = player.stats[statType];
-                if (statValues.some(value => value >= threshold)) {
-                    filteredPlayers.push(player);
-                }
-            }
-        }
-    }
-
-    return filteredPlayers;
+  return filteredPlayers;
 };
+
+
 
     
   useEffect(() => {
@@ -328,12 +313,8 @@ export default function App() {
       logo = b1gLogo;
     }
 
-    if (conference === 'Pac-12'){
+    if (conference === 'Pac-12' || conference === 'Pac-10'){
       logo = pacLogo;
-    }
-
-    if (conference === 'Mid-American'){
-      logo = macLogo;
     }
 
     if (conference === 'ACC'){
@@ -346,6 +327,10 @@ export default function App() {
 
     if(conference === 'Big 12'){
       logo = b12Logo;
+    }
+
+    if(conference === 'other'){
+      logo = other;
     }
 
     return logo;
@@ -417,6 +402,7 @@ export default function App() {
       <div className="max-w-4xl flex-col items-center mx-auto p-4">
         <h1 className="text-6xl font-bold text-center mb-4">CFB Grids</h1>
         <p className="text-center mb-4">Players from 2005-2006 season up to 2022-2023</p>
+        <p className="text-center mb-4">Ellipses represents any conference not in the Power 5</p>
         <p className="text-center mb-4"><span className='text-blue-500'>Passing</span> -- <span className='text-green-500'>Receiving</span> -- <span className='text-purple-500'>Rushing</span></p>
         {focused && (
           <div className="mb-4 text-black">
