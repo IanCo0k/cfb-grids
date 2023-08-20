@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Dropdown from './components/Dropdown';
+import Modal from './components/Modal';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -322,6 +323,10 @@ const getPlayersByOverallAndConference = (data, overallThreshold, targetConferen
       teamName = 'texas-am';
     } else if(teamName === 'Ole Miss'){
       teamName = 'mississippi';
+    } else if(teamName === 'UT San Antonio'){
+      teamName = 'texas-san-antonio'
+    } else if(teamName === 'BYU'){
+      teamName = 'brigham-young'
     }
     else {
       // Remove leading/trailing spaces and convert the name to lowercase
@@ -374,12 +379,9 @@ const getPlayersByOverallAndConference = (data, overallThreshold, targetConferen
 
 
   return (
-    <div className="min-h-screen bg-gray-200 py-8">
+    <div className="min-h-screen relative bg-gray-200 py-8">
       <div className="max-w-4xl flex-col items-center mx-auto p-4">
         <h1 className="text-6xl font-bold text-center mb-4">CFB Grids</h1>
-        <p className="text-center mb-4">Players from 2005-2006 season up to 2022-2023</p>
-        <p className="text-center mb-4">Ellipses represents any conference not in the Power 5</p>
-        <p className="text-center mb-4"><span className='bg-blue-500'>Passing</span>--<span className='bg-green-500'>Receiving</span>--<span className='bg-purple-500'>Rushing</span>--<span className='bg-orange-500'>Other</span></p>          
         {focused && (
           <div className="mb-4 text-black">
             <Dropdown onChange={handleDropdownChange} options={uniquePlayers} />
@@ -447,6 +449,8 @@ const getPlayersByOverallAndConference = (data, overallThreshold, targetConferen
             <button className="rounded bg-black text-white py-2 px-4">Tweet Score</button>
           </a>
         )}
+                <Modal />   
+
       </div>
 
         
