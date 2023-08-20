@@ -29,7 +29,7 @@ const Footer = () => {
         >
           <FaInstagram />
         </a>
-        <a href="ianscook19@gmail.com" className="text-4xl hover:text-yellow-400">
+        <a href="mailto:ianscook19@gmail.com" className="text-4xl hover:text-yellow-400">
           <FaEnvelope />
         </a>
       </div>
