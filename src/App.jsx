@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Dropdown from './components/Dropdown';
 import Modal from './components/Modal';
+import Footer from './components/Footer';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -452,9 +453,8 @@ const getPlayersByOverallAndConference = (data, overallThreshold, targetConferen
                 <Modal />   
 
       </div>
-
-        
       </div>
+      <Footer />
     </div>
   );
 }
