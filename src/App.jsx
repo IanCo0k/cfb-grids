@@ -34,6 +34,7 @@ import other from './other.png';
 import qb from './data/passing';
 import wr from './data/receiving';
 import rb from './data/running';
+import draft from './data/draft';
 
 export default function App() {
 
@@ -42,11 +43,11 @@ export default function App() {
   const [activeCell, setActiveCell] = useState('');
 
   const [leftColumnStatType, setLeftColumnStatType] = useState('TD');
-  const [leftColumnThreshold, setLeftColumnThreshold] = useState();
-  const [middleColumnStatType, setMiddleColumnStatType] = useState('YDS');
-  const [middleColumnThreshold, setMiddleColumnThreshold] = useState();
-  const [rightColumnStatType, setRightColumnStatType] = useState('INT');
-  const [rightColumnThreshold, setRightColumnThreshold] = useState();
+  const [leftColumnThreshold, setLeftColumnThreshold] = useState(20);
+  const [middleColumnStatType, setMiddleColumnStatType] = useState('TD');
+  const [middleColumnThreshold, setMiddleColumnThreshold] = useState(10);
+  const [rightColumnStatType, setRightColumnStatType] = useState('TD');
+  const [rightColumnThreshold, setRightColumnThreshold] = useState(10);
 
   const [cellPercentages, setCellPercentages] = useState({
     topLeft: 0,
@@ -82,9 +83,9 @@ export default function App() {
     setRarityScore(updatedRarityScore.toFixed(1));
   }, [cellPercentages]);
 
-  const [topRowConference, setTopRowConference] = useState();
-  const [middleRowConference, setMiddleRowConference] = useState();
-  const [bottomRowConference, setBottomRowConference] = useState();
+  const [topRowConference, setTopRowConference] = useState('Big Ten');
+  const [middleRowConference, setMiddleRowConference] = useState('Pac-12');
+  const [bottomRowConference, setBottomRowConference] = useState('other');
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   
   const [playerGrid, setPlayerGrid] = useState({
@@ -104,64 +105,7 @@ export default function App() {
     setSelectedPlayer(null);
   }, [activeCell]);
 
-  useEffect(() => {
-    const db = getFirestore(app);
 
-    async function fetchData() {
-        // Fetch stat types
-        try {
-            const dailyStatTypesDocRef = doc(db, "dailyStatTypes", "statTypes");
-            const dailyStatTypesDocSnapshot = await getDoc(dailyStatTypesDocRef);
-        
-            if (dailyStatTypesDocSnapshot.exists()) {
-                const statTypesData = dailyStatTypesDocSnapshot.data();
-                setLeftColumnStatType(statTypesData.leftColumn);
-                setMiddleColumnStatType(statTypesData.middleColumn);
-                setRightColumnStatType(statTypesData.rightColumn);
-            } else {
-                console.log("Stat types document not found.");
-            }
-        } catch (error) {
-            console.error("Error fetching stat types: ", error);
-        }
-
-        // Fetch threshold data
-        try {
-            const dailyThresholdsDocRef = doc(db, "dailyThresholds", "thresholds");
-            const dailyThresholdsDocSnapshot = await getDoc(dailyThresholdsDocRef);
-
-            if (dailyThresholdsDocSnapshot.exists()) {
-                const thresholdsData = dailyThresholdsDocSnapshot.data();
-                setLeftColumnThreshold(thresholdsData.left);
-                setMiddleColumnThreshold(thresholdsData.middle);
-                setRightColumnThreshold(thresholdsData.right);
-            } else {
-                console.log("Thresholds document not found.");
-            }
-        } catch (error) {
-            console.error("Error fetching thresholds: ", error);
-        }
-
-        // Fetch conference data
-        try {
-            const dailyConferencesDocRef = doc(db, "dailyConferences", "conferences");
-            const dailyConferencesDocSnapshot = await getDoc(dailyConferencesDocRef);
-
-            if (dailyConferencesDocSnapshot.exists()) {
-                const conferencesData = dailyConferencesDocSnapshot.data();
-                setTopRowConference(conferencesData.topRowConference);
-                setMiddleRowConference(conferencesData.middleRowConference);
-                setBottomRowConference(conferencesData.bottomRowConference);
-            } else {
-                console.log("Conferences document not found.");
-            }
-        } catch (error) {
-            console.error("Error fetching conferences: ", error);
-        }
-    }
-    
-    fetchData();
-}, []);
 
 
 
@@ -202,23 +146,47 @@ const getPlayers = (position, statType, threshold, conference) => {
   return filteredPlayers;
 };
 
+const getPlayersByOverallAndConference = (data, overallThreshold, targetConference) => {
+  const filteredPlayers = [];
+  const majorConferences = ['Big Ten', 'Pac-12', 'Pac-10', 'Big 12', 'ACC', 'SEC'];
+
+  console.log(data);
+
+  for (const player of data) {
+    const playerConference = player.collegeConference === 'Pac-10' ? 'Pac-12' : player.collegeConference;
+
+    if (targetConference === 'other') {
+      if (majorConferences.includes(playerConference)) {
+        continue;
+      }
+    } else if (targetConference && playerConference !== targetConference) {
+      continue;
+    }
+
+    if (player.overall && player.overall <= overallThreshold) {
+      filteredPlayers.push(player);
+    }
+  }
+
+  return filteredPlayers;
+};
+
+
+
 
 
     
   useEffect(() => {
-
-    console.log(leftColumnStatType + " " + leftColumnThreshold)
-
     setPlayerGrid({
       topLeftPlayers: getPlayers('qb', leftColumnStatType, leftColumnThreshold, topRowConference),
       topMiddlePlayers: getPlayers('wr', middleColumnStatType, middleColumnThreshold, topRowConference),
-      topRightPlayers: getPlayers('rb', rightColumnStatType, rightColumnThreshold, topRowConference),
+      topRightPlayers: getPlayersByOverallAndConference(draft, 100, topRowConference),
       middleLeftPlayers: getPlayers('qb', leftColumnStatType, leftColumnThreshold, middleRowConference),
       middleMiddlePlayers: getPlayers('wr', middleColumnStatType, middleColumnThreshold, middleRowConference),
-      middleRightPlayers: getPlayers('rb', rightColumnStatType, rightColumnThreshold, middleRowConference),
+      middleRightPlayers: getPlayersByOverallAndConference(draft, 100, middleRowConference),
       bottomLeftPlayers: getPlayers('qb', leftColumnStatType, leftColumnThreshold, bottomRowConference),
       bottomMiddlePlayers: getPlayers('wr', middleColumnStatType, middleColumnThreshold, bottomRowConference),
-      bottomRightPlayers: getPlayers('rb', rightColumnStatType, rightColumnThreshold, bottomRowConference),
+      bottomRightPlayers: getPlayersByOverallAndConference(draft, 100, topRowConference)
     });
 
     console.log(playerGrid);
@@ -392,8 +360,11 @@ const getPlayers = (position, statType, threshold, conference) => {
   };
 
   const allPlayers = [...qb, ...wr, ...rb];
+  const draftPlayers = draft
 
-  const uniquePlayers = [...new Set(allPlayers.map(p => p.player))];
+  // Combine all player names from 'qb', 'wr', 'rb', and 'draft'
+  const uniquePlayers = [...new Set([...allPlayers.map(p => p.player), ...draftPlayers.map(p => p.player)])];
+  
 
 
 
@@ -403,7 +374,7 @@ const getPlayers = (position, statType, threshold, conference) => {
         <h1 className="text-6xl font-bold text-center mb-4">CFB Grids</h1>
         <p className="text-center mb-4">Players from 2005-2006 season up to 2022-2023</p>
         <p className="text-center mb-4">Ellipses represents any conference not in the Power 5</p>
-        <p className="text-center mb-4"><span className='text-blue-500'>Passing</span> -- <span className='text-green-500'>Receiving</span> -- <span className='text-purple-500'>Rushing</span></p>
+        <p className="text-center mb-4"><span className='bg-blue-500'>Passing</span>--<span className='bg-green-500'>Receiving</span>--<span className='bg-purple-500'>Rushing</span>--<span className='bg-orange-500'>Other</span></p>          
         {focused && (
           <div className="mb-4 text-black">
             <Dropdown onChange={handleDropdownChange} options={uniquePlayers} />
@@ -419,8 +390,8 @@ const getPlayers = (position, statType, threshold, conference) => {
           <div className="flex items-center justify-center square bg-green-500 text-white" onClick={handleClick}>
             {middleColumnThreshold} {middleColumnStatType}
           </div>
-          <div className="flex w-100 pb-100 items-center justify-center square bg-purple-500 text-white" onClick={handleClick}>
-            {rightColumnThreshold} {rightColumnStatType}
+          <div className="flex w-100 pb-100 wrap items-center justify-center square bg-orange-500 text-white" onClick={handleClick}>
+            Top 100 Pick
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
             <img src={logoUrl(topRowConference)} alt="" />
