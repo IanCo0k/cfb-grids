@@ -207,7 +207,7 @@ export default function App() {
                 continue;
             }
 
-            if (player.stats && player.stats[statType]) {  // Ensure the statType exists for the player
+            if (player.stats && player.stats[statType] && (player.conference === conference)) {  // Ensure the statType exists for the player
                 const statValues = player.stats[statType];
                 if (statValues.some(value => value >= threshold)) {
                     filteredPlayers.push(player);
