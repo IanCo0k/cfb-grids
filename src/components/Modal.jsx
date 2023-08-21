@@ -23,12 +23,13 @@ function Modal() {
           <p className="text-center mb-4">Players from 2005-2006 season up to 2022-2023</p>
           <p className="text-center mb-4">Draft players are between 2010-2021, for now</p>
             <h1>SOME PLAYERS THAT SHOULD QUALIFY FOR SOME SQUARES WON'T.</h1>
+            <br />
             <h1>Send me an email or DM on twitter and I will manually override it as soon as I can.</h1>     
             <button
               className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               onClick={toggleModal}
             >
-              Close Modal
+              Close
             </button>
           </div>
         </div>

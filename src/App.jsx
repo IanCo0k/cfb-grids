@@ -231,12 +231,14 @@ const getPlayersByOverallAndConference = (data, overallThreshold, targetConferen
 
   const handleClick = (event) => {
     const cellId = event.target.id;
+
     // Prevent changes to finalized cells
     if (finalizedCellPlayers[cellId]) return;
     setFocused(true);
     setActiveCell(cellId);
     setCellPlayerInfo({});
   };
+
 
   const handleDropdownChange = (playerName) => {
     setSelectedPlayer(playerName);
@@ -356,6 +358,10 @@ const getPlayersByOverallAndConference = (data, overallThreshold, targetConferen
       teamName = 'texas-san-antonio'
     } else if(teamName === 'BYU'){
       teamName = 'brigham-young'
+    } else if(teamName === 'Miami'){
+      teamName = 'miami-fl';
+    } else if(teamName === 'UNLV'){
+      teamName = 'nevada-las-vegas'
     }
     else {
       // Remove leading/trailing spaces and convert the name to lowercase
