@@ -46,6 +46,18 @@
   border-radius: 1em;
 }
 
+.title-square{
+  width: 100%;
+  aspect-ratio: 1;  /* Maintains square aspect ratio */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: wrap;  /* Keeps contents within square bounds */
+  text-align: center;
+  box-sizing: border-box;
+  border-radius: 1em;
+}
+
 .guess:hover{
   background: #fff;
 }

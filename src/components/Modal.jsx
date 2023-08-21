@@ -22,8 +22,8 @@ function Modal() {
           <p className="text-center mb-4">Similar to Immaculate Grid, the goal is to find players for each cell that match the criteria of the row and column.</p>
           <p className="text-center mb-4">Players from 2005-2006 season up to 2022-2023</p>
           <p className="text-center mb-4">Draft players are between 2010-2021, for now</p>
-        <p className="text-center mb-4">Ellipses represents any conference not in the Power 5</p>
-        <p className="text-center mb-4"><span className='bg-blue-500'>Passing</span>--<span className='bg-green-500'>Receiving</span>--<span className='bg-purple-500'>Rushing</span>--<span className='bg-orange-500'>Other</span></p>       
+            <h1>SOME PLAYERS THAT SHOULD QUALIFY FOR SOME SQUARES WON'T.</h1>
+            <h1>Send me an email or DM on twitter and I will manually override it as soon as I can.</h1>     
             <button
               className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               onClick={toggleModal}
