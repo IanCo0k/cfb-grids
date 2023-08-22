@@ -84,10 +84,10 @@ export default function App() {
   
     setShowTweetButton(!hasZeroPercentage);
   
-    setTweetText(`CFB Grids\n\nRarity Score: ${updatedRarityScore.toFixed(1)}\n\n@cfbgrids / cfbgrids.com`);
+    setTweetText(`CFB Grids\n\nRarity Score: ${updatedRarityScore.toFixed(2)}\n\n@cfbgrids / cfbgrids.com`);
   
     // Update the rarity score in the state
-    setRarityScore(updatedRarityScore.toFixed(1));
+    setRarityScore(updatedRarityScore.toFixed(2));
   }, [cellPercentages]);
 
   const [topRowConference, setTopRowConference] = useState('Big Ten');
@@ -404,7 +404,7 @@ const getPlayersByOverallAndTeam = (data, overallThreshold, targetConference) =>
     return (
       <div className="text-center relative" style={{backgroundImage: `url(${generateLogoUrl(finalizedPlayer.team)})`, backgroundSize: 'cover', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'center'}}>
         <span className="text-white bg-black p-1 rounded text-xs absolute top-0 right-0">
-          {displayedPercentage.toFixed(1)}%
+          {displayedPercentage.toFixed(2)}%
         </span>
         <p className="mobile text-white mt-1 w-full bg-black">{finalizedPlayer.player}</p>
       </div>
