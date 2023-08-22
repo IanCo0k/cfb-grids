@@ -21,7 +21,7 @@ function Modal() {
           <div className="bg-white p-6 rounded shadow-md z-10">
           <p className="text-center mb-4">Similar to Immaculate Grid, the goal is to find players for each cell that match the criteria of the row and column.</p>
           <p className="text-center mb-4">Players from 2005-2006 season up to 2022-2023</p>
-          <p className="text-center mb-4">Draft players are between 2010-2021, for now</p>
+          <p className="text-center mb-4">NFL Draft data goes from 2005 to current day now!</p>
             <h1>SOME PLAYERS THAT SHOULD QUALIFY FOR SOME SQUARES WON'T.</h1>
             <br />
             <h1>Send me an email or DM on twitter and I will manually override it as soon as I can.</h1>     

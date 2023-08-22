@@ -49,10 +49,10 @@ export default function App() {
   const [focused, setFocused] = useState(false);
   const [activeCell, setActiveCell] = useState('');
 
-  const [leftColumnStatType, setLeftColumnStatType] = useState('ATT');
-  const [leftColumnThreshold, setLeftColumnThreshold] = useState(1);
-  const [middleColumnStatType, setMiddleColumnStatType] = useState('YPC');
-  const [middleColumnThreshold, setMiddleColumnThreshold] = useState(5);
+  const [leftColumnStatType, setLeftColumnStatType] = useState('YPR');
+  const [leftColumnThreshold, setLeftColumnThreshold] = useState(8);
+  const [middleColumnStatType, setMiddleColumnStatType] = useState('LONG');
+  const [middleColumnThreshold, setMiddleColumnThreshold] = useState(50);
   const [rightColumnStatType, setRightColumnStatType] = useState('LONG');
   const [rightColumnThreshold, setRightColumnThreshold] = useState(45)
 
@@ -91,7 +91,7 @@ export default function App() {
   }, [cellPercentages]);
 
   const [topRowConference, setTopRowConference] = useState('Big Ten');
-  const [middleRowConference, setMiddleRowConference] = useState('ACC');
+  const [middleRowConference, setMiddleRowConference] = useState('Big 12');
   const [bottomRowConference, setBottomRowConference] = useState('other');
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   
@@ -206,6 +206,26 @@ const getPlayersByOverallAndConference = (data, overallThreshold, targetConferen
   return filteredPlayers;
 };
 
+const getPlayersByOverallAndTeam = (data, overallThreshold, targetConference) => {
+  const filteredPlayers = [];
+  const majorConferences = ['Big Ten', 'Pac-12', 'Pac-10', 'Big 12', 'ACC', 'SEC'];
+
+  console.log(data);
+
+  for (const player of data) {
+
+   if (targetConference && player.team !== targetConference) {
+      continue;
+    }
+
+    if (player.overall && player.overall <= overallThreshold) {
+      filteredPlayers.push(player);
+    }
+  }
+
+  return filteredPlayers;
+};
+
 
 
 
@@ -213,15 +233,15 @@ const getPlayersByOverallAndConference = (data, overallThreshold, targetConferen
     
   useEffect(() => {
     setPlayerGrid({
-      topLeftPlayers: getTeamPlayers('qb', leftColumnStatType, leftColumnThreshold, 'Georgia'),
-      topMiddlePlayers: getTeamPlayers('rb', middleColumnStatType, middleColumnThreshold, 'Georgia'),
-      topRightPlayers: getTeamPlayers('wr', rightColumnStatType, rightColumnThreshold, 'Georgia'),
-      middleLeftPlayers: getPlayers('qb', leftColumnStatType, leftColumnThreshold, middleRowConference),
+      topLeftPlayers: getTeamPlayers('wr', leftColumnStatType, leftColumnThreshold, 'Ohio State'),
+      topMiddlePlayers: getTeamPlayers('rb', middleColumnStatType, middleColumnThreshold, 'Ohio State'),
+      topRightPlayers: getPlayersByOverallAndTeam(draft, 75, 'Ohio State'),
+      middleLeftPlayers: getPlayers('wr', leftColumnStatType, leftColumnThreshold, middleRowConference),
       middleMiddlePlayers: getPlayers('rb', middleColumnStatType, middleColumnThreshold, middleRowConference),
-      middleRightPlayers: getPlayers('wr', rightColumnStatType, rightColumnThreshold, middleRowConference),
-      bottomLeftPlayers: getPlayers('qb', leftColumnStatType, leftColumnThreshold, bottomRowConference),
+      middleRightPlayers: getPlayersByOverallAndConference(draft, 75, middleRowConference),
+      bottomLeftPlayers: getPlayers('wr', leftColumnStatType, leftColumnThreshold, bottomRowConference),
       bottomMiddlePlayers: getPlayers('rb', middleColumnStatType, middleColumnThreshold, bottomRowConference),
-      bottomRightPlayers: getPlayers('wr', rightColumnStatType, rightColumnThreshold, bottomRowConference),
+      bottomRightPlayers: getPlayersByOverallAndConference(draft, 75, bottomRowConference)
     });
 
     console.log(playerGrid);
@@ -258,7 +278,7 @@ const getPlayersByOverallAndConference = (data, overallThreshold, targetConferen
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'aug21');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'aug22');
   
     try {
       // Fetch current data from the database
@@ -427,16 +447,16 @@ const getPlayersByOverallAndConference = (data, overallThreshold, targetConferen
         <div className="grid grid-cols-4 gap-2">
           <div className="flex items-center justify-center squarefont-bold text-gray-800" onClick={handleClick}>Rarity Score: {rarityScore}</div>
           <div className="flex items-center justify-center title-square bg-blue-500 text-white" onClick={handleClick}>
-            1 Pass Attempt
+            8 YPR
           </div>
           <div className="flex items-center justify-center title-square bg-blue-500 text-white" onClick={handleClick}>
-            5 YPC
+            50+ YD Rush
           </div>
           <div className="flex w-100 pb-100 wrap items-center justify-center title-square bg-blue-500 text-white" onClick={handleClick}>
-            45+ YD catch
+            Top 75 Draft Pick
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/georgia.png' alt="" />
+            <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/ohio-state.png' alt="" />
           </div>
           <div className="border border-2 guess border-black flex items-center justify-center square" id='topLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('topLeft')}
