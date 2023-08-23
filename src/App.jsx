@@ -49,10 +49,10 @@ export default function App() {
   const [focused, setFocused] = useState(false);
   const [activeCell, setActiveCell] = useState('');
 
-  const [leftColumnStatType, setLeftColumnStatType] = useState('YPR');
-  const [leftColumnThreshold, setLeftColumnThreshold] = useState(8);
-  const [middleColumnStatType, setMiddleColumnStatType] = useState('LONG');
-  const [middleColumnThreshold, setMiddleColumnThreshold] = useState(50);
+  const [leftColumnStatType, setLeftColumnStatType] = useState('TD');
+  const [leftColumnThreshold, setLeftColumnThreshold] = useState(6);
+  const [middleColumnStatType, setMiddleColumnStatType] = useState('CAR');
+  const [middleColumnThreshold, setMiddleColumnThreshold] = useState(1);
   const [rightColumnStatType, setRightColumnStatType] = useState('LONG');
   const [rightColumnThreshold, setRightColumnThreshold] = useState(45)
 
@@ -91,7 +91,7 @@ export default function App() {
   }, [cellPercentages]);
 
   const [topRowConference, setTopRowConference] = useState('Big Ten');
-  const [middleRowConference, setMiddleRowConference] = useState('Big 12');
+  const [middleRowConference, setMiddleRowConference] = useState('Big Ten');
   const [bottomRowConference, setBottomRowConference] = useState('other');
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   
@@ -233,15 +233,15 @@ const getPlayersByOverallAndTeam = (data, overallThreshold, targetConference) =>
     
   useEffect(() => {
     setPlayerGrid({
-      topLeftPlayers: getTeamPlayers('wr', leftColumnStatType, leftColumnThreshold, 'Ohio State'),
-      topMiddlePlayers: getTeamPlayers('rb', middleColumnStatType, middleColumnThreshold, 'Ohio State'),
-      topRightPlayers: getPlayersByOverallAndTeam(draft, 75, 'Ohio State'),
+      topLeftPlayers: getTeamPlayers('wr', leftColumnStatType, leftColumnThreshold, 'LSU'),
+      topMiddlePlayers: getTeamPlayers('rb', middleColumnStatType, middleColumnThreshold, 'LSU'),
+      topRightPlayers: getPlayersByOverallAndTeam(draft, 32, 'LSU'),
       middleLeftPlayers: getPlayers('wr', leftColumnStatType, leftColumnThreshold, middleRowConference),
       middleMiddlePlayers: getPlayers('rb', middleColumnStatType, middleColumnThreshold, middleRowConference),
-      middleRightPlayers: getPlayersByOverallAndConference(draft, 75, middleRowConference),
+      middleRightPlayers: getPlayersByOverallAndConference(draft, 32, middleRowConference),
       bottomLeftPlayers: getPlayers('wr', leftColumnStatType, leftColumnThreshold, bottomRowConference),
       bottomMiddlePlayers: getPlayers('rb', middleColumnStatType, middleColumnThreshold, bottomRowConference),
-      bottomRightPlayers: getPlayersByOverallAndConference(draft, 75, bottomRowConference)
+      bottomRightPlayers: getPlayersByOverallAndConference(draft, 32, bottomRowConference)
     });
 
     console.log(playerGrid);
@@ -261,9 +261,11 @@ const getPlayersByOverallAndTeam = (data, overallThreshold, targetConference) =>
 
 
   const handleDropdownChange = (playerName) => {
-    setSelectedPlayer(playerName);
+    const playerNameOnly = playerName.split(' (')[0]; // Extract the player's name part
+    setSelectedPlayer(playerNameOnly);
+    
     const playerList = playerGrid[`${activeCell}Players`];
-    const selectedPlayerInfo = playerList.find((player) => player.player === playerName);
+    const selectedPlayerInfo = playerList.find((player) => player.player === playerNameOnly);
   
     if (selectedPlayerInfo) {
       setCellPlayerInfo(selectedPlayerInfo);
@@ -275,10 +277,11 @@ const getPlayersByOverallAndTeam = (data, overallThreshold, targetConference) =>
       console.log(selectedPlayerInfo);
     }
   };
+  
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'aug22');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'aug23');
   
     try {
       // Fetch current data from the database
@@ -427,8 +430,9 @@ const getPlayersByOverallAndTeam = (data, overallThreshold, targetConference) =>
   const allPlayers = [...qb, ...wr, ...rb];
   const draftPlayers = draft
 
-  // Combine all player names from 'qb', 'wr', 'rb', and 'draft'
-  const uniquePlayers = [...new Set([...allPlayers.map(p => p.player), ...draftPlayers.map(p => p.player)])];
+// Combine all player names from 'qb', 'wr', 'rb', and 'draft'
+const uniquePlayers = [...new Set([...allPlayers.map(p => `${p.player} (${p.team})`), ...draftPlayers.map(p => `${p.player} (${p.team})`)])];
+
   
 
 
@@ -447,16 +451,16 @@ const getPlayersByOverallAndTeam = (data, overallThreshold, targetConference) =>
         <div className="grid grid-cols-4 gap-2">
           <div className="flex items-center justify-center squarefont-bold text-gray-800" onClick={handleClick}>Rarity Score: {rarityScore}</div>
           <div className="flex items-center justify-center title-square bg-blue-500 text-white" onClick={handleClick}>
-            8 YPR
+            6 REC TD
           </div>
           <div className="flex items-center justify-center title-square bg-blue-500 text-white" onClick={handleClick}>
-            50+ YD Rush
+            1 Carry
           </div>
           <div className="flex w-100 pb-100 wrap items-center justify-center title-square bg-blue-500 text-white" onClick={handleClick}>
-            Top 75 Draft Pick
+            1st Round Pick
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/ohio-state.png' alt="" />
+            <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/louisiana-state.png' alt="" />
           </div>
           <div className="border border-2 guess border-black flex items-center justify-center square" id='topLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('topLeft')}
