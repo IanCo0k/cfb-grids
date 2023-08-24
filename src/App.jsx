@@ -35,14 +35,12 @@ import pacLogo from './pac.png';
 import accLogo from './acc.png';
 import secLogo from './sec.png';
 import b12Logo from './big12.png';
-import other from './other.png';
-
+import mac from './mac.png'
 
 import qb from './data/passing';
 import wr from './data/receiving';
 import rb from './data/running';
 import draft from './data/draft';
-
 export default function App() {
 
   const [finalizedCellPlayers, setFinalizedCellPlayers] = useState({});
@@ -50,11 +48,11 @@ export default function App() {
   const [activeCell, setActiveCell] = useState('');
 
   const [leftColumnStatType, setLeftColumnStatType] = useState('TD');
-  const [leftColumnThreshold, setLeftColumnThreshold] = useState(6);
+  const [leftColumnThreshold, setLeftColumnThreshold] = useState(1);
   const [middleColumnStatType, setMiddleColumnStatType] = useState('CAR');
-  const [middleColumnThreshold, setMiddleColumnThreshold] = useState(1);
-  const [rightColumnStatType, setRightColumnStatType] = useState('LONG');
-  const [rightColumnThreshold, setRightColumnThreshold] = useState(45)
+  const [middleColumnThreshold, setMiddleColumnThreshold] = useState(20);
+  const [rightColumnStatType, setRightColumnStatType] = useState('REC');
+  const [rightColumnThreshold, setRightColumnThreshold] = useState(10)
 
   const [cellPercentages, setCellPercentages] = useState({
     topLeft: 0,
@@ -91,8 +89,8 @@ export default function App() {
   }, [cellPercentages]);
 
   const [topRowConference, setTopRowConference] = useState('Big Ten');
-  const [middleRowConference, setMiddleRowConference] = useState('Big Ten');
-  const [bottomRowConference, setBottomRowConference] = useState('other');
+  const [middleRowConference, setMiddleRowConference] = useState('Pac-12');
+  const [bottomRowConference, setBottomRowConference] = useState('Mid-American');
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   
   const [playerGrid, setPlayerGrid] = useState({
@@ -124,8 +122,6 @@ const getPlayers = (position, statType, threshold, conference) => {
       'rb': rb
   };
 
-  const majorConferences = ['Big Ten', 'Pac-12', 'Pac-10', 'Big 12', 'ACC', 'SEC'];
-
   const data = datasets[position];
 
   for (const playerIndex in data) {
@@ -134,11 +130,7 @@ const getPlayers = (position, statType, threshold, conference) => {
       // If the player's conference is 'Pac-10', consider it as 'Pac-12'
       const playerConference = player.conference === 'Pac-10' ? 'Pac-12' : player.conference;
 
-      if (conference === 'other') {
-          if (majorConferences.includes(playerConference)) {
-              continue;
-          }
-      } else if (conference && playerConference !== conference) {
+     if (conference && playerConference !== conference) {
           continue;
       }
 
@@ -233,15 +225,15 @@ const getPlayersByOverallAndTeam = (data, overallThreshold, targetConference) =>
     
   useEffect(() => {
     setPlayerGrid({
-      topLeftPlayers: getTeamPlayers('wr', leftColumnStatType, leftColumnThreshold, 'LSU'),
-      topMiddlePlayers: getTeamPlayers('rb', middleColumnStatType, middleColumnThreshold, 'LSU'),
-      topRightPlayers: getPlayersByOverallAndTeam(draft, 32, 'LSU'),
-      middleLeftPlayers: getPlayers('wr', leftColumnStatType, leftColumnThreshold, middleRowConference),
+      topLeftPlayers: getTeamPlayers('qb', leftColumnStatType, leftColumnThreshold, 'Alabama'),
+      topMiddlePlayers: getTeamPlayers('rb', middleColumnStatType, middleColumnThreshold, 'Alabama'),
+      topRightPlayers: getTeamPlayers('wr', rightColumnStatType, rightColumnThreshold, 'Alabama'),
+      middleLeftPlayers: getPlayers('qb', leftColumnStatType, leftColumnThreshold, middleRowConference),
       middleMiddlePlayers: getPlayers('rb', middleColumnStatType, middleColumnThreshold, middleRowConference),
-      middleRightPlayers: getPlayersByOverallAndConference(draft, 32, middleRowConference),
-      bottomLeftPlayers: getPlayers('wr', leftColumnStatType, leftColumnThreshold, bottomRowConference),
+      middleRightPlayers: getPlayers('wr', rightColumnStatType, rightColumnThreshold, middleRowConference),
+      bottomLeftPlayers: getPlayers('qb', leftColumnStatType, leftColumnThreshold, bottomRowConference),
       bottomMiddlePlayers: getPlayers('rb', middleColumnStatType, middleColumnThreshold, bottomRowConference),
-      bottomRightPlayers: getPlayersByOverallAndConference(draft, 32, bottomRowConference)
+      bottomRightPlayers: getPlayers('wr', rightColumnStatType, rightColumnThreshold, bottomRowConference),
     });
 
     console.log(playerGrid);
@@ -281,7 +273,7 @@ const getPlayersByOverallAndTeam = (data, overallThreshold, targetConference) =>
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'aug23');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'aug24');
   
     try {
       // Fetch current data from the database
@@ -357,8 +349,8 @@ const getPlayersByOverallAndTeam = (data, overallThreshold, targetConference) =>
       logo = b12Logo;
     }
 
-    if(conference === 'other'){
-      logo = other;
+    if(conference === 'Mid-American'){
+      logo = mac;
     }
 
     return logo;
@@ -451,16 +443,16 @@ const uniquePlayers = [...new Set([...allPlayers.map(p => `${p.player} (${p.team
         <div className="grid grid-cols-4 gap-2">
           <div className="flex items-center justify-center squarefont-bold text-gray-800" onClick={handleClick}>Rarity Score: {rarityScore}</div>
           <div className="flex items-center justify-center title-square bg-blue-500 text-white" onClick={handleClick}>
-            6 REC TD
+            1 Passing TD
           </div>
           <div className="flex items-center justify-center title-square bg-blue-500 text-white" onClick={handleClick}>
-            1 Carry
+            20 Carries
           </div>
           <div className="flex w-100 pb-100 wrap items-center justify-center title-square bg-blue-500 text-white" onClick={handleClick}>
-            1st Round Pick
+            10 Receptions
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/louisiana-state.png' alt="" />
+            <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/alabama.png' alt="" />
           </div>
           <div className="border border-2 guess border-black flex items-center justify-center square" id='topLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('topLeft')}
@@ -484,7 +476,7 @@ const uniquePlayers = [...new Set([...allPlayers.map(p => `${p.player} (${p.team
             {getPlayerDisplayInfo('middleRight')}
           </div>
           <div className="flex text-xl lg:text-4xl items-center justify-center square text-black" onClick={handleClick}>
-            Non-P5
+          <img src={logoUrl(bottomRowConference)} alt="" />
           </div>
           <div className="border border-2 guess border-black flex items-center justify-center square" id='bottomLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('bottomLeft')}
