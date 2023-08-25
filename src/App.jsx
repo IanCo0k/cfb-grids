@@ -6,7 +6,7 @@ import Footer from './components/Footer';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
-import { getAnalytics, logEvent } from "firebase/analytics";
+import { getAnalytics } from "firebase/analytics";
 
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -36,11 +36,12 @@ import accLogo from './acc.png';
 import secLogo from './sec.png';
 import b12Logo from './big12.png';
 import mac from './mac.png'
+import mwc from './mwc.png';
 
-import qb from './data/passing';
-import wr from './data/receiving';
-import rb from './data/running';
+import qb from './data/qb';
+import rb from './data/rb';
 import draft from './data/draft';
+
 export default function App() {
 
   const [finalizedCellPlayers, setFinalizedCellPlayers] = useState({});
@@ -89,8 +90,8 @@ export default function App() {
   }, [cellPercentages]);
 
   const [topRowConference, setTopRowConference] = useState('Big Ten');
-  const [middleRowConference, setMiddleRowConference] = useState('Pac-12');
-  const [bottomRowConference, setBottomRowConference] = useState('Mid-American');
+  const [middleRowConference, setMiddleRowConference] = useState('Big 12');
+  const [bottomRowConference, setBottomRowConference] = useState('MWC');
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   
   const [playerGrid, setPlayerGrid] = useState({
@@ -112,72 +113,9 @@ export default function App() {
 
 
 
-
-
-const getPlayers = (position, statType, threshold, conference) => {
-  const filteredPlayers = [];
-  const datasets = {
-      'qb': qb,
-      'wr': wr,
-      'rb': rb
-  };
-
-  const data = datasets[position];
-
-  for (const playerIndex in data) {
-      const player = data[playerIndex];
-
-      // If the player's conference is 'Pac-10', consider it as 'Pac-12'
-      const playerConference = player.conference === 'Pac-10' ? 'Pac-12' : player.conference;
-
-     if (conference && playerConference !== conference) {
-          continue;
-      }
-
-      if (player.stats && player.stats[statType]) {  // Ensure the statType exists for the player
-          const statValues = player.stats[statType];
-          if (statValues.some(value => value >= threshold)) {
-              filteredPlayers.push(player);
-          }
-      }
-  }
-
-  return filteredPlayers;
-};
-
-const getTeamPlayers = (position, statType, threshold, team) => {
-  const filteredPlayers = [];
-  const datasets = {
-      'qb': qb,
-      'wr': wr,
-      'rb': rb
-  };
-
-  const data = datasets[position];
-
-  for (const playerIndex in data) {
-      const player = data[playerIndex];
-
-      if (team && player.team !== team) {
-          continue;
-      }
-
-      if (player.stats && player.stats[statType]) {  // Ensure the statType exists for the player
-          const statValues = player.stats[statType];
-          if (statValues.some(value => value >= threshold)) {
-              filteredPlayers.push(player);
-          }
-      }
-  }
-
-  return filteredPlayers;
-};
-
 const getPlayersByOverallAndConference = (data, overallThreshold, targetConference) => {
   const filteredPlayers = [];
   const majorConferences = ['Big Ten', 'Pac-12', 'Pac-10', 'Big 12', 'ACC', 'SEC'];
-
-  console.log(data);
 
   for (const player of data) {
     const playerConference = player.collegeConference === 'Pac-10' ? 'Pac-12' : player.collegeConference;
@@ -202,8 +140,6 @@ const getPlayersByOverallAndTeam = (data, overallThreshold, targetConference) =>
   const filteredPlayers = [];
   const majorConferences = ['Big Ten', 'Pac-12', 'Pac-10', 'Big 12', 'ACC', 'SEC'];
 
-  console.log(data);
-
   for (const player of data) {
 
    if (targetConference && player.team !== targetConference) {
@@ -218,25 +154,66 @@ const getPlayersByOverallAndTeam = (data, overallThreshold, targetConference) =>
   return filteredPlayers;
 };
 
+const getConference = (position, statType, threshold, conference) => {
+  const filteredPlayers = [];
+  const datasets = {
+    'qb': qb,
+    'rb': rb
+  };
 
+  const data = datasets[position];
+
+  for (const player of data) {
+    if (conference && player.conference !== conference) {
+      continue;
+    }
+
+    if (player[statType] !== undefined && player[statType] >= threshold) {
+      filteredPlayers.push(player);
+    }
+  }
+
+  return filteredPlayers;
+};
+
+const getTeam = (position, statType, threshold, team) => {
+  const filteredPlayers = [];
+  const datasets = {
+    'qb': qb,
+    'rb': rb
+  };
+
+  const data = datasets[position];
+
+  for (const player of data) {
+    if (team && player.team !== team) {
+      continue;
+    }
+
+    if (player[statType] !== undefined && player[statType] >= threshold) {
+      filteredPlayers.push(player);
+    }
+  }
+
+  return filteredPlayers;
+};
 
 
 
     
   useEffect(() => {
     setPlayerGrid({
-      topLeftPlayers: getTeamPlayers('qb', leftColumnStatType, leftColumnThreshold, 'Alabama'),
-      topMiddlePlayers: getTeamPlayers('rb', middleColumnStatType, middleColumnThreshold, 'Alabama'),
-      topRightPlayers: getTeamPlayers('wr', rightColumnStatType, rightColumnThreshold, 'Alabama'),
-      middleLeftPlayers: getPlayers('qb', leftColumnStatType, leftColumnThreshold, middleRowConference),
-      middleMiddlePlayers: getPlayers('rb', middleColumnStatType, middleColumnThreshold, middleRowConference),
-      middleRightPlayers: getPlayers('wr', rightColumnStatType, rightColumnThreshold, middleRowConference),
-      bottomLeftPlayers: getPlayers('qb', leftColumnStatType, leftColumnThreshold, bottomRowConference),
-      bottomMiddlePlayers: getPlayers('rb', middleColumnStatType, middleColumnThreshold, bottomRowConference),
-      bottomRightPlayers: getPlayers('wr', rightColumnStatType, rightColumnThreshold, bottomRowConference),
+      topLeftPlayers: getTeam('rb', 'touchdowns', 10, 'Michigan'),
+      topMiddlePlayers: getTeam('qb', 'touchdowns', 20, 'Michigan'),
+      topRightPlayers: getPlayersByOverallAndTeam(draft, 1000, 'Michigan'),
+      middleLeftPlayers: getConference('rb', 'touchdowns', 10, middleRowConference),
+      middleMiddlePlayers: getConference('qb', 'touchdowns', 20, middleRowConference),
+      middleRightPlayers: getPlayersByOverallAndConference(draft, 1000, middleRowConference),
+      bottomLeftPlayers: getConference('rb', 'touchdowns', 10, bottomRowConference),
+      bottomMiddlePlayers: getConference('qb', 'touchdowns', 20, bottomRowConference),
+      bottomRightPlayers: getPlayersByOverallAndConference(draft, 1000, bottomRowConference),
     });
 
-    console.log(playerGrid);
   }, []);
     
 
@@ -258,22 +235,29 @@ const getPlayersByOverallAndTeam = (data, overallThreshold, targetConference) =>
     
     const playerList = playerGrid[`${activeCell}Players`];
     const selectedPlayerInfo = playerList.find((player) => player.player === playerNameOnly);
-  
+    
     if (selectedPlayerInfo) {
       setCellPlayerInfo(selectedPlayerInfo);
       setFinalizedCellPlayers(prevState => ({ ...prevState, [activeCell]: selectedPlayerInfo }));
-  
       // Assuming you have a database update function, e.g., updateDatabase(activeCell, selectedPlayerInfo);
       updateDatabase(activeCell, selectedPlayerInfo);
-      
-      console.log(selectedPlayerInfo);
+    } else {
+      // Player not found, setFocused to false
+      setFocused(false);
     }
+    
+    // Clear the selected player after submission
+    setSelectedPlayer('');
+    setFocused(false);
   };
+  
+  
+  
   
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'aug24');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'aug25');
   
     try {
       // Fetch current data from the database
@@ -353,6 +337,10 @@ const getPlayersByOverallAndTeam = (data, overallThreshold, targetConference) =>
       logo = mac;
     }
 
+    if(conference === 'MWC'){
+      logo = mwc;
+    }
+
     return logo;
   }
 
@@ -411,7 +399,7 @@ const getPlayersByOverallAndTeam = (data, overallThreshold, targetConference) =>
     if (Object.keys(currentPlayerInfo).length !== 0) {
       return (
         <div className="text-center">
-          <p className="text-sm">{currentPlayerInfo.player}</p>
+          <p className="text-sm text-gray-200">{currentPlayerInfo.player}</p>
         </div>
       );
     } else {
@@ -419,7 +407,7 @@ const getPlayersByOverallAndTeam = (data, overallThreshold, targetConference) =>
     }
   };
 
-  const allPlayers = [...qb, ...wr, ...rb];
+  const allPlayers = [...qb, ...rb];
   const draftPlayers = draft
 
 // Combine all player names from 'qb', 'wr', 'rb', and 'draft'
@@ -430,9 +418,9 @@ const uniquePlayers = [...new Set([...allPlayers.map(p => `${p.player} (${p.team
 
 
   return (
-    <div className="min-h-screen relative bg-gray-200 py-8">
+    <div className="min-h-screen relative bg-gray-800 py-8">
       <div className="max-w-4xl flex-col items-center mx-auto p-4">
-        <h1 className="text-6xl font-bold text-center mb-4">CFB Grids</h1>
+        <h1 className="text-6xl font-bold text-center text-gray-200 mb-4">CFB Grids</h1>
         {focused && (
           <div className="mb-4 text-black">
             <Dropdown onChange={handleDropdownChange} options={uniquePlayers} />
@@ -441,50 +429,50 @@ const uniquePlayers = [...new Set([...allPlayers.map(p => `${p.player} (${p.team
 
         <div className="grid-container w-screen m-auto">
         <div className="grid grid-cols-4 gap-2">
-          <div className="flex items-center justify-center squarefont-bold text-gray-800" onClick={handleClick}>Rarity Score: {rarityScore}</div>
-          <div className="flex items-center justify-center title-square bg-blue-500 text-white" onClick={handleClick}>
-            1 Passing TD
+          <div className="flex items-center justify-center squarefont-bold text-gray-200" onClick={handleClick}>Rarity Score: {rarityScore}</div>
+          <div className="flex items-center justify-center title-square bg-blue-500 text-gray-200" onClick={handleClick}>
+            10 career rushing TD
           </div>
-          <div className="flex items-center justify-center title-square bg-blue-500 text-white" onClick={handleClick}>
-            20 Carries
+          <div className="flex items-center justify-center title-square bg-blue-500 text-gray-200" onClick={handleClick}>
+            20 career passing TD
           </div>
-          <div className="flex w-100 pb-100 wrap items-center justify-center title-square bg-blue-500 text-white" onClick={handleClick}>
-            10 Receptions
+          <div className="flex w-100 pb-100 wrap items-center justify-center title-square bg-blue-500 text-gray-200" onClick={handleClick}>
+            Drafted, Any Round
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/alabama.png' alt="" />
+          <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/michigan.png' alt="" />
           </div>
-          <div className="border border-2 guess border-black flex items-center justify-center square" id='topLeft' onClick={handleClick}>
+          <div className="border border-2 guess border-white flex items-center justify-center square" id='topLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('topLeft')}
           </div>
-          <div className="border border-2 guess border-black flex items-center justify-center square" id='topMiddle' onClick={handleClick}>
+          <div className="border border-2 guess border-white flex items-center justify-center square" id='topMiddle' onClick={handleClick}>
             {getPlayerDisplayInfo('topMiddle')}
           </div>
-          <div className="border border-2 guess border-black flex items-center justify-center square" id='topRight' onClick={handleClick}>
+          <div className="border border-2 guess border-white flex items-center justify-center square" id='topRight' onClick={handleClick}>
             {getPlayerDisplayInfo('topRight')}
           </div>
-          <div className="flex items-center justify-center square text-white" onClick={handleClick}>
+          <div className="flex items-center bg-gray-200 justify-center square text-white" onClick={handleClick}>
             <img src={logoUrl(middleRowConference)} alt="" />
           </div>
-          <div className="border border-2 guess border-black flex items-center justify-center square" id='middleLeft' onClick={handleClick}>
+          <div className="border border-2 guess border-white flex items-center justify-center square" id='middleLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('middleLeft')}
           </div>
-          <div className="border border-2 guess border-black flex items-center justify-center square" id='middleMiddle' onClick={handleClick}>
+          <div className="border border-2 guess border-white flex items-center justify-center square" id='middleMiddle' onClick={handleClick}>
             {getPlayerDisplayInfo('middleMiddle')}
           </div>
-          <div className="border border-2 guess border-black flex items-center justify-center square" id='middleRight' onClick={handleClick}>
+          <div className="border border-2 guess border-white flex items-center justify-center square" id='middleRight' onClick={handleClick}>
             {getPlayerDisplayInfo('middleRight')}
           </div>
-          <div className="flex text-xl lg:text-4xl items-center justify-center square text-black" onClick={handleClick}>
+          <div className="flex bg-gray-200 text-xl lg:text-4xl items-center justify-center square text-black" onClick={handleClick}>
           <img src={logoUrl(bottomRowConference)} alt="" />
           </div>
-          <div className="border border-2 guess border-black flex items-center justify-center square" id='bottomLeft' onClick={handleClick}>
+          <div className="border border-2 guess border-white flex items-center justify-center square" id='bottomLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('bottomLeft')}
           </div>
-          <div className="border border-2 guess border-black flex items-center justify-center square" id='bottomMiddle' onClick={handleClick}>
+          <div className="border border-2 guess border-white flex items-center justify-center square" id='bottomMiddle' onClick={handleClick}>
             {getPlayerDisplayInfo('bottomMiddle')}
           </div>
-          <div className="border border-2 guess border-black flex items-center justify-center square" id='bottomRight' onClick={handleClick}>
+          <div className="border border-2 guess border-white flex items-center justify-center square" id='bottomRight' onClick={handleClick}>
             {getPlayerDisplayInfo('bottomRight')}
           </div>
         </div>
@@ -497,7 +485,7 @@ const uniquePlayers = [...new Set([...allPlayers.map(p => `${p.player} (${p.team
             target="_blank"
             rel="noopener noreferrer"
           >
-            <button className="rounded bg-black text-white py-2 px-4">Tweet Score</button>
+            <button className="rounded m-2 bg-blue-500 text-white py-2 px-4">Tweet Score</button>
           </a>
         )}
                 <Modal />   

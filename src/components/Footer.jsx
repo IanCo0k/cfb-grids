@@ -3,7 +3,7 @@ import { FaTwitter, FaSpotify, FaInstagram, FaEnvelope } from 'react-icons/fa';
 
 const Footer = () => {
   return (
-    <footer className="text-black py-8">
+    <footer className="text-gray-200 py-8">
       <div className="flex justify-center space-x-4">
         <a
           href="https://twitter.com/CFBGrids"

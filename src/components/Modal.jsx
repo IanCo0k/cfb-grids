@@ -24,21 +24,14 @@ function Modal() {
               CFB Grids
               </a>
             </h1>
+            <p className="text-center text-2xl mb-4">PLAYER STATS NOW EXTEND BACK TO 1957</p>
+            <p className="text-center mb-4">NFL Draft data goes to 2005.</p>
             <p className="text-center mb-4">
-              Similar to Immaculate Grid, the goal is to find players for each
-              cell that match the criteria of the row and column.
-            </p>
-            <p className="text-center mb-4">Players from 2005-2006 season up to 2022-2023</p>
-            <p className="text-center mb-4">NFL Draft data goes from 2005 to current day now!</p>
-            <p className="text-center mb-4">
-              Transfer players, as of right now, only qualify for the most
-              recent team they played for. (Example: Justin Fields qualifies for
-              Ohio State, and not Georgia)
+              For transfer players, they must have reached the 'career' total with the school to qualify. But players can qualify for 2 different schools now.
             </p>
             <p className="text-center mb-4">FCS players only included in draft data, for now</p>
-            <h2 className='text-center mb-2'>
-              SOME PLAYERS THAT SHOULD QUALIFY FOR SOME SQUARES WON'T.
-            </h2>
+            <p className="text-center mb-4">Players only qualify for 'conferences' that the school is CURRENTLY in now. (Example: All past and present TCU players are counted as Big-12, even though not all played in the Big 12)</p>
+            
             <p className='text-center mb-4'>
               Follow my{' '}
               <a
