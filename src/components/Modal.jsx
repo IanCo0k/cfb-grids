@@ -24,7 +24,6 @@ function Modal() {
               CFB Grids
               </a>
             </h1>
-            <p className="text-center text-blue-500 text-3xl mb-4">HAPPY WEEK 0!</p>
             <p className="text-center text-2xl mb-4">PLAYER STATS NOW EXTEND BACK TO 1957</p>
             <p className="text-center mb-4">
               For transfer players, they must have reached the 'career' total with the school to qualify. But players can qualify for 2 different schools now.

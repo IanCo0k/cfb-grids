@@ -38,6 +38,7 @@ import b12Logo from './big12.png';
 import mac from './mac.png'
 import mwc from './mwc.png';
 import aac from './aac.png';
+import cusa from './cusa.png';
 
 import qb from './data/qb';
 import rb from './data/rb';
@@ -93,7 +94,7 @@ export default function App() {
 
   const [topRowConference, setTopRowConference] = useState('Big Ten');
   const [middleRowConference, setMiddleRowConference] = useState('Big 12');
-  const [bottomRowConference, setBottomRowConference] = useState('AAC');
+  const [bottomRowConference, setBottomRowConference] = useState('C-USA');
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   
   const [playerGrid, setPlayerGrid] = useState({
@@ -207,15 +208,15 @@ const getTeam = (position, statType, threshold, team) => {
     
   useEffect(() => {
     setPlayerGrid({
-      topLeftPlayers: getTeam('qb', 'yards', 500, 'Notre Dame'),
-      topMiddlePlayers: getTeam('rb', 'avg', 4, 'Notre Dame'),
-      topRightPlayers: getTeam('wr', 'receptions', 10, 'Notre Dame'),
-      middleLeftPlayers: getTeam('qb', 'yards', 500, 'Southern California'),
-      middleMiddlePlayers: getTeam('rb', 'avg', 4, 'Southern California'),
-      middleRightPlayers: getTeam('wr', 'receptions', 10, 'Southern California'),
-      bottomLeftPlayers: getConference('qb', 'yards', 500, bottomRowConference),
-      bottomMiddlePlayers: getConference('rb', 'avg', 4, bottomRowConference),
-      bottomRightPlayers: getConference('wr', 'receptions', 10, bottomRowConference)
+      topLeftPlayers: getTeam('qb', 'yards', 1000, 'Texas'),
+      topMiddlePlayers: getTeam('rb', 'touchdowns', 5 , 'Texas'),
+      topRightPlayers: getTeam('wr', 'receptions', 25, 'Texas'),
+      middleLeftPlayers: getTeam('qb', 'yards', 100, 'Indiana'),
+      middleMiddlePlayers: getTeam('rb', 'touchdowns', 5, 'Indiana'),
+      middleRightPlayers: getTeam('wr', 'receptions', 20, 'Indiana'),
+      bottomLeftPlayers: getConference('qb', 'yards', 1000, bottomRowConference),
+      bottomMiddlePlayers: getConference('rb', 'touchdowns', 5, bottomRowConference),
+      bottomRightPlayers: getConference('wr', 'receptions', 20, bottomRowConference)
     });
 
   }, []);
@@ -261,7 +262,7 @@ const getTeam = (position, statType, threshold, team) => {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'aug26');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'aug27');
   
     try {
       // Fetch current data from the database
@@ -347,6 +348,10 @@ const getTeam = (position, statType, threshold, team) => {
 
     if(conference === 'AAC'){
       logo = aac;
+    }
+
+    if(conference === 'C-USA'){
+      logo = cusa;
     }
 
     return logo;
@@ -439,16 +444,16 @@ const uniquePlayers = [...new Set([...allPlayers.map(p => `${p.player} (${p.team
         <div className="grid grid-cols-4 gap-2">
           <div className="flex items-center justify-center squarefont-bold text-gray-200" onClick={handleClick}>Rarity Score: {rarityScore}</div>
           <div className="flex items-center justify-center title-square bg-blue-500 text-gray-200" onClick={handleClick}>
-            500 career passing yards
+            1000 career passing yards
           </div>
           <div className="flex items-center justify-center title-square bg-blue-500 text-gray-200" onClick={handleClick}>
-            4.0 career yards per carry
+            5 career rushing TD
           </div>
           <div className="flex w-100 pb-100 wrap items-center justify-center title-square bg-blue-500 text-gray-200" onClick={handleClick}>
-            10 career receptions
+            20 career REC
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-          <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/notre-dame.png' alt="" />
+          <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/texas.png' alt="" />
           </div>
           <div className="border border-2 guess border-white flex items-center justify-center square" id='topLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('topLeft')}
@@ -460,7 +465,7 @@ const uniquePlayers = [...new Set([...allPlayers.map(p => `${p.player} (${p.team
             {getPlayerDisplayInfo('topRight')}
           </div>
           <div className="flex items-center bg-gray-200 justify-center square text-white" onClick={handleClick}>
-          <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/southern-california.png' alt="" />
+          <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/indiana.png' alt="" />
           </div>
           <div className="border border-2 guess border-white flex items-center justify-center square" id='middleLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('middleLeft')}
