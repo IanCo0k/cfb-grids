@@ -444,7 +444,7 @@ const uniquePlayers = [...new Set([...allPlayers.map(p => `${p.player} (${p.team
         <div className="grid grid-cols-4 gap-2">
           <div className="flex items-center justify-center squarefont-bold text-gray-200" onClick={handleClick}>Rarity Score: {rarityScore}</div>
           <div className="flex items-center justify-center title-square bg-blue-500 text-gray-200" onClick={handleClick}>
-            1000 career passing yards
+            1000 career passing YDS
           </div>
           <div className="flex items-center justify-center title-square bg-blue-500 text-gray-200" onClick={handleClick}>
             5 career rushing TD

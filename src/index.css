@@ -51,7 +51,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: wrap;  /* Keeps contents within square bounds */
+  overflow: hidden;  /* Keeps contents within square bounds */
   text-align: center;
   box-sizing: border-box;
   border-radius: 1em;
