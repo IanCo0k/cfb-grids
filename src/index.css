@@ -11,10 +11,9 @@
 
 .grid-container {
   width: 90vw;  /* Use viewport width for responsive sizing */
-  max-width: 500px;  /* Maximum size for large screens */
+  max-width: 450px;  /* Maximum size for large screens */
   height: 90vw;  /* To ensure it's a square */
-  max-height: 500px;
-  overflow: hidden;  /* Avoids any unexpected overflow */
+  max-height: 450px;
 }
 
 .mobile{
