@@ -30,7 +30,7 @@ const Footer = () => {
       </p>
       <p className="text-center mt-4">
         Data gathered via <a className='text-blue-500' href='https://www.sports-reference.com/' target="_blank"
-          rel="noopener noreferrer">Sport Reference</a>
+          rel="noopener noreferrer">Sports Reference</a>
       </p>
     </footer>
   );
