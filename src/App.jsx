@@ -86,7 +86,7 @@ export default function App() {
   
     setShowTweetButton(!hasZeroPercentage);
   
-    setTweetText(`CFB Grids\n\nRarity Score: ${updatedRarityScore.toFixed(2)}\n\n@cfbgrids / cfbgrids.com`);
+    setTweetText(`CFB Grids\n\nRarity Score: ${updatedRarityScore.toFixed(2)}\n\n@CFBGrids / @BarstoolBigCat / cfbgrids.com`);
   
     // Update the rarity score in the state
     setRarityScore(updatedRarityScore.toFixed(2));
