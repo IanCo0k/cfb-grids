@@ -94,7 +94,7 @@ export default function App() {
 
   const [topRowConference, setTopRowConference] = useState('Big Ten');
   const [middleRowConference, setMiddleRowConference] = useState('Big 12');
-  const [bottomRowConference, setBottomRowConference] = useState('C-USA');
+  const [bottomRowConference, setBottomRowConference] = useState('MAC');
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   
   const [playerGrid, setPlayerGrid] = useState({
@@ -208,15 +208,15 @@ const getTeam = (position, statType, threshold, team) => {
     
   useEffect(() => {
     setPlayerGrid({
-      topLeftPlayers: getTeam('qb', 'yards', 1000, 'Texas'),
-      topMiddlePlayers: getTeam('rb', 'touchdowns', 5 , 'Texas'),
-      topRightPlayers: getTeam('wr', 'receptions', 25, 'Texas'),
-      middleLeftPlayers: getTeam('qb', 'yards', 100, 'Indiana'),
-      middleMiddlePlayers: getTeam('rb', 'touchdowns', 5, 'Indiana'),
-      middleRightPlayers: getTeam('wr', 'receptions', 20, 'Indiana'),
-      bottomLeftPlayers: getConference('qb', 'yards', 1000, bottomRowConference),
-      bottomMiddlePlayers: getConference('rb', 'touchdowns', 5, bottomRowConference),
-      bottomRightPlayers: getConference('wr', 'receptions', 20, bottomRowConference)
+      topLeftPlayers: getTeam('qb', 'yardsPerAttempt', 5.0, 'Wisconsin'),
+      topMiddlePlayers: getTeam('rb', 'attempts', 1 , 'Wisconsin'),
+      topRightPlayers: getTeam('wr', 'yards', 100, 'Wisconsin'),
+      middleLeftPlayers: getTeam('qb', 'yardsPerAttempt', 5.0, 'Florida State'),
+      middleMiddlePlayers: getTeam('rb', 'attempts', 1, 'Florida State'),
+      middleRightPlayers: getTeam('wr', 'yards', 100, 'Florida State'),
+      bottomLeftPlayers: getConference('qb', 'yardsPerAttempt', 5.0, bottomRowConference),
+      bottomMiddlePlayers: getConference('rb', 'attempts', 1, bottomRowConference),
+      bottomRightPlayers: getConference('wr', 'yards', 100, bottomRowConference)
     });
 
   }, []);
@@ -262,7 +262,7 @@ const getTeam = (position, statType, threshold, team) => {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'aug27');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'aug28');
   
     try {
       // Fetch current data from the database
@@ -338,7 +338,7 @@ const getTeam = (position, statType, threshold, team) => {
       logo = b12Logo;
     }
 
-    if(conference === 'Mid-American'){
+    if(conference === 'MAC'){
       logo = mac;
     }
 
@@ -444,16 +444,16 @@ const uniquePlayers = [...new Set([...allPlayers.map(p => `${p.player} (${p.team
         <div className="grid grid-cols-4 gap-2">
           <div className="flex items-center justify-center squarefont-bold text-gray-200" onClick={handleClick}>Rarity Score: {rarityScore}</div>
           <div className="flex items-center justify-center title-square bg-blue-500 text-gray-200" onClick={handleClick}>
-            1000 career passing YDS
+            5.0 career YPA
           </div>
           <div className="flex items-center justify-center title-square bg-blue-500 text-gray-200" onClick={handleClick}>
-            5 career rushing TD
+            1 career CAR
           </div>
           <div className="flex w-100 pb-100 wrap items-center justify-center title-square bg-blue-500 text-gray-200" onClick={handleClick}>
-            20 career REC
+            100 career REC YDS
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-          <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/texas.png' alt="" />
+          <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/wisconsin.png' alt="" />
           </div>
           <div className="border border-2 guess border-white flex items-center justify-center square" id='topLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('topLeft')}
@@ -465,7 +465,7 @@ const uniquePlayers = [...new Set([...allPlayers.map(p => `${p.player} (${p.team
             {getPlayerDisplayInfo('topRight')}
           </div>
           <div className="flex items-center bg-gray-200 justify-center square text-white" onClick={handleClick}>
-          <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/indiana.png' alt="" />
+          <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/florida-state.png' alt="" />
           </div>
           <div className="border border-2 guess border-white flex items-center justify-center square" id='middleLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('middleLeft')}
