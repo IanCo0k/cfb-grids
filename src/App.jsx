@@ -94,7 +94,7 @@ export default function App() {
 
   const [topRowConference, setTopRowConference] = useState('Big Ten');
   const [middleRowConference, setMiddleRowConference] = useState('Big 12');
-  const [bottomRowConference, setBottomRowConference] = useState('MAC');
+  const [bottomRowConference, setBottomRowConference] = useState('Big 12');
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   
   const [playerGrid, setPlayerGrid] = useState({
@@ -208,12 +208,12 @@ const getTeam = (position, statType, threshold, team) => {
     
   useEffect(() => {
     setPlayerGrid({
-      topLeftPlayers: getTeam('qb', 'yardsPerAttempt', 5.0, 'Wisconsin'),
-      topMiddlePlayers: getTeam('rb', 'attempts', 1 , 'Wisconsin'),
-      topRightPlayers: getTeam('wr', 'yards', 100, 'Wisconsin'),
-      middleLeftPlayers: getTeam('qb', 'yardsPerAttempt', 5.0, 'Florida State'),
-      middleMiddlePlayers: getTeam('rb', 'attempts', 1, 'Florida State'),
-      middleRightPlayers: getTeam('wr', 'yards', 100, 'Florida State'),
+      topLeftPlayers: getTeam('qb', 'yardsPerAttempt', 5.0, 'Penn State'),
+      topMiddlePlayers: getTeam('rb', 'attempts', 1 , 'Penn State'),
+      topRightPlayers: getTeam('wr', 'yards', 100, 'Penn State'),
+      middleLeftPlayers: getTeam('qb', 'yardsPerAttempt', 5.0, 'Florida'),
+      middleMiddlePlayers: getTeam('rb', 'attempts', 1, 'Florida'),
+      middleRightPlayers: getTeam('wr', 'yards', 100, 'Florida'),
       bottomLeftPlayers: getConference('qb', 'yardsPerAttempt', 5.0, bottomRowConference),
       bottomMiddlePlayers: getConference('rb', 'attempts', 1, bottomRowConference),
       bottomRightPlayers: getConference('wr', 'yards', 100, bottomRowConference)
@@ -262,7 +262,7 @@ const getTeam = (position, statType, threshold, team) => {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'aug28');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'aug29');
   
     try {
       // Fetch current data from the database
@@ -453,39 +453,39 @@ const uniquePlayers = [...new Set([...allPlayers.map(p => `${p.player} (${p.team
             100 career REC YDS
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-          <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/wisconsin.png' alt="" />
+          <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/penn-state.png' alt="" />
           </div>
-          <div className="border border-2 guess border-white flex items-center justify-center square" id='topLeft' onClick={handleClick}>
+          <div className=" border-2 guess border-white flex items-center justify-center square" id='topLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('topLeft')}
           </div>
-          <div className="border border-2 guess border-white flex items-center justify-center square" id='topMiddle' onClick={handleClick}>
+          <div className=" border-2 guess border-white flex items-center justify-center square" id='topMiddle' onClick={handleClick}>
             {getPlayerDisplayInfo('topMiddle')}
           </div>
-          <div className="border border-2 guess border-white flex items-center justify-center square" id='topRight' onClick={handleClick}>
+          <div className=" border-2 guess border-white flex items-center justify-center square" id='topRight' onClick={handleClick}>
             {getPlayerDisplayInfo('topRight')}
           </div>
           <div className="flex items-center bg-gray-200 justify-center square text-white" onClick={handleClick}>
-          <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/florida-state.png' alt="" />
+          <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/florida.png' alt="" />
           </div>
-          <div className="border border-2 guess border-white flex items-center justify-center square" id='middleLeft' onClick={handleClick}>
+          <div className=" border-2 guess border-white flex items-center justify-center square" id='middleLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('middleLeft')}
           </div>
-          <div className="border border-2 guess border-white flex items-center justify-center square" id='middleMiddle' onClick={handleClick}>
+          <div className=" border-2 guess border-white flex items-center justify-center square" id='middleMiddle' onClick={handleClick}>
             {getPlayerDisplayInfo('middleMiddle')}
           </div>
-          <div className="border border-2 guess border-white flex items-center justify-center square" id='middleRight' onClick={handleClick}>
+          <div className=" border-2 guess border-white flex items-center justify-center square" id='middleRight' onClick={handleClick}>
             {getPlayerDisplayInfo('middleRight')}
           </div>
           <div className="flex bg-gray-200 text-xl lg:text-4xl items-center justify-center square text-black" onClick={handleClick}>
           <img src={logoUrl(bottomRowConference)} alt="" />
           </div>
-          <div className="border border-2 guess border-white flex items-center justify-center square" id='bottomLeft' onClick={handleClick}>
+          <div className=" border-2 guess border-white flex items-center justify-center square" id='bottomLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('bottomLeft')}
           </div>
-          <div className="border border-2 guess border-white flex items-center justify-center square" id='bottomMiddle' onClick={handleClick}>
+          <div className=" border-2 guess border-white flex items-center justify-center square" id='bottomMiddle' onClick={handleClick}>
             {getPlayerDisplayInfo('bottomMiddle')}
           </div>
-          <div className="border border-2 guess border-white flex items-center justify-center square" id='bottomRight' onClick={handleClick}>
+          <div className=" border-2 guess border-white flex items-center justify-center square" id='bottomRight' onClick={handleClick}>
             {getPlayerDisplayInfo('bottomRight')}
           </div>
         </div>
