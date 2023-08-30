@@ -94,7 +94,7 @@ export default function App() {
 
   const [topRowConference, setTopRowConference] = useState('Big Ten');
   const [middleRowConference, setMiddleRowConference] = useState('Big 12');
-  const [bottomRowConference, setBottomRowConference] = useState('Big 12');
+  const [bottomRowConference, setBottomRowConference] = useState('SEC');
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   
   const [playerGrid, setPlayerGrid] = useState({
@@ -208,12 +208,12 @@ const getTeam = (position, statType, threshold, team) => {
     
   useEffect(() => {
     setPlayerGrid({
-      topLeftPlayers: getTeam('qb', 'yardsPerAttempt', 5.0, 'Penn State'),
-      topMiddlePlayers: getTeam('rb', 'attempts', 1 , 'Penn State'),
-      topRightPlayers: getTeam('wr', 'yards', 100, 'Penn State'),
-      middleLeftPlayers: getTeam('qb', 'yardsPerAttempt', 5.0, 'Florida'),
-      middleMiddlePlayers: getTeam('rb', 'attempts', 1, 'Florida'),
-      middleRightPlayers: getTeam('wr', 'yards', 100, 'Florida'),
+      topLeftPlayers: getTeam('qb', 'yardsPerAttempt', 5.0, 'Clemson'),
+      topMiddlePlayers: getTeam('rb', 'attempts', 1 , 'Clemson'),
+      topRightPlayers: getTeam('wr', 'yards', 100, 'Clemson'),
+      middleLeftPlayers: getTeam('qb', 'yardsPerAttempt', 5.0, 'Nebraska'),
+      middleMiddlePlayers: getTeam('rb', 'attempts', 1, 'Nebraska'),
+      middleRightPlayers: getTeam('wr', 'yards', 100, 'Nebraska'),
       bottomLeftPlayers: getConference('qb', 'yardsPerAttempt', 5.0, bottomRowConference),
       bottomMiddlePlayers: getConference('rb', 'attempts', 1, bottomRowConference),
       bottomRightPlayers: getConference('wr', 'yards', 100, bottomRowConference)
@@ -262,7 +262,7 @@ const getTeam = (position, statType, threshold, team) => {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'aug29');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'aug30');
   
     try {
       // Fetch current data from the database
@@ -453,7 +453,7 @@ const uniquePlayers = [...new Set([...allPlayers.map(p => `${p.player} (${p.team
             100 career REC YDS
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-          <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/penn-state.png' alt="" />
+          <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/clemson.png' alt="" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='topLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('topLeft')}
@@ -465,7 +465,7 @@ const uniquePlayers = [...new Set([...allPlayers.map(p => `${p.player} (${p.team
             {getPlayerDisplayInfo('topRight')}
           </div>
           <div className="flex items-center bg-gray-200 justify-center square text-white" onClick={handleClick}>
-          <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/florida.png' alt="" />
+          <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/nebraska.png' alt="" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='middleLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('middleLeft')}
