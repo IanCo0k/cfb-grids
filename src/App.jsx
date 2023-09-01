@@ -95,7 +95,7 @@ export default function App() {
 
   const [topRowConference, setTopRowConference] = useState('Big Ten');
   const [middleRowConference, setMiddleRowConference] = useState('MAC');
-  const [bottomRowConference, setBottomRowConference] = useState('Sun Belt');
+  const [bottomRowConference, setBottomRowConference] = useState('ACC');
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   
   const [playerGrid, setPlayerGrid] = useState({
@@ -209,12 +209,12 @@ const getTeam = (position, statType, threshold, team) => {
     
   useEffect(() => {
     setPlayerGrid({
-      topLeftPlayers: getTeam('qb', 'yardsPerAttempt', 1, 'UCLA'),
-      topMiddlePlayers: getTeam('rb', 'attempts', 1 , 'UCLA'),
-      topRightPlayers: getTeam('wr', 'receptions', 1, 'UCLA'),
-      middleLeftPlayers: getConference('qb', 'passesAttempted', 1, middleRowConference),
-      middleMiddlePlayers: getConference('rb', 'attempts', 1, middleRowConference),
-      middleRightPlayers: getConference('wr', 'receptions', 1, middleRowConference),
+      topLeftPlayers: getTeam('qb', 'yardsPerAttempt', 1, 'Texas AM'),
+      topMiddlePlayers: getTeam('rb', 'attempts', 1 , 'Texas AM'),
+      topRightPlayers: getTeam('wr', 'receptions', 1, 'Texas AM'),
+      middleLeftPlayers: getTeam('qb', 'passesAttempted', 1, 'Michigan State'),
+      middleMiddlePlayers: getTeam('rb', 'attempts', 1, 'Michigan State'),
+      middleRightPlayers: getTeam('wr', 'receptions', 1, 'Michigan State'),
       bottomLeftPlayers: getConference('qb', 'passesAttempted', 1, bottomRowConference),
       bottomMiddlePlayers: getConference('rb', 'attempts', 1, bottomRowConference),
       bottomRightPlayers: getConference('wr', 'receptions', 1, bottomRowConference)
@@ -263,7 +263,7 @@ const getTeam = (position, statType, threshold, team) => {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'aug31');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'sep1');
   
     try {
       // Fetch current data from the database
@@ -429,7 +429,7 @@ const getTeam = (position, statType, threshold, team) => {
   const draftPlayers = draft
 
 // Combine all player names from 'qb', 'wr', 'rb', and 'draft'
-const uniquePlayers = [...new Set([...allPlayers.map(p => `${p.player} (${p.team})`), ...draftPlayers.map(p => `${p.player} (${p.team})`)])];
+const uniquePlayers = [...new Set([...allPlayers.map(p => `${p.player} (${p.team})`)])];
 
   
 
@@ -458,7 +458,7 @@ const uniquePlayers = [...new Set([...allPlayers.map(p => `${p.player} (${p.team
             1 career reception
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-          <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/ucla.png' alt="" />
+            <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/texas-am.png' alt="" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='topLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('topLeft')}
@@ -470,7 +470,7 @@ const uniquePlayers = [...new Set([...allPlayers.map(p => `${p.player} (${p.team
             {getPlayerDisplayInfo('topRight')}
           </div>
           <div className="flex items-center bg-gray-200 justify-center square text-white" onClick={handleClick}>
-            <img src={logoUrl(middleRowConference)} alt="" />
+          <img src='https://cdn.ssref.net/req/202307313/tlogo/ncaa/michigan-state.png' alt="" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='middleLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('middleLeft')}
