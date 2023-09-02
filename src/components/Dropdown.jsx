@@ -45,7 +45,7 @@ export default function Dropdown({ options, onChange }) {
   return (
     <div className="relative text-gray-500">
       <input
-        type="text"
+        type="search"
         value={inputValue}
         onChange={handleChange}
         placeholder="Type to search..."
