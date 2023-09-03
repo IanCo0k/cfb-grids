@@ -45,6 +45,9 @@ import qb from './data/qb';
 import rb from './data/rb';
 import wr from './data/wr';
 import draft from './data/draft';
+import unc from './data/unc';
+import colorado from './data/colorado';
+import uga from './data/uga';
 
 export default function App() {
 
@@ -117,6 +120,7 @@ export default function App() {
 
 
 
+
 const getPlayersByOverallAndConference = (data, overallThreshold, targetConference) => {
   const filteredPlayers = [];
   const majorConferences = ['Big Ten', 'Pac-12', 'Pac-10', 'Big 12', 'ACC', 'SEC'];
@@ -181,6 +185,44 @@ const getConference = (position, statType, threshold, conference) => {
   return filteredPlayers;
 };
 
+const getUGAplayers = () => {
+  const filteredPlayers = [];
+
+  // map through first_name and last_name for each player in uga dataset
+  for (const player of uga) {
+    filteredPlayers.push({ player: `${player.first_name} ${player.last_name}`, team: 'Georgia' });
+  }
+
+  return filteredPlayers;
+}
+
+
+
+const getUNCplayers = () => {
+  const filteredPlayers = [];
+
+  // map through first_name and last_name for each player in unc dataset
+  for (const player of unc) {
+    filteredPlayers.push({ player: `${player.first_name} ${player.last_name}`, team: 'North Carolina' });
+  }
+
+  return filteredPlayers;
+}
+
+
+const getColoradoplayers = () => {
+  const filteredPlayers = [];
+
+  // map through first_name and last_name for each player in colorado dataset
+  for (const player of colorado) {
+    filteredPlayers.push({ player: `${player.first_name} ${player.last_name}`, team: 'Colorado' });
+  }
+
+  return filteredPlayers;
+}
+
+
+
 const getTeam = (position, statType, threshold, team) => {
   const filteredPlayers = [];
   const datasets = {
@@ -204,20 +246,22 @@ const getTeam = (position, statType, threshold, team) => {
   return filteredPlayers;
 };
 
-
+useEffect(() => {
+  console.log(uga.map(p => `${p.first_name} ${p.last_name}`))
+}, []);
 
     
   useEffect(() => {
     setPlayerGrid({
-      topLeftPlayers: getTeam('qb', 'yardsPerAttempt', 1, 'Oklahoma'),
-      topMiddlePlayers: getTeam('rb', 'attempts', 1 , 'Oklahoma'),
-      topRightPlayers: getTeam('wr', 'receptions', 1, 'Oklahoma'),
-      middleLeftPlayers: getTeam('qb', 'passesAttempted', 1, 'Oregon'),
-      middleMiddlePlayers: getTeam('rb', 'attempts', 1, 'Oregon'),
-      middleRightPlayers: getTeam('wr', 'receptions', 1, 'Oregon'),
-      bottomLeftPlayers: getConference('qb', 'passesAttempted', 1, bottomRowConference),
-      bottomMiddlePlayers: getConference('rb', 'attempts', 1, bottomRowConference),
-      bottomRightPlayers: getConference('wr', 'receptions', 1, bottomRowConference)
+      topLeftPlayers: getUGAplayers(),
+      topMiddlePlayers: getUGAplayers(),
+      topRightPlayers: getUGAplayers(),
+      middleLeftPlayers: getUNCplayers(),
+      middleMiddlePlayers: getUNCplayers(),
+      middleRightPlayers: getUNCplayers(),
+      bottomLeftPlayers: getColoradoplayers(),
+      bottomMiddlePlayers: getColoradoplayers(),
+      bottomRightPlayers: getColoradoplayers(),
     });
 
   }, []);
@@ -258,12 +302,10 @@ const getTeam = (position, statType, threshold, team) => {
   };
   
   
-  
-  
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'sep2');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'sep3');
   
     try {
       // Fetch current data from the database
@@ -399,6 +441,38 @@ const getTeam = (position, statType, threshold, team) => {
       logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Northwestern_Wildcats_logo.svg/1330px-Northwestern_Wildcats_logo.svg.png'
     } else if(teamName === 'Purdue'){
       logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/6/66/PurdueBoilermakersAthleticLogo.png'
+    } else if(teamName === 'Alabama'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Alabama_Crimson_Tide_logo.svg/1200px-Alabama_Crimson_Tide_logo.svg.png'
+    } else if(teamName === 'Georgia'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Georgia_Athletics_logo.svg/2560px-Georgia_Athletics_logo.svg.png'
+    } else if(teamName === 'LSU'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/LSU_Athletics_logo.svg/1200px-LSU_Athletics_logo.svg.png'
+    } else if(teamName === 'Florida'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Florida_Gators_script_logo.svg/1200px-Florida_Gators_script_logo.svg.png'
+    } else if(teamName === 'Texas A&M'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Texas_A%26M_University_logo.svg/1200px-Texas_A%26M_University_logo.svg.png'
+    } else if(teamName === 'Auburn'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Auburn_Tigers_logo.svg/1200px-Auburn_Tigers_logo.svg.png'
+    } else if(teamName === 'Mississippi State'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Mississippi_State_Bulldogs_logo.svg/1200px-Mississippi_State_Bulldogs_logo.svg.png'
+    } else if(teamName === 'Ole Miss'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Ole_Miss_Rebels_logo.svg/1200px-Ole_Miss_Rebels_logo.svg.png'
+    } else if(teamName === 'South Carolina'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/South_Carolina_Gamecocks_logo.svg/1200px-South_Carolina_Gamecocks_logo.svg.png'
+    } else if(teamName === 'Tennessee'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Tennessee_Volunteers_logo.svg/1200px-Tennessee_Volunteers_logo.svg.png'
+    } else if(teamName === 'Kentucky'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Kentucky_Wildcats_logo.svg/1200px-Kentucky_Wildcats_logo.svg.png'
+    } else if(teamName === 'Missouri'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Missouri_Tigers_logo.svg/1200px-Missouri_Tigers_logo.svg.png'
+    } else if(teamName === 'Vanderbilt'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Vanderbilt_Commodores_logo.svg/1200px-Vanderbilt_Commodores_logo.svg.png'
+    } else if(teamName === 'Arkansas'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Arkansas_Razorbacks_logo.svg/1200px-Arkansas_Razorbacks_logo.svg.png'
+    } else if(teamName === 'North Carolina'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/North_Carolina_Tar_Heels_logo.svg/2560px-North_Carolina_Tar_Heels_logo.svg.png'
+    } else if(teamName === 'Colorado'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/d/d4/Colorado_Buffs_alternate_logo.png'
     }
 
     return logoUrl;
@@ -438,7 +512,12 @@ const getTeam = (position, statType, threshold, team) => {
   const draftPlayers = draft
 
 // Combine all player names from 'qb', 'wr', 'rb', and 'draft'
-const uniquePlayers = [...new Set([...allPlayers.map(p => `${p.player} (${p.team})`)])];
+
+const allPlayerNames = allPlayers.map(p => p.player);
+const uncPlayerNames = unc.map(p => `${p.first_name} ${p.last_name}`);
+const coloradoPlayerNames = colorado.map(p => `${p.first_name} ${p.last_name}`);
+const ugaPlayerNames = uga.map(p => `${p.first_name} ${p.last_name}`);
+const uniquePlayers = [...new Set([...allPlayerNames, ...uncPlayerNames, ...coloradoPlayerNames, ...ugaPlayerNames])];
 
   
 
@@ -458,16 +537,16 @@ const uniquePlayers = [...new Set([...allPlayers.map(p => `${p.player} (${p.team
         <div className="grid grid-cols-4 gap-2">
           <div className="flex items-center justify-center squarefont-bold text-gray-200" onClick={handleClick}>Rarity Score: {rarityScore}</div>
           <div className="flex items-center justify-center title-square bg-blue-500 text-gray-200" onClick={handleClick}>
-            1 career passing attempt
+            ---
           </div>
           <div className="flex items-center justify-center title-square bg-blue-500 text-gray-200" onClick={handleClick}>
-            1 career carry
+            Player on 2023-2024 Roster
           </div>
           <div className="flex w-100 pb-100 wrap items-center justify-center title-square bg-blue-500 text-gray-200" onClick={handleClick}>
-            1 career reception
+            ---
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Oklahoma_Sooners_logo.svg/795px-Oklahoma_Sooners_logo.svg.png' alt="Oklahoma Team Logo" />
+            <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Georgia_Athletics_logo.svg/2560px-Georgia_Athletics_logo.svg.png' alt="Georgia Team Logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='topLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('topLeft')}
@@ -479,7 +558,7 @@ const uniquePlayers = [...new Set([...allPlayers.map(p => `${p.player} (${p.team
             {getPlayerDisplayInfo('topRight')}
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Oregon_Ducks_logo.svg/580px-Oregon_Ducks_logo.svg.png' alt="Oregon Team Logo" />
+            <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/North_Carolina_Tar_Heels_logo.svg/2560px-North_Carolina_Tar_Heels_logo.svg.png' alt="Oregon Team Logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='middleLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('middleLeft')}
@@ -491,7 +570,7 @@ const uniquePlayers = [...new Set([...allPlayers.map(p => `${p.player} (${p.team
             {getPlayerDisplayInfo('middleRight')}
           </div>
           <div className="flex items-center justify-center square text-black" onClick={handleClick}>
-            <img src={logoUrl(bottomRowConference)} alt="" />
+            <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Colorado_Buffaloes_wordmark.svg/2126px-Colorado_Buffaloes_wordmark.svg.png' alt="" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='bottomLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('bottomLeft')}
