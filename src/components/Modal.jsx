@@ -10,7 +10,7 @@ function Modal() {
   return (
     <div>
       {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center lg:max-w-1/2 z-50">
+        <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="absolute inset-0 bg-gray-900 opacity-50"></div>
           <div className="bg-white p-6 rounded shadow-md z-10">
             <h1 className='text-center text-2xl font-semibold mb-4'>
@@ -24,8 +24,8 @@ function Modal() {
               CFB Grids
               </a>
             </h1>
-            <p className="text-center text-2xl mb-4">TODAY'S PLAYERS MUST BE ON THE TEAMS ACTIVE 2023-2024 ROSTER. THAT IS THE ONLY REQUIREMENT.</p>
-            <p className="text-center text-2xl mb-4">I am updating this late at night and I'm trying to go to bed, I haven't added any checks to prevent duplicate players. I guess it's on the honor system for today.</p>
+            <p className="text-center text-2xl mb-4">TODAY'S PLAYERS ARE BACK TO BETWEEN 1956-2022/23 SEASON</p>
+            <p className="text-center text-2xl mb-4">Should also accept transfer players, granted they met the career total with the school.</p>
             <p className='text-center mb-4'>
               Follow my{' '}
               <a
