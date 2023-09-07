@@ -37,7 +37,6 @@ function Modal() {
               ></iframe>
             </div>
             <p className="text-center text-2xl mb-4">TODAY'S PLAYERS ARE BACK TO BETWEEN 1956-2022/23 SEASON</p>
-            <p className="text-center text-2xl mb-4">Should also accept transfer players, granted they met the career total with the school.</p>
             <p className='text-center mb-4'>
               Follow my{' '}
               <a
