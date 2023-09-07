@@ -305,7 +305,7 @@ useEffect(() => {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'sep');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'sep6');
   
     try {
       // Fetch current data from the database
