@@ -253,15 +253,15 @@ useEffect(() => {
     
   useEffect(() => {
     setPlayerGrid({
-      topLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Mississippi State'),
-      topMiddlePlayers: getTeam('rb', 'yds', 1, 'Mississippi State'),
-      topRightPlayers: getTeam('wr', 'yards', 1, 'Mississippi State'),
-      middleLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'West Virginia'),
-      middleMiddlePlayers: getTeam('rb', 'yds', 1, 'West Virginia'),
-      middleRightPlayers: getTeam('wr', 'yards', 1, 'West Virginia'),
-      bottomLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Louisville'),
-      bottomMiddlePlayers: getTeam('rb', 'yds', 1, 'Louisville'),
-      bottomRightPlayers: getTeam('wr', 'yards', 1, 'Louisville'),
+      topLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Brigham Young'),
+      topMiddlePlayers: getTeam('rb', 'yds', 1, 'Brigham Young'),
+      topRightPlayers: getTeam('wr', 'yards', 1, 'Brigham Young'),
+      middleLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Houston'),
+      middleMiddlePlayers: getTeam('rb', 'yds', 1, 'Houston'),
+      middleRightPlayers: getTeam('wr', 'yards', 1, 'Houston'),
+      bottomLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Stanford'),
+      bottomMiddlePlayers: getTeam('rb', 'yds', 1, 'Stanford'),
+      bottomRightPlayers: getTeam('wr', 'yards', 1, 'Stanford'),
     });
 
   }, []);
@@ -305,7 +305,7 @@ useEffect(() => {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'sep7');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'sep8');
   
     try {
       // Fetch current data from the database
@@ -490,6 +490,12 @@ useEffect(() => {
       logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/WVU_flying_WV_Gold124.svg/2369px-WVU_flying_WV_Gold124.svg.png';
     } else if(teamName === 'Louisville'){
       logoUrl = 'https://upload.wikimedia.org/wikipedia/en/thumb/5/59/Louisville_Cardinals_logo.svg/1200px-Louisville_Cardinals_logo.svg.png'
+    } else if(teamName === 'Brigham Young'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/BYU_Cougars_logo.svg/2560px-BYU_Cougars_logo.svg.png'
+    } else if(teamName === 'Houston'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/f/f4/Logo_of_University_of_Houston_Athletics.png'
+    } else if(teamName === 'Stanford'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Stanford_Cardinal_logo.svg/1341px-Stanford_Cardinal_logo.svg.png'
     }
 
     return logoUrl;
@@ -563,7 +569,7 @@ const uniquePlayers = [...new Set([...allPlayerNames, ...uncPlayerNames, ...colo
             1 career receiving yard
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src={generateLogoUrl('Mississippi State')} alt="Mississippi State Logo" />
+            <img src={generateLogoUrl('Brigham Young')} alt="Mississippi State Logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='topLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('topLeft')}
@@ -575,7 +581,7 @@ const uniquePlayers = [...new Set([...allPlayerNames, ...uncPlayerNames, ...colo
             {getPlayerDisplayInfo('topRight')}
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src={generateLogoUrl('West Virginia')} alt="West Virginia Team Logo" />
+            <img src={generateLogoUrl('Houston')} alt="West Virginia Team Logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='middleLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('middleLeft')}
@@ -587,7 +593,7 @@ const uniquePlayers = [...new Set([...allPlayerNames, ...uncPlayerNames, ...colo
             {getPlayerDisplayInfo('middleRight')}
           </div>
           <div className="flex items-center justify-center square text-black" onClick={handleClick}>
-            <img src={generateLogoUrl('Louisville')} alt="Arkansas logo" />
+            <img src={generateLogoUrl('Stanford')} alt="Arkansas logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='bottomLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('bottomLeft')}
