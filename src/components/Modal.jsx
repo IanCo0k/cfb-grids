@@ -24,19 +24,8 @@ function Modal() {
               HERE
               </a>
             </h1>
-            <div style={{ borderRadius: '12px', margin: '1em' }}>
-              <iframe
-                src="https://open.spotify.com/embed/show/3PxjY8VH1h4Q4Cb2shJqRQ?utm_source=generator"
-                width="100%"
-                height="352"
-                frameBorder="0"
-                allowFullScreen
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy"
-                title="Spotify Embed"
-              ></iframe>
-            </div>
-            <p className="text-center text-2xl mb-4">TODAY'S PLAYERS ARE BACK TO BETWEEN 1956-2022/23 SEASON</p>
+            <p className="text-center text-2xl mb-4">Players for columns 1 and 2 go back to 1957</p>
+            <p className="text-center text-2xl mb-4">Players for column 3 go back to 1976 for kickers, 2000 for non kickers</p>
             <p className='text-center mb-4'>
               Follow my{' '}
               <a
