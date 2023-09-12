@@ -4738,6 +4738,12 @@ const sep12 = [
     "team": "Kansas State",
     "conference": "Big 12",
     "points": 1
+  },
+  {
+    "player": "Martin Gramatica",
+    "team": "Kansas State",
+    "conference": "Big 12",
+    "points": 1
   }
 ]
 
