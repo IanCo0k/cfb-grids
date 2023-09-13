@@ -48,7 +48,7 @@ import draft from './data/draft';
 import unc from './data/unc';
 import colorado from './data/colorado';
 import uga from './data/uga';
-import sep12 from './data/sep12';
+import sep13 from './data/sep13';
 import teams from './data/teams';
 
 export default function App() {
@@ -232,7 +232,7 @@ const getTeam = (position, statType, threshold, team) => {
     'qb': qb,
     'rb': rb,
     'wr': wr,
-    'sep12': sep12,
+    'sep13': sep13,
   };
 
   const data = datasets[position];
@@ -253,15 +253,15 @@ const getTeam = (position, statType, threshold, team) => {
     
   useEffect(() => {
     setPlayerGrid({
-      topLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Ohio State'),
-      topMiddlePlayers: getTeam('rb', 'yds', 1, 'Ohio State'),
-      topRightPlayers: getTeam('sep12', 'points', 1, 'Ohio State'),
-      middleLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Florida'),
-      middleMiddlePlayers: getTeam('rb', 'yds', 1, 'Florida'),
-      middleRightPlayers: getTeam('sep12', 'points', 1, 'Florida'),
-      bottomLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Kansas State'),
-      bottomMiddlePlayers: getTeam('rb', 'yds', 1, 'Kansas State'),
-      bottomRightPlayers: getTeam('sep12', 'points', 1, 'Kansas State'),
+      topLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Oklahoma'),
+      topMiddlePlayers: getTeam('rb', 'yds', 1, 'Oklahoma'),
+      topRightPlayers: getTeam('sep13', 'points', 1, 'Oklahoma'),
+      middleLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Boston College'),
+      middleMiddlePlayers: getTeam('rb', 'yds', 1, 'Boston College'),
+      middleRightPlayers: getTeam('sep13', 'points', 1, 'Boston College'),
+      bottomLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Purdue'),
+      bottomMiddlePlayers: getTeam('rb', 'yds', 1, 'Purdue'),
+      bottomRightPlayers: getTeam('sep13', 'points', 1, 'Purdue'),
     });
 
   }, []);
@@ -305,7 +305,7 @@ const getTeam = (position, statType, threshold, team) => {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'sep12');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'sep13');
   
     try {
       // Fetch current data from the database
@@ -506,6 +506,8 @@ const getTeam = (position, statType, threshold, team) => {
       logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Baylor_Athletics_logo.svg/204px-Baylor_Athletics_logo.svg.png'
     } else if(teamName === 'Kansas State'){
       logoUrl = 'https://cdn.freebiesupply.com/logos/large/2x/kansas-state-wildcats-logo-png-transparent.png';
+    } else if(teamName === 'Boston College'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/en/thumb/9/96/Boston_College_Eagles_logo.svg/1200px-Boston_College_Eagles_logo.svg.png'
     }
 
     return logoUrl;
@@ -541,7 +543,7 @@ const getTeam = (position, statType, threshold, team) => {
     }
   };
 
-  const allPlayers = [...qb, ...rb, ...wr, ...sep12];
+  const allPlayers = [...qb, ...rb, ...wr, ...sep13];
   const draftPlayers = draft
 
 // Combine all player names from 'qb', 'wr', 'rb', and 'draft'
@@ -577,7 +579,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             1 point scored
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src={generateLogoUrl('Ohio State')} alt="Mississippi State Logo" />
+            <img src={generateLogoUrl('Oklahoma')} alt="Mississippi State Logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='topLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('topLeft')}
@@ -589,7 +591,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             {getPlayerDisplayInfo('topRight')}
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src={generateLogoUrl('Florida')} alt="West Virginia Team Logo" />
+            <img src={generateLogoUrl('Boston College')} alt="West Virginia Team Logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='middleLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('middleLeft')}
@@ -601,7 +603,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             {getPlayerDisplayInfo('middleRight')}
           </div>
           <div className="flex items-center justify-center square text-black" onClick={handleClick}>
-            <img src={generateLogoUrl('Kansas State')} alt="Arkansas logo" />
+            <img src={generateLogoUrl('Purdue')} alt="Arkansas logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='bottomLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('bottomLeft')}
