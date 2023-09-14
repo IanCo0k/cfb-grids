@@ -48,7 +48,7 @@ import draft from './data/draft';
 import unc from './data/unc';
 import colorado from './data/colorado';
 import uga from './data/uga';
-import sep13 from './data/sep13';
+import sep14 from './data/sep14';
 import teams from './data/teams';
 
 export default function App() {
@@ -232,7 +232,7 @@ const getTeam = (position, statType, threshold, team) => {
     'qb': qb,
     'rb': rb,
     'wr': wr,
-    'sep13': sep13,
+    'sep14': sep14,
   };
 
   const data = datasets[position];
@@ -253,15 +253,15 @@ const getTeam = (position, statType, threshold, team) => {
     
   useEffect(() => {
     setPlayerGrid({
-      topLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Oklahoma'),
-      topMiddlePlayers: getTeam('rb', 'yds', 1, 'Oklahoma'),
-      topRightPlayers: getTeam('sep13', 'points', 1, 'Oklahoma'),
-      middleLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Boston College'),
-      middleMiddlePlayers: getTeam('rb', 'yds', 1, 'Boston College'),
-      middleRightPlayers: getTeam('sep13', 'points', 1, 'Boston College'),
-      bottomLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Purdue'),
-      bottomMiddlePlayers: getTeam('rb', 'yds', 1, 'Purdue'),
-      bottomRightPlayers: getTeam('sep13', 'points', 1, 'Purdue'),
+      topLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'South Carolina'),
+      topMiddlePlayers: getTeam('rb', 'yds', 1, 'South Carolina'),
+      topRightPlayers: getTeam('sep14', 'points', 1, 'South Carolina'),
+      middleLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Central Florida'),
+      middleMiddlePlayers: getTeam('rb', 'yds', 1, 'Central Florida'),
+      middleRightPlayers: getTeam('sep14', 'points', 1, 'Central Florida'),
+      bottomLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Duke'),
+      bottomMiddlePlayers: getTeam('rb', 'yds', 1, 'Duke'),
+      bottomRightPlayers: getTeam('sep14', 'points', 1, 'Duke'),
     });
 
   }, []);
@@ -305,7 +305,7 @@ const getTeam = (position, statType, threshold, team) => {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'sep13');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'sep14');
   
     try {
       // Fetch current data from the database
@@ -456,8 +456,6 @@ const getTeam = (position, statType, threshold, team) => {
       logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Mississippi_State_Bulldogs_logo.svg/2560px-Mississippi_State_Bulldogs_logo.svg.png'
     } else if(teamName === 'Mississippi'){
       logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Ole_Miss_Rebels_logo.svg/2560px-Ole_Miss_Rebels_logo.svg.png'
-    } else if(teamName === 'South Carolina'){
-      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/South_Carolina_Gamecocks_logo.svg/1200px-South_Carolina_Gamecocks_logo.svg.png'
     } else if(teamName === 'Tennessee'){
       logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Tennessee_Volunteers_logo.svg/1024px-Tennessee_Volunteers_logo.svg.png'
     } else if(teamName === 'Kentucky'){
@@ -508,6 +506,12 @@ const getTeam = (position, statType, threshold, team) => {
       logoUrl = 'https://cdn.freebiesupply.com/logos/large/2x/kansas-state-wildcats-logo-png-transparent.png';
     } else if(teamName === 'Boston College'){
       logoUrl = 'https://upload.wikimedia.org/wikipedia/en/thumb/9/96/Boston_College_Eagles_logo.svg/1200px-Boston_College_Eagles_logo.svg.png'
+    } else if(teamName === 'South Carolina'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/South_Carolina_Gamecocks_logo.svg/1200px-South_Carolina_Gamecocks_logo.svg.png'
+    } else if(teamName === 'Central Florida'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/UCF_Knights_logo.svg/597px-UCF_Knights_logo.svg.png'
+    } else if(teamName === 'Duke'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Duke_Athletics_logo.svg/537px-Duke_Athletics_logo.svg.png';
     }
 
     return logoUrl;
@@ -543,7 +547,7 @@ const getTeam = (position, statType, threshold, team) => {
     }
   };
 
-  const allPlayers = [...qb, ...rb, ...wr, ...sep13];
+  const allPlayers = [...qb, ...rb, ...wr, ...sep14];
   const draftPlayers = draft
 
 // Combine all player names from 'qb', 'wr', 'rb', and 'draft'
@@ -579,7 +583,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             1 point scored
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src={generateLogoUrl('Oklahoma')} alt="Mississippi State Logo" />
+            <img src={generateLogoUrl('South Carolina')} alt="Mississippi State Logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='topLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('topLeft')}
@@ -591,7 +595,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             {getPlayerDisplayInfo('topRight')}
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src={generateLogoUrl('Boston College')} alt="West Virginia Team Logo" />
+            <img src={generateLogoUrl('Central Florida')} alt="West Virginia Team Logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='middleLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('middleLeft')}
@@ -603,7 +607,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             {getPlayerDisplayInfo('middleRight')}
           </div>
           <div className="flex items-center justify-center square text-black" onClick={handleClick}>
-            <img src={generateLogoUrl('Purdue')} alt="Arkansas logo" />
+            <img src={generateLogoUrl('Duke')} alt="Arkansas logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='bottomLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('bottomLeft')}
