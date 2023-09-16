@@ -48,7 +48,7 @@ import draft from './data/draft';
 import unc from './data/unc';
 import colorado from './data/colorado';
 import uga from './data/uga';
-import sep15 from './data/sep15';
+import sep16 from './data/sep16';
 import teams from './data/teams';
 
 export default function App() {
@@ -232,7 +232,7 @@ const getTeam = (position, statType, threshold, team) => {
     'qb': qb,
     'rb': rb,
     'wr': wr,
-    'sep15': sep15,
+    'sep16': sep16,
   };
 
   const data = datasets[position];
@@ -253,15 +253,15 @@ const getTeam = (position, statType, threshold, team) => {
     
   useEffect(() => {
     setPlayerGrid({
-      topLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Kansas'),
-      topMiddlePlayers: getTeam('rb', 'yds', 1, 'Kansas'),
-      topRightPlayers: getTeam('sep15', 'points', 1, 'Kansas'),
-      middleLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Georgia Tech'),
-      middleMiddlePlayers: getTeam('rb', 'yds', 1, 'Georgia Tech'),
-      middleRightPlayers: getTeam('sep15', 'points', 1, 'Georgia Tech'),
-      bottomLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Florida State'),
-      bottomMiddlePlayers: getTeam('rb', 'yds', 1, 'Florida State'),
-      bottomRightPlayers: getTeam('sep15', 'points', 1, 'Florida State'),
+      topLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Penn State'),
+      topMiddlePlayers: getTeam('rb', 'yds', 1, 'Penn State'),
+      topRightPlayers: getTeam('sep16', 'points', 1, 'Penn State'),
+      middleLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Ohio State'),
+      middleMiddlePlayers: getTeam('rb', 'yds', 1, 'Ohio State'),
+      middleRightPlayers: getTeam('sep16', 'points', 1, 'Ohio State'),
+      bottomLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Michigan State'),
+      bottomMiddlePlayers: getTeam('rb', 'yds', 1, 'Michigan State'),
+      bottomRightPlayers: getTeam('sep16', 'points', 1, 'Michigan State'),
     });
 
   }, []);
@@ -305,7 +305,7 @@ const getTeam = (position, statType, threshold, team) => {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'sep15');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'sep16');
   
     try {
       // Fetch current data from the database
@@ -551,7 +551,7 @@ const getTeam = (position, statType, threshold, team) => {
     }
   };
 
-  const allPlayers = [...qb, ...rb, ...wr, ...sep15];
+  const allPlayers = [...qb, ...rb, ...wr, ...sep16];
   const draftPlayers = draft
 
 // Combine all player names from 'qb', 'wr', 'rb', and 'draft'
@@ -587,7 +587,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             1 point scored
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src={generateLogoUrl('Kansas')} alt="Mississippi State Logo" />
+            <img src={generateLogoUrl('Penn State')} alt="Mississippi State Logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='topLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('topLeft')}
@@ -599,7 +599,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             {getPlayerDisplayInfo('topRight')}
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src={generateLogoUrl('Georgia Tech')} alt="West Virginia Team Logo" />
+            <img src={generateLogoUrl('Ohio State')} alt="West Virginia Team Logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='middleLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('middleLeft')}
@@ -611,7 +611,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             {getPlayerDisplayInfo('middleRight')}
           </div>
           <div className="flex items-center justify-center square text-black" onClick={handleClick}>
-            <img src={generateLogoUrl('Florida State')} alt="Arkansas logo" />
+            <img src={generateLogoUrl('Michigan State')} alt="Arkansas logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='bottomLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('bottomLeft')}
