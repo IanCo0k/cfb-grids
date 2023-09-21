@@ -24,8 +24,7 @@ function Modal() {
               HERE
               </a>
             </h1>
-            <p className="text-center text-2xl mb-4">Players for columns 1 and 2 go back to 1957</p>
-            <p className="text-center text-2xl mb-4">Players for column 3 go back to 1976 for kickers, 2000 for non kickers</p>
+            <p className="text-center text-2xl mb-4">Players for all columns go back to 1957</p>
             <p className='text-center mb-4'>
               Follow my{' '}
               <a
