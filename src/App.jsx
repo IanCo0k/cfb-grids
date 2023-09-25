@@ -253,15 +253,15 @@ const getTeam = (position, statType, threshold, team) => {
     
   useEffect(() => {
     setPlayerGrid({
-      topLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Arkansas'),
-      topMiddlePlayers: getTeam('rb', 'yds', 1, 'Arkansas'),
-      topRightPlayers: getTeam('wr', 'yds', 1, 'Arkansas'),
-      middleLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Nebraska'),
-      middleMiddlePlayers: getTeam('rb', 'yds', 1, 'Nebraska'),
-      middleRightPlayers: getTeam('wr', 'yds', 1, 'Nebraska'),
-      bottomLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Oklahoma'),
-      bottomMiddlePlayers: getTeam('rb', 'yds', 1, 'Oklahoma'),
-      bottomRightPlayers: getTeam('wr', 'yds', 1, 'Oklahoma'),
+      topLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Central Michigan'),
+      topMiddlePlayers: getTeam('rb', 'yds', 1, 'Central Michigan'),
+      topRightPlayers: getTeam('wr', 'yds', 1, 'Central Michigan'),
+      middleLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Michigan'),
+      middleMiddlePlayers: getTeam('rb', 'yds', 1, 'Michigan'),
+      middleRightPlayers: getTeam('wr', 'yds', 1, 'Michigan'),
+      bottomLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Michigan State'),
+      bottomMiddlePlayers: getTeam('rb', 'yds', 1, 'Michigan State'),
+      bottomRightPlayers: getTeam('wr', 'yds', 1, 'Michigan State'),
     });
 
   }, []);
@@ -305,7 +305,7 @@ const getTeam = (position, statType, threshold, team) => {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'sep22');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'sep25');
   
     try {
       // Fetch current data from the database
@@ -528,6 +528,8 @@ const getTeam = (position, statType, threshold, team) => {
       logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/archive/8/8b/20170413194714%21California_Golden_Bears_logo.svg/120px-California_Golden_Bears_logo.svg.png';
     } else if(teamName === 'Kentucky'){
       logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Kentucky_Wildcats_logo.svg/198px-Kentucky_Wildcats_logo.svg.png?20170712231132'
+    } else if(teamName === 'Central Michigan'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/3/32/CentralMichiganChippewas.png';
     }
 
     return logoUrl;
@@ -599,7 +601,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             1 career receiving yard
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src={generateLogoUrl('Arkansas')} alt="Mississippi State Logo" />
+            <img src={generateLogoUrl('Central Michigan')} alt="Mississippi State Logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='topLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('topLeft')}
@@ -611,7 +613,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             {getPlayerDisplayInfo('topRight')}
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src={generateLogoUrl('Nebraska')} alt="West Virginia Team Logo" />
+            <img src={generateLogoUrl('Michigan')} alt="West Virginia Team Logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='middleLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('middleLeft')}
@@ -623,7 +625,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             {getPlayerDisplayInfo('middleRight')}
           </div>
           <div className="flex items-center justify-center square text-black" onClick={handleClick}>
-            <img src={generateLogoUrl('Oklahoma')} alt="Kentucky logo" />
+            <img src={generateLogoUrl('Michigan State')} alt="Kentucky logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='bottomLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('bottomLeft')}
