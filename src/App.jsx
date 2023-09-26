@@ -253,15 +253,15 @@ const getTeam = (position, statType, threshold, team) => {
     
   useEffect(() => {
     setPlayerGrid({
-      topLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Central Michigan'),
-      topMiddlePlayers: getTeam('rb', 'yds', 1, 'Central Michigan'),
-      topRightPlayers: getTeam('wr', 'yds', 1, 'Central Michigan'),
-      middleLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Michigan'),
-      middleMiddlePlayers: getTeam('rb', 'yds', 1, 'Michigan'),
-      middleRightPlayers: getTeam('wr', 'yds', 1, 'Michigan'),
-      bottomLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Michigan State'),
-      bottomMiddlePlayers: getTeam('rb', 'yds', 1, 'Michigan State'),
-      bottomRightPlayers: getTeam('wr', 'yds', 1, 'Michigan State'),
+      topLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Notre Dame'),
+      topMiddlePlayers: getTeam('rb', 'yds', 1, 'Notre Dame'),
+      topRightPlayers: getTeam('wr', 'yds', 1, 'Notre Dame'),
+      middleLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Indiana'),
+      middleMiddlePlayers: getTeam('rb', 'yds', 1, 'Indiana'),
+      middleRightPlayers: getTeam('wr', 'yds', 1, 'Indiana'),
+      bottomLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Purdue'),
+      bottomMiddlePlayers: getTeam('rb', 'yds', 1, 'Purdue'),
+      bottomRightPlayers: getTeam('wr', 'yds', 1, 'Purdue'),
     });
 
   }, []);
@@ -305,7 +305,7 @@ const getTeam = (position, statType, threshold, team) => {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'sep25');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'sep26');
   
     try {
       // Fetch current data from the database
@@ -530,6 +530,8 @@ const getTeam = (position, statType, threshold, team) => {
       logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Kentucky_Wildcats_logo.svg/198px-Kentucky_Wildcats_logo.svg.png?20170712231132'
     } else if(teamName === 'Central Michigan'){
       logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/3/32/CentralMichiganChippewas.png';
+    } else if(teamName === 'Notre Dame'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Notre_Dame_Fighting_Irish_logo.svg/2276px-Notre_Dame_Fighting_Irish_logo.svg.png';
     }
 
     return logoUrl;
@@ -601,7 +603,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             1 career receiving yard
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src={generateLogoUrl('Central Michigan')} alt="Mississippi State Logo" />
+            <img src={generateLogoUrl('Notre Dame')} alt="Mississippi State Logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='topLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('topLeft')}
@@ -613,7 +615,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             {getPlayerDisplayInfo('topRight')}
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src={generateLogoUrl('Michigan')} alt="West Virginia Team Logo" />
+            <img src={generateLogoUrl('Indiana')} alt="West Virginia Team Logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='middleLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('middleLeft')}
@@ -625,7 +627,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             {getPlayerDisplayInfo('middleRight')}
           </div>
           <div className="flex items-center justify-center square text-black" onClick={handleClick}>
-            <img src={generateLogoUrl('Michigan State')} alt="Kentucky logo" />
+            <img src={generateLogoUrl('Purdue')} alt="Kentucky logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='bottomLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('bottomLeft')}
