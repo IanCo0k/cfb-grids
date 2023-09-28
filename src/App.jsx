@@ -253,15 +253,15 @@ const getTeam = (position, statType, threshold, team) => {
     
   useEffect(() => {
     setPlayerGrid({
-      topLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Florida'),
-      topMiddlePlayers: getTeam('rb', 'yds', 1, 'Florida'),
-      topRightPlayers: getTeam('wr', 'yds', 1, 'Florida'),
-      middleLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Florida State'),
-      middleMiddlePlayers: getTeam('rb', 'yds', 1, 'Florida State'),
-      middleRightPlayers: getTeam('wr', 'yds', 1, 'Florida State'),
-      bottomLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Central Florida'),
-      bottomMiddlePlayers: getTeam('rb', 'yds', 1, 'Central Florida'),
-      bottomRightPlayers: getTeam('wr', 'yds', 1, 'Central Florida'),
+      topLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Texas Christian'),
+      topMiddlePlayers: getTeam('rb', 'yds', 1, 'Texas Christian'),
+      topRightPlayers: getTeam('wr', 'yds', 1, 'Texas Christian'),
+      middleLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Georgia'),
+      middleMiddlePlayers: getTeam('rb', 'yds', 1, 'Georgia'),
+      middleRightPlayers: getTeam('wr', 'yds', 1, 'Georgia'),
+      bottomLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Washington'),
+      bottomMiddlePlayers: getTeam('rb', 'yds', 1, 'Washington'),
+      bottomRightPlayers: getTeam('wr', 'yds', 1, 'Washington'),
     });
 
   }, []);
@@ -305,7 +305,7 @@ const getTeam = (position, statType, threshold, team) => {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'sep27');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'sep28');
   
     try {
       // Fetch current data from the database
@@ -603,7 +603,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             1 career receiving yard
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src={generateLogoUrl('Florida')} alt="Mississippi State Logo" />
+            <img src={generateLogoUrl('Texas Christian')} alt="Mississippi State Logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='topLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('topLeft')}
@@ -615,7 +615,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             {getPlayerDisplayInfo('topRight')}
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src={generateLogoUrl('Florida State')} alt="West Virginia Team Logo" />
+            <img src={generateLogoUrl('Georgia')} alt="West Virginia Team Logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='middleLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('middleLeft')}
@@ -627,7 +627,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             {getPlayerDisplayInfo('middleRight')}
           </div>
           <div className="flex items-center justify-center square text-black" onClick={handleClick}>
-            <img src={generateLogoUrl('Central Florida')} alt="Kentucky logo" />
+            <img src={generateLogoUrl('Washington')} alt="Kentucky logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='bottomLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('bottomLeft')}
