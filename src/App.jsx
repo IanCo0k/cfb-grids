@@ -253,15 +253,15 @@ const getTeam = (position, statType, threshold, team) => {
     
   useEffect(() => {
     setPlayerGrid({
-      topLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Iowa State'),
-      topMiddlePlayers: getTeam('rb', 'yds', 1, 'Iowa State'),
-      topRightPlayers: getTeam('wr', 'yds', 1, 'Iowa State'),
-      middleLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'West Virginia'),
-      middleMiddlePlayers: getTeam('rb', 'yds', 1, 'West Virginia'),
-      middleRightPlayers: getTeam('wr', 'yds', 1, 'West Virginia'),
-      bottomLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Baylor'),
-      bottomMiddlePlayers: getTeam('rb', 'yds', 1, 'Baylor'),
-      bottomRightPlayers: getTeam('wr', 'yds', 1, 'Baylor'),
+      topLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Missouri'),
+      topMiddlePlayers: getTeam('rb', 'yds', 1, 'Missouri'),
+      topRightPlayers: getTeam('wr', 'yds', 1, 'Missouri'),
+      middleLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'California'),
+      middleMiddlePlayers: getTeam('rb', 'yds', 1, 'California'),
+      middleRightPlayers: getTeam('wr', 'yds', 1, 'California'),
+      bottomLeftPlayers: getTeam('qb', 'passesCompleted', 1, 'Ohio State'),
+      bottomMiddlePlayers: getTeam('rb', 'yds', 1, 'Ohio State'),
+      bottomRightPlayers: getTeam('wr', 'yds', 1, 'Ohio State'),
     });
 
   }, []);
@@ -305,7 +305,7 @@ const getTeam = (position, statType, threshold, team) => {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'sep29');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'oct2');
   
     try {
       // Fetch current data from the database
@@ -461,7 +461,7 @@ const getTeam = (position, statType, threshold, team) => {
     } else if(teamName === 'Kentucky'){
       logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Kentucky_Wildcats_logo.svg/1200px-Kentucky_Wildcats_logo.svg.png'
     } else if(teamName === 'Missouri'){
-      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Missouri_Tigers_logo.svg/1200px-Missouri_Tigers_logo.svg.png'
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/en/thumb/2/2c/Missouri_Tigers_logo.svg/1200px-Missouri_Tigers_logo.svg.png'
     } else if(teamName === 'Vanderbilt'){
       logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Vanderbilt_Commodores_logo.svg/1200px-Vanderbilt_Commodores_logo.svg.png'
     } else if(teamName === 'Arkansas'){
@@ -603,7 +603,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             1 career receiving yard
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src={generateLogoUrl('Iowa State')} alt="Mississippi State Logo" />
+            <img src={generateLogoUrl('Missouri')} alt="Mississippi State Logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='topLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('topLeft')}
@@ -615,7 +615,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             {getPlayerDisplayInfo('topRight')}
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src={generateLogoUrl('West Virginia')} alt="West Virginia Team Logo" />
+            <img src={generateLogoUrl('California')} alt="West Virginia Team Logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='middleLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('middleLeft')}
@@ -627,7 +627,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             {getPlayerDisplayInfo('middleRight')}
           </div>
           <div className="flex items-center justify-center square text-black" onClick={handleClick}>
-            <img src={generateLogoUrl('Baylor')} alt="Kentucky logo" />
+            <img src={generateLogoUrl('Ohio State')} alt="Kentucky logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='bottomLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('bottomLeft')}
