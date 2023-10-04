@@ -98,9 +98,9 @@ export default function App() {
     setRarityScore(updatedRarityScore.toFixed(2));
   }, [cellPercentages]);
 
-  const [topTeam, setTopTeam] = useState('Southern California');
-  const [middleTeam, setMiddleTeam] = useState('North Carolina');
-  const [bottomTeam, setBottomTeam] = useState('Virginia Tech');
+  const [topTeam, setTopTeam] = useState('Clemson');
+  const [middleTeam, setMiddleTeam] = useState('Tennessee');
+  const [bottomTeam, setBottomTeam] = useState('Texas AM');
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   
   const [playerGrid, setPlayerGrid] = useState({
@@ -305,7 +305,7 @@ const getTeam = (position, statType, threshold, team) => {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'oct3');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'oct4');
   
     try {
       // Fetch current data from the database
@@ -534,6 +534,8 @@ const getTeam = (position, statType, threshold, team) => {
       logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Notre_Dame_Fighting_Irish_logo.svg/2276px-Notre_Dame_Fighting_Irish_logo.svg.png';
     } else if(teamName === 'Virginia Tech'){
       logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Virginia_Tech_Hokies_logo.svg/2560px-Virginia_Tech_Hokies_logo.svg.png'
+    } else if(teamName === 'Texas AM'){
+      logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Texas_A%26M_University_logo.svg/247px-Texas_A%26M_University_logo.svg.png?20130911171824'
     }
 
     return logoUrl;
