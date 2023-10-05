@@ -112,11 +112,11 @@ export default function App() {
       const docSnapshot = await getDoc(leaderboardRef);
       const currentScores = docSnapshot.data().scores || [];
       
-      // Add new score and sort in descending order
-      const updatedScores = [...currentScores, score].sort((a, b) => b - a);
+      // Add new score without limiting the array size
+      const updatedScores = [...currentScores, score];
       
-      // Write the updated scores back to the database, keeping only top 5
-      await updateDoc(leaderboardRef, { scores: updatedScores.slice(0, 5) });
+      // Write the updated scores back to the database
+      await updateDoc(leaderboardRef, { scores: updatedScores });
     } catch (error) {
       console.error("Error updating leaderboard:", error);
     }
