@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Dropdown from './components/Dropdown';
 import Modal from './components/Modal';
+import Leaderboard from './components/Leaderboard';
 import Footer from './components/Footer';
 
 // Import the functions you need from the SDKs you need
@@ -91,12 +92,35 @@ export default function App() {
     const hasZeroPercentage = Object.values(cellPercentages).some(percentage => percentage === 0);
   
     setShowTweetButton(!hasZeroPercentage);
+
+    if (!hasZeroPercentage) {
+      postRarityScore(updatedRarityScore);
+    }
   
     setTweetText(`CFB Grids\n\nRarity Score: ${updatedRarityScore.toFixed(2)}\n\n@CFBGrids / cfbgrids.com`);
   
     // Update the rarity score in the state
     setRarityScore(updatedRarityScore.toFixed(2));
   }, [cellPercentages]);
+
+  const postRarityScore = async (score) => {
+    const db = getFirestore();
+    const leaderboardRef = doc(db, 'dailyLeaderboard', 'oct5leaders');
+  
+    try {
+      // Fetch current scores data from the database
+      const docSnapshot = await getDoc(leaderboardRef);
+      const currentScores = docSnapshot.data().scores || [];
+      
+      // Add new score and sort in descending order
+      const updatedScores = [...currentScores, score].sort((a, b) => b - a);
+      
+      // Write the updated scores back to the database, keeping only top 5
+      await updateDoc(leaderboardRef, { scores: updatedScores.slice(0, 5) });
+    } catch (error) {
+      console.error("Error updating leaderboard:", error);
+    }
+  };
 
   const [topTeam, setTopTeam] = useState('Texas Tech');
   const [middleTeam, setMiddleTeam] = useState('Washington State');
@@ -647,19 +671,20 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
         </div>
         </div>
 
-        <div className="text-center mt-5">
-        {showTweetButton && (
-          <a
-            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <button className="rounded m-2 bg-blue-500 text-white py-2 px-4">Tweet Score</button>
-          </a>
-        )}
-                <Modal />   
+        <div className="text-center mt-5 flex justify-center space-x-4">
+  {showTweetButton && (
+    <a
+      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <button className="rounded bg-blue-500 text-white py-2 px-4">Tweet Score</button>
+    </a>
+  )}
+  <Modal />   
+  <Leaderboard imgSrc1={generateLogoUrl(topTeam)} imgSrc2={generateLogoUrl(middleTeam)} imgSrc3={generateLogoUrl(bottomTeam)} />
+</div>
 
-      </div>
       </div>
       <Footer />
     </div>
