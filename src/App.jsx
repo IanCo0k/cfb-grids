@@ -285,7 +285,7 @@ const getTeam = (position, statType, threshold, team) => {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', '7');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'oct7');
   
     try {
       // Fetch current data from the database

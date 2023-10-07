@@ -22,7 +22,7 @@ function Leaderboard({ imgSrc1, imgSrc2, imgSrc3 }) {
         const top5Scores = scores
             .sort((a, b) => a - b)  // Sorting in ascending order
             .slice(0, 5)
-            .map(score => score.toFixed(1));
+            .map(score => score.toFixed(2));
         
         setTopScores(top5Scores);
       } catch (error) {
