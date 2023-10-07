@@ -13,7 +13,7 @@ function Leaderboard({ imgSrc1, imgSrc2, imgSrc3 }) {
   useEffect(() => {
     const fetchTopScores = async () => {
       const db = getFirestore();
-      const leaderboardRef = doc(db, 'dailyLeaderboard', 'oct6leaders');
+      const leaderboardRef = doc(db, 'dailyLeaderboard', 'oct7leaders');
       
       try {
         const docSnapshot = await getDoc(leaderboardRef);
@@ -50,7 +50,7 @@ function Leaderboard({ imgSrc1, imgSrc2, imgSrc3 }) {
             </ol>
             <div className="flex justify-around mt-4">  {/* Add this div */}
               <img src={imgSrc1} alt="Stylish img 1" className="w-16 h-16"/>
-              <img src={imgSrc2} alt="Stylish img 2" className="w-16 h-16"/>
+              <img src={imgSrc2} alt="Stylish img 2" className="w-10 h-16"/>
               <img src={imgSrc3} alt="Stylish img 3" className="w-16 h-16"/>
             </div> 
             <button
