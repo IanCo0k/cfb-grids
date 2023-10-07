@@ -244,6 +244,10 @@ const getTeam = (position, statType, threshold, team) => {
 
     if(teamName === 'Louisiana State'){
       teamName = 'LSU';
+    } else if(teamName === 'Texas AM'){
+      teamName = 'Texas A&M';
+    } else if(teamName === 'Mississippi'){
+      teamName = 'Ole Miss';
     }
     // Find the team by name
     let team = teams.find((t) => t.School === teamName);
