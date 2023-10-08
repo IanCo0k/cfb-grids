@@ -93,7 +93,7 @@ export default function App() {
 
   const postRarityScore = async (score) => {
     const db = getFirestore();
-    const leaderboardRef = doc(db, 'dailyLeaderboard', 'oct7leaders');
+    const leaderboardRef = doc(db, 'dailyLeaderboard', 'oct8leaders');
   
     try {
       // Fetch current scores data from the database
@@ -114,9 +114,9 @@ export default function App() {
   const [middleTeam, setMiddleTeam] = useState('Florida');
   const [bottomTeam, setBottomTeam] = useState('Texas');
 
-  const [topConference, setTopConference] = useState('SEC');
-  const [middleConference, setMiddleConference] = useState('Big Ten');
-  const [bottomConference, setBottomConference] = useState('Big 12');
+  const [topConference, setTopConference] = useState('ACC');
+  const [middleConference, setMiddleConference] = useState('MAC');
+  const [bottomConference, setBottomConference] = useState('Pac-12');
 
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   
@@ -250,6 +250,8 @@ const getTeam = (position, statType, threshold, team) => {
       teamName = 'Ole Miss';
     } else if(teamName === 'Texas Christian'){
       teamName = 'TCU';
+    } else if(teamName === 'Southern California'){
+      teamName = 'USC';
     }
     // Find the team by name
     let team = teams.find((t) => t.School === teamName);
@@ -291,7 +293,7 @@ const getTeam = (position, statType, threshold, team) => {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'oct7');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'oct8');
   
     try {
       // Fetch current data from the database
@@ -505,7 +507,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
     </a>
   )}
   <Modal />   
-  <Leaderboard imgSrc1={getTeamLogoURL(topTeam)} imgSrc2={getTeamLogoURL(middleTeam)} imgSrc3={getTeamLogoURL(bottomTeam)} />
+  <Leaderboard  />
 </div>
 
       </div>
