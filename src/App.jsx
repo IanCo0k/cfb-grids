@@ -248,13 +248,15 @@ const getTeam = (position, statType, threshold, team) => {
       teamName = 'Texas A&M';
     } else if(teamName === 'Mississippi'){
       teamName = 'Ole Miss';
+    } else if(teamName === 'Texas Christian'){
+      teamName = 'TCU';
     }
     // Find the team by name
     let team = teams.find((t) => t.School === teamName);
     
     // Return the team's logo URL or null if not found
     if(team) {
-      return team["Logos[0]"];
+      return team["Logos[1]"];
     } else {
       console.log(`No team found with name ${teamName}`);
       return null;
