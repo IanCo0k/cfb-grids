@@ -53,7 +53,7 @@ function Modal() {
                 <h2 className='text-center text-xl font-semibold mb-2'>Legend</h2>
                 <div className='flex flex-col items-center'>
                   <div className='flex items-center mb-2'>
-                    <FaTrophy style={{ fill: 'bronze' }} /> <span className='ml-2'>5% - 10%</span>
+                    <FaTrophy style={{ fill: 'green' }} /> <span className='ml-2'>5% - 10%</span>
                   </div>
                   <div className='flex items-center mb-2'>
                     <FaTrophy style={{ fill: 'silver' }} /> <span className='ml-2'>2% - 5%</span>
