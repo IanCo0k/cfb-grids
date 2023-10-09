@@ -50,6 +50,7 @@ export default function Dropdown({ options, onChange }) {
         onChange={handleChange}
         placeholder="Type to search..."
         className="block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-200 focus:border-blue-500"
+        autoFocus
       />
       {filteredOptions.length > 0 && (
         <FixedSizeList
