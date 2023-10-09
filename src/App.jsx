@@ -9,6 +9,8 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
 
+import { FaTrophy } from 'react-icons/fa';
+
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -392,25 +394,39 @@ const getTeam = (position, statType, threshold, team) => {
     return logo;
   }
 
+  const getTrophyOrStyling = (percentage) => {
+    if (percentage > 10) {
+      return null;
+    } else if (percentage >= 5 && percentage <= 10) {
+      return <FaTrophy style={{ fill: 'bronze' }} />;
+    } else if (percentage >= 2 && percentage < 5) {
+      return <FaTrophy style={{ fill: 'silver' }} />;
+    } else if (percentage >= 1 && percentage < 2) {
+      return <FaTrophy style={{ fill: 'gold' }} />;
+    } else if (percentage < 1) {
+      return <FaTrophy style={{ fill: 'purple' }} />;  // Changed fill color to purple for epic
+    }
+  };
+  
   const getPlayerDisplayInfo = (cellId) => {
     const finalizedPlayer = finalizedCellPlayers[cellId];
-  const currentPlayerInfo = Object.keys(cellPlayerInfo).length !== 0 ? cellPlayerInfo : selectedPlayer;
-
-  const displayedPercentage = cellPercentages[cellId]; // Get the stored percentage for the cell
-
-  if (finalizedPlayer) {
-    return (
-      <div className="text-center relative" style={{backgroundImage: `url(${getTeamLogoURL(finalizedPlayer.team)})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'center'}}>
-        <span className="text-white bg-black p-1 rounded text-xs absolute top-0 right-0">
-          {displayedPercentage.toFixed(2)}%
-        </span>
-        <p className="mobile text-white mt-1 w-full bg-black">{finalizedPlayer.player}</p>
-      </div>
-    );
-  }
-
+    const currentPlayerInfo = Object.keys(cellPlayerInfo).length !== 0 ? cellPlayerInfo : selectedPlayer;
+  
+    const displayedPercentage = cellPercentages[cellId]; // Get the stored percentage for the cell
+  
+    if (finalizedPlayer) {
+      return (
+        <div className="text-center relative" style={{backgroundImage: `url(${getTeamLogoURL(finalizedPlayer.team)})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'center'}}>
+          <span className="text-white bg-black p-1 rounded text-xs absolute top-0 right-0" style={{ display: 'flex', alignItems: 'center' }}>
+          {getTrophyOrStyling(displayedPercentage)}  {displayedPercentage.toFixed(2)}%
+          </span>
+          <p className="mobile text-white mt-1 w-full bg-black">{finalizedPlayer.player}</p>
+        </div>
+      );
+    }
+  
     if (!currentPlayerInfo || activeCell !== cellId) return null;
-
+  
     if (Object.keys(currentPlayerInfo).length !== 0) {
       return (
         <div className="text-center">

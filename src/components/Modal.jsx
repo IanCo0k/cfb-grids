@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FaTrophy } from 'react-icons/fa';
 
 function Modal() {
   const [isOpen, setIsOpen] = useState(true);
@@ -47,6 +48,25 @@ function Modal() {
                 for frequent updates
               </p>
             </div>
+
+            <div className='mt-4'>
+                <h2 className='text-center text-xl font-semibold mb-2'>Legend</h2>
+                <div className='flex flex-col items-center'>
+                  <div className='flex items-center mb-2'>
+                    <FaTrophy style={{ fill: 'bronze' }} /> <span className='ml-2'>5% - 10%</span>
+                  </div>
+                  <div className='flex items-center mb-2'>
+                    <FaTrophy style={{ fill: 'silver' }} /> <span className='ml-2'>2% - 5%</span>
+                  </div>
+                  <div className='flex items-center mb-2'>
+                    <FaTrophy style={{ fill: 'gold' }} /> <span className='ml-2'>1% - 2%</span>
+                  </div>
+                  <div className='flex items-center mb-2'>
+                    <FaTrophy style={{ fill: 'purple' }} /> <span className='ml-2'>Less than 1%</span>
+                  </div>
+                </div>
+              </div>
+
             <button
               className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               onClick={toggleModal}
