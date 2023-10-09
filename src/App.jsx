@@ -398,7 +398,7 @@ const getTeam = (position, statType, threshold, team) => {
     if (percentage > 10) {
       return null;
     } else if (percentage >= 5 && percentage <= 10) {
-      return <FaTrophy style={{ fill: 'bronze' }} />;
+      return <FaTrophy style={{ fill: 'white' }} />;
     } else if (percentage >= 2 && percentage < 5) {
       return <FaTrophy style={{ fill: 'silver' }} />;
     } else if (percentage >= 1 && percentage < 2) {
