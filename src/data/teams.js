@@ -1141,7 +1141,7 @@ const teams = [
   },
   {
     "﻿Id": "62",
-    "School": "Hawai'i",
+    "School": "Hawaii",
     "Mascot": "Rainbow Warriors",
     "Abbreviation": "HAW",
     "Alt Name1": "",

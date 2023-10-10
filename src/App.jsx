@@ -95,7 +95,7 @@ export default function App() {
 
   const postRarityScore = async (score) => {
     const db = getFirestore();
-    const leaderboardRef = doc(db, 'dailyLeaderboard', 'oct9leaders');
+    const leaderboardRef = doc(db, 'dailyLeaderboard', 'oct10leaders');
   
     try {
       // Fetch current scores data from the database
@@ -116,9 +116,9 @@ export default function App() {
   const [middleTeam, setMiddleTeam] = useState('Florida');
   const [bottomTeam, setBottomTeam] = useState('Texas');
 
-  const [topConference, setTopConference] = useState('Big Ten');
-  const [middleConference, setMiddleConference] = useState('SEC');
-  const [bottomConference, setBottomConference] = useState('MWC');
+  const [topConference, setTopConference] = useState('Pac-12');
+  const [middleConference, setMiddleConference] = useState('Big 12');
+  const [bottomConference, setBottomConference] = useState('Sun Belt');
 
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   
@@ -295,7 +295,7 @@ const getTeam = (position, statType, threshold, team) => {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'oct9');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'oct10');
   
     try {
       // Fetch current data from the database
