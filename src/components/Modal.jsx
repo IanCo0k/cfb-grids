@@ -47,9 +47,8 @@ function Modal() {
                 </a>{' '}
                 for frequent updates
               </p>
-            </div>
 
-            <div className='mt-4'>
+              <div className='mt-4'>
                 <h2 className='text-center text-xl font-semibold mb-2'>Legend</h2>
                 <div className='flex flex-col items-center'>
                   <div className='flex items-center mb-2'>
@@ -66,6 +65,7 @@ function Modal() {
                   </div>
                 </div>
               </div>
+            </div>
 
             <button
               className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
