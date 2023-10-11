@@ -2011,7 +2011,7 @@ const teams = [
   },
   {
     "﻿Id": "152",
-    "School": "NC State",
+    "School": "North Carolina State",
     "Mascot": "Wolfpack",
     "Abbreviation": "NCST",
     "Alt Name1": "North Carolina St.",
@@ -2761,7 +2761,7 @@ const teams = [
   },
   {
     "﻿Id": "2567",
-    "School": "SMU",
+    "School": "Southern Methodist",
     "Mascot": "Mustangs",
     "Abbreviation": "SMU",
     "Alt Name1": "Southern Methodist",
