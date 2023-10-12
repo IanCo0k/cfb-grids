@@ -26,6 +26,7 @@ function Modal() {
                 HERE
                 </a>
               </h1>
+              <h1 className='text-2xl'>HAPPY BIRTHDAY MOM!</h1><br />
               <p className="text-center mb-4">
                 Server costs are increasing, so if you'd be willing to donate to continue to support CFB Grids, click the link above.
               </p>
