@@ -26,12 +26,14 @@ function Modal() {
                 HERE
                 </a>
               </h1>
-              <h1 className='text-2xl'>HAPPY BIRTHDAY MOM!</h1><br />
               <p className="text-center mb-4">
                 Server costs are increasing, so if you'd be willing to donate to continue to support CFB Grids, click the link above.
               </p>
               <p className="text-center text-2xl mb-4">
                 Players go back to 1957 and up to the end of the 2022-2023 season.
+              </p>
+              <p className="text-center text-2xl mb-4">
+                PLAYERS IN THE FAR RIGHT COLUMN CAN BELONG TO ANY CONFERENCE
               </p>
               <p className='text-center mb-4'>
                 To play, you have to click a cell and type a player that meets the team/conference criteria on the y-axis that intersects with the statistic on the x-axis.

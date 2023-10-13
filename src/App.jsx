@@ -50,6 +50,7 @@ import wr from './data/wr';
 import draft from './data/draft';
 import sep20 from './data/sep20';
 import teams from './data/teams';
+import heisman from './data/heisman';
 
 export default function App() {
 
@@ -95,7 +96,7 @@ export default function App() {
 
   const postRarityScore = async (score) => {
     const db = getFirestore();
-    const leaderboardRef = doc(db, 'dailyLeaderboard', 'oct12leaders');
+    const leaderboardRef = doc(db, 'dailyLeaderboard', 'oct13leaders');
   
     try {
       // Fetch current scores data from the database
@@ -116,9 +117,9 @@ export default function App() {
   const [middleTeam, setMiddleTeam] = useState('Florida');
   const [bottomTeam, setBottomTeam] = useState('Texas');
 
-  const [topConference, setTopConference] = useState('Big Ten');
-  const [middleConference, setMiddleConference] = useState('Big 12');
-  const [bottomConference, setBottomConference] = useState('SEC');
+  const [topConference, setTopConference] = useState('Pac-12');
+  const [middleConference, setMiddleConference] = useState('ACC');
+  const [bottomConference, setBottomConference] = useState('MAC');
 
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   
@@ -189,6 +190,24 @@ const getConference = (position, statType, threshold, conference) => {
   return filteredPlayers;
 };
 
+const getHeismanPlayers = (conference) => {
+  const filteredPlayers = [];
+
+  for (const playerData of heisman) {
+    // If a conference is specified, filter players by conference
+    if (conference) {
+      const schoolConference = getConferenceBySchool(playerData.school);
+      if (schoolConference !== conference) {
+        continue;
+      }
+    }
+    
+    filteredPlayers.push(playerData);
+  }
+
+  return filteredPlayers;
+};
+
 const getTeam = (position, statType, threshold, team) => {
   const filteredPlayers = [];
   const datasets = {
@@ -218,13 +237,13 @@ const getTeam = (position, statType, threshold, team) => {
     setPlayerGrid({
       topLeftPlayers: getConference('qb', 'passesCompleted', 1, topConference),
       topMiddlePlayers: getConference('rb', 'yds', 1, topConference),
-      topRightPlayers: getConference('wr', 'yds', 1, topConference),
+      topRightPlayers: getHeismanPlayers(),
       middleLeftPlayers: getConference('qb', 'passesCompleted', 1, middleConference),
       middleMiddlePlayers: getConference('rb', 'yds', 1, middleConference),
-      middleRightPlayers: getConference('wr', 'yds', 1, middleConference),  
+      middleRightPlayers: getHeismanPlayers(),  
       bottomLeftPlayers: getConference('qb', 'passesCompleted', 1, bottomConference),
       bottomMiddlePlayers: getConference('rb', 'yds', 1, bottomConference),
-      bottomRightPlayers: getConference('wr', 'yds', 1, bottomConference),
+      bottomRightPlayers: getHeismanPlayers(),
     });
 
   }, []);
@@ -295,7 +314,7 @@ const getTeam = (position, statType, threshold, team) => {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'oct12');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'oct13');
   
     try {
       // Fetch current data from the database
@@ -438,7 +457,7 @@ const getTeam = (position, statType, threshold, team) => {
     }
   };
 
-  const allPlayers = [...qb, ...rb, ...wr, ...sep20];
+  const allPlayers = [...qb, ...rb, ...wr, ...sep20, ...heisman];
   const draftPlayers = draft
 
 // Combine all player names from 'qb', 'wr', 'rb', and 'draft'
@@ -470,8 +489,8 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
           <div className="flex items-center justify-center title-square bg-blue-500 text-gray-200" onClick={handleClick}>
             1 career rushing yard
           </div>
-          <div className="flex w-100 pb-100 wrap items-center justify-center title-square bg-blue-500 text-gray-200" onClick={handleClick}>
-            1 career receiving yard
+          <div className="flex w-100 pb-100 wrap items-center justify-center title-square bg-orange-500 text-gray-200" onClick={handleClick}>
+            HEISMAN WINNER (ANY CONFERENCE)
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
             <img src={logoUrl(topConference)} alt="Mississippi State Logo" />
