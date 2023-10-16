@@ -47,6 +47,7 @@ import sbc from './sbc.png';
 import qb from './data/qb';
 import rb from './data/rb';
 import wr from './data/wr';
+import transfers from './data/transfers';
 import draft from './data/draft';
 import sep20 from './data/sep20';
 import teams from './data/teams';
@@ -96,7 +97,7 @@ export default function App() {
 
   const postRarityScore = async (score) => {
     const db = getFirestore();
-    const leaderboardRef = doc(db, 'dailyLeaderboard', 'oct13leaders');
+    const leaderboardRef = doc(db, 'dailyLeaderboard', 'oct16leaders');
   
     try {
       // Fetch current scores data from the database
@@ -117,9 +118,9 @@ export default function App() {
   const [middleTeam, setMiddleTeam] = useState('Florida');
   const [bottomTeam, setBottomTeam] = useState('Texas');
 
-  const [topConference, setTopConference] = useState('Pac-12');
-  const [middleConference, setMiddleConference] = useState('ACC');
-  const [bottomConference, setBottomConference] = useState('MAC');
+  const [topConference, setTopConference] = useState('Big Ten');
+  const [middleConference, setMiddleConference] = useState('SEC');
+  const [bottomConference, setBottomConference] = useState('MWC');
 
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   
@@ -166,6 +167,17 @@ const getPlayersByOverallAndConference = (data, overallThreshold, targetConferen
 
   return filteredPlayers;
 };
+
+const getTransfer = (position) => {
+  const filteredPlayers = [];
+  for (const player of transfers) {
+    if (player.Position === position) {
+      filteredPlayers.push(player);
+    }
+  }
+
+  return filteredPlayers;
+}
 
 const getConference = (position, statType, threshold, conference) => {
   const filteredPlayers = [];
@@ -237,13 +249,13 @@ const getTeam = (position, statType, threshold, team) => {
     setPlayerGrid({
       topLeftPlayers: getConference('qb', 'passesCompleted', 1, topConference),
       topMiddlePlayers: getConference('rb', 'yds', 1, topConference),
-      topRightPlayers: getHeismanPlayers(),
+      topRightPlayers: getConference('wr', 'yds', 1, topConference),
       middleLeftPlayers: getConference('qb', 'passesCompleted', 1, middleConference),
       middleMiddlePlayers: getConference('rb', 'yds', 1, middleConference),
-      middleRightPlayers: getHeismanPlayers(),  
+      middleRightPlayers: getConference('wr', 'yds', 1, middleConference),  
       bottomLeftPlayers: getConference('qb', 'passesCompleted', 1, bottomConference),
       bottomMiddlePlayers: getConference('rb', 'yds', 1, bottomConference),
-      bottomRightPlayers: getHeismanPlayers(),
+      bottomRightPlayers: getConference('wr', 'yds', 1, bottomConference),
     });
 
   }, []);
@@ -314,7 +326,7 @@ const getTeam = (position, statType, threshold, team) => {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'oct13');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'oct16');
   
     try {
       // Fetch current data from the database
@@ -489,8 +501,8 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
           <div className="flex items-center justify-center title-square bg-blue-500 text-gray-200" onClick={handleClick}>
             1 career rushing yard
           </div>
-          <div className="flex w-100 pb-100 wrap items-center justify-center title-square bg-orange-500 text-gray-200" onClick={handleClick}>
-            HEISMAN WINNER (ANY CONFERENCE)
+          <div className="flex w-100 pb-100 wrap items-center justify-center title-square bg-blue-500 text-gray-200" onClick={handleClick}>
+            1 receiving yard
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
             <img src={logoUrl(topConference)} alt="Mississippi State Logo" />

@@ -33,7 +33,7 @@ function Modal() {
                 Players go back to 1957 and up to the end of the 2022-2023 season.
               </p>
               <p className="text-center text-2xl mb-4">
-                PLAYERS IN THE FAR RIGHT COLUMN CAN BELONG TO ANY CONFERENCE
+                IF YOU ARE WILLING TO HELP CFB GRIDS EXPAND AND HAVE CODING EXPERIENCE AND/OR ACCESS TO DATA, PLEASE EMAIL ME (EMAIL IN THE FOOTER).
               </p>
               <p className='text-center mb-4'>
                 To play, you have to click a cell and type a player that meets the team/conference criteria on the y-axis that intersects with the statistic on the x-axis.
