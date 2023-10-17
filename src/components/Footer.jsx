@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaTwitter, FaSpotify, FaInstagram, FaEnvelope } from 'react-icons/fa';
+import { FaTwitter, FaSpotify, FaBasketballBall, FaEnvelope } from 'react-icons/fa';
 
 const Footer = () => {
   return (
@@ -23,6 +23,10 @@ const Footer = () => {
         </a>
         <a href="mailto:ianscook19@gmail.com" className="text-4xl hover:text-yellow-400">
           <FaEnvelope />
+        </a>
+        <a href="https://cbb-grids.netlify.app/" target="_blank"
+          rel="noopener noreferrer" className="text-4xl hover:text-blue-400">
+          <FaBasketballBall />
         </a>
       </div>
       <p className="text-center mt-4">
