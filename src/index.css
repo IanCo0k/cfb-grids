@@ -63,6 +63,5 @@
 
 /* Adjust font size based on viewport width for added responsiveness */
 .square img {
-  max-width: 100%;  /* Ensure images don't overflow */
-  max-height: 100%;
+  max-width: 50%;  /* Ensure images don't overflow */
 }

@@ -95,7 +95,7 @@ const analytics = getAnalytics(app);
 
   const postRarityScore = async (score) => {
     const db = getFirestore();
-    const leaderboardRef = doc(db, 'dailyLeaderboard', 'oct17leaders');
+    const leaderboardRef = doc(db, 'dailyLeaderboard', 'oct18leaders');
   
     try {
       // Fetch current scores data from the database
@@ -200,6 +200,39 @@ const getConference = (position, statType, threshold, conference) => {
   return filteredPlayers;
 };
 
+const getState = (position, statType, threshold, state) => {
+  const filteredPlayers = [];
+  const datasets = {
+    'qb': qb,
+    'rb': rb,
+    'wr': wr
+  };
+
+  const data = datasets[position];
+  
+  // Define the teams for each state
+  const stateTeams = {
+    'Florida': ['Florida', 'Florida State'],
+    'Michigan': ['Michigan', 'Michigan State'],
+    'North Carolina': ['North Carolina', 'North Carolina State']
+  };
+
+  const allowedTeams = stateTeams[state];
+
+  for (const player of data) {
+
+    if (player[statType] !== undefined && player[statType] >= threshold) {
+      // Check if the player's team is in the allowedTeams array
+      if (allowedTeams.includes(player.team)) {
+        filteredPlayers.push(player);
+      }
+    }
+  }
+
+  return filteredPlayers;
+};
+
+
 const getHeismanPlayers = (conference) => {
   const filteredPlayers = [];
 
@@ -245,15 +278,15 @@ const getTeam = (position, statType, threshold, team) => {
     
   useEffect(() => {
     setPlayerGrid({
-      topLeftPlayers: getConference('qb', 'passesCompleted', 1, topConference),
-      topMiddlePlayers: getConference('rb', 'yds', 1, topConference),
-      topRightPlayers: getConference('wr', 'yds', 1, topConference),
-      middleLeftPlayers: getConference('qb', 'passesCompleted', 1, middleConference),
-      middleMiddlePlayers: getConference('rb', 'yds', 1, middleConference),
-      middleRightPlayers: getConference('wr', 'yds', 1, middleConference),  
-      bottomLeftPlayers: getConference('qb', 'passesCompleted', 1, bottomConference),
-      bottomMiddlePlayers: getConference('rb', 'yds', 1, bottomConference),
-      bottomRightPlayers: getConference('wr', 'yds', 1, bottomConference),
+      topLeftPlayers: getState('qb', 'passesCompleted', 1, 'Florida'),
+      topMiddlePlayers: getState('rb', 'yds', 1, 'Florida'),
+      topRightPlayers: getState('wr', 'yds', 1, 'Florida'),
+      middleLeftPlayers: getState('qb', 'passesCompleted', 1, 'Michigan'),
+      middleMiddlePlayers: getState('rb', 'yds', 1, 'Michigan'),
+      middleRightPlayers: getState('wr', 'yds', 1, 'Michigan'),  
+      bottomLeftPlayers: getState('qb', 'passesCompleted', 1, 'North Carolina'),
+      bottomMiddlePlayers: getState('rb', 'yds', 1, 'North Carolina'),
+      bottomRightPlayers: getState('wr', 'yds', 1, 'North Carolina'),
     });
 
   }, []);
@@ -324,7 +357,7 @@ const getTeam = (position, statType, threshold, team) => {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'oct17');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'oct18');
   
     try {
       // Fetch current data from the database
@@ -503,7 +536,8 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             1 receiving yard
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src={logoUrl(topConference)} alt="Mississippi State Logo" />
+            <img src={getTeamLogoURL('Florida')} alt="Mississippi State Logo" />
+            <img src={getTeamLogoURL('Florida State')} alt="Mississippi State Logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='topLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('topLeft')}
@@ -515,7 +549,8 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             {getPlayerDisplayInfo('topRight')}
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src={logoUrl(middleConference)} alt="West Virginia Team Logo" />
+            <img src={getTeamLogoURL('Michigan')} alt="West Virginia Team Logo" />
+            <img src={getTeamLogoURL('Michigan State')} alt="West Virginia Team Logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='middleLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('middleLeft')}
@@ -527,7 +562,8 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             {getPlayerDisplayInfo('middleRight')}
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            <img src={logoUrl(bottomConference)} alt="Kentucky logo" />
+            <img src={getTeamLogoURL('North Carolina')} alt="Kentucky logo" />
+            <img src={getTeamLogoURL('North Carolina State')} alt="Kentucky logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='bottomLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('bottomLeft')}
