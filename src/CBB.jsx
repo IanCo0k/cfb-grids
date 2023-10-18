@@ -9,11 +9,6 @@ import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 
 import { FaTrophy } from 'react-icons/fa';
 
-
-
-
-
-
 import b1gLogo from './b1g.png';
 import pacLogo from './pac.png';
 import accLogo from './acc.png';
