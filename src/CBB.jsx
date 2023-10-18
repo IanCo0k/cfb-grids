@@ -20,10 +20,18 @@ import aac from './aac.png';
 import cusa from './cusa.png';
 import sbc from './sbc.png';
 
-import cbb from './data/cbb.js';
+import chunk1 from './data/chunk_1';
+import chunk2 from './data/chunk_2';
+import chunk3 from './data/chunk_3';
+import chunk4 from './data/chunk_4';
+import chunk5 from './data/chunk_5';
+import chunk6 from './data/chunk_6';
+
 import teams from './data/teams.js'
 
 export default function CFB() {
+
+  let cbb = [...chunk1, ...chunk2, ...chunk3, ...chunk4, ...chunk5, ...chunk6];
 
   const [finalizedCellPlayers, setFinalizedCellPlayers] = useState({});
   const [focused, setFocused] = useState(false);
