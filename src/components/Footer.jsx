@@ -24,10 +24,6 @@ const Footer = () => {
         <a href="mailto:ianscook19@gmail.com" className="text-4xl hover:text-yellow-400">
           <FaEnvelope />
         </a>
-        <a href="https://cbb-grids.netlify.app/" target="_blank"
-          rel="noopener noreferrer" className="text-4xl hover:text-blue-400">
-          <FaBasketballBall />
-        </a>
       </div>
       <p className="text-center mt-4">
         © {new Date().getFullYear()} CFB Grids.

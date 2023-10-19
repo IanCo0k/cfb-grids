@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { MdLeaderboard, MdClose } from 'react-icons/md';
 
-function Leaderboard({ imgSrc1, imgSrc2, imgSrc3 }) {
+function CBBLeaderboard({ imgSrc1, imgSrc2, imgSrc3 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [topScores, setTopScores] = useState([]);
 
@@ -13,7 +13,7 @@ function Leaderboard({ imgSrc1, imgSrc2, imgSrc3 }) {
   useEffect(() => {
     const fetchTopScores = async () => {
       const db = getFirestore();
-      const leaderboardRef = doc(db, 'dailyLeaderboard', 'oct19leaders');
+      const leaderboardRef = doc(db, 'dailyLeaderboard', 'cbb-oct19leaders');
       
       try {
         const docSnapshot = await getDoc(leaderboardRef);
@@ -68,4 +68,4 @@ function Leaderboard({ imgSrc1, imgSrc2, imgSrc3 }) {
   );
 }
 
-export default Leaderboard;
+export default CBBLeaderboard;

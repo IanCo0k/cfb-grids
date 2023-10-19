@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Dropdown from './components/Dropdown';
 import BasketballModal from './components/BasketballModal';
-import Leaderboard from './components/Leaderboard';
+import Leaderboard from './components/CBBLeaderboard';
 import Footer from './components/Footer';
 
 // Import the functions you need from the SDKs you need
@@ -75,7 +75,7 @@ export default function CFB() {
 
   const postRarityScore = async (score) => {
     const db = getFirestore();
-    const leaderboardRef = doc(db, 'dailyLeaderboard', 'oct17leaders');
+    const leaderboardRef = doc(db, 'dailyLeaderboard', 'cbb-oct19leaders');
   
     try {
       // Fetch current scores data from the database
@@ -92,9 +92,9 @@ export default function CFB() {
     }
   };
 
-  const [topTeam, setTopTeam] = useState('Alabama');
-  const [middleTeam, setMiddleTeam] = useState('Florida');
-  const [bottomTeam, setBottomTeam] = useState('Texas');
+  const [topTeam, setTopTeam] = useState('Kentucky');
+  const [middleTeam, setMiddleTeam] = useState('Kansas');
+  const [bottomTeam, setBottomTeam] = useState('Michigan State');
 
   const [topConference, setTopConference] = useState('Big Ten');
   const [middleConference, setMiddleConference] = useState('SEC');
@@ -115,28 +115,31 @@ export default function CFB() {
   });
   const [cellPlayerInfo, setCellPlayerInfo] = useState({});
 
-const getPlayers = () => {
+  const getPlayers = (team) => {
     let filteredPlayers = [];
 
     for (const player of cbb) {
-        filteredPlayers.push(player)
+        if (player.teamName === team) {
+            filteredPlayers.push(player);
+        }
     }
 
     return filteredPlayers;
 }
 
+
     
   useEffect(() => {
     setPlayerGrid({
-      topLeftPlayers: getPlayers(),
-      topMiddlePlayers: getPlayers(),
-      topRightPlayers: getPlayers(),
-      middleLeftPlayers: getPlayers(),
-      middleMiddlePlayers: getPlayers(),
-      middleRightPlayers: getPlayers(),  
-      bottomLeftPlayers: getPlayers(),
-      bottomMiddlePlayers: getPlayers(),
-      bottomRightPlayers: getPlayers(),
+      topLeftPlayers: getPlayers(topTeam),
+      topMiddlePlayers: getPlayers(topTeam),
+      topRightPlayers: getPlayers(topTeam),
+      middleLeftPlayers: getPlayers(middleTeam),
+      middleMiddlePlayers: getPlayers(middleTeam),
+      middleRightPlayers: getPlayers(middleTeam),  
+      bottomLeftPlayers: getPlayers(bottomTeam),
+      bottomMiddlePlayers: getPlayers(bottomTeam),
+      bottomRightPlayers: getPlayers(bottomTeam),
     });
 
   }, []);
@@ -207,7 +210,7 @@ const getPlayers = () => {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'cbb-oct17');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'cbb-oct19');
   
     try {
       // Fetch current data from the database
@@ -376,16 +379,16 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
         <div className="grid grid-cols-4 gap-2">
           <div className="flex items-center justify-center squarefont-bold text-gray-200" onClick={handleClick}>Rarity Score: {rarityScore}</div>
           <div className="flex items-center justify-center title-square bg-blue-500 text-gray-200" onClick={handleClick}>
-            ANY CBB PLAYER
+            ANY PLAYER
           </div>
           <div className="flex items-center justify-center title-square bg-blue-500 text-gray-200" onClick={handleClick}>
-            ANY CBB PLAYER
+            ANY PLAYER
           </div>
           <div className="flex w-100 pb-100 wrap items-center justify-center title-square bg-blue-500 text-gray-200" onClick={handleClick}>
-            ANY CBB PLAYER
+            ANY PLAYER
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            ANY
+          <img src={getTeamLogoURL(topTeam)} alt="" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='topLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('topLeft')}
@@ -397,7 +400,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             {getPlayerDisplayInfo('topRight')}
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            ANY  
+            <img src={getTeamLogoURL(middleTeam)} alt="" />  
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='middleLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('middleLeft')}
@@ -409,7 +412,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
             {getPlayerDisplayInfo('middleRight')}
           </div>
           <div className="flex items-center justify-center square text-white" onClick={handleClick}>
-            ANY
+          <img src={getTeamLogoURL(bottomTeam)} alt="" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='bottomLeft' onClick={handleClick}>
             {getPlayerDisplayInfo('bottomLeft')}
