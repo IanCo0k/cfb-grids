@@ -67,7 +67,7 @@ export default function CFB() {
       postRarityScore(updatedRarityScore);
     }
   
-    setTweetText(`1st EVER CBB Grids\n\nRarity Score: ${updatedRarityScore.toFixed(2)}\n\n@CFBGrids / cfbgrids.com`);
+    setTweetText(`CBB Grids BLUE BLOODS EDITION\n\nRarity Score: ${updatedRarityScore.toFixed(2)}\n\n@CFBGrids / cfbgrids.com`);
   
     // Update the rarity score in the state
     setRarityScore(updatedRarityScore.toFixed(2));
