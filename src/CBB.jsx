@@ -75,7 +75,7 @@ export default function CFB() {
 
   const postRarityScore = async (score) => {
     const db = getFirestore();
-    const leaderboardRef = doc(db, 'dailyLeaderboard', 'cbb-oct19leaders');
+    const leaderboardRef = doc(db, 'dailyLeaderboard', 'cbb-oct20leaders');
   
     try {
       // Fetch current scores data from the database
@@ -92,9 +92,9 @@ export default function CFB() {
     }
   };
 
-  const [topTeam, setTopTeam] = useState('Kentucky');
-  const [middleTeam, setMiddleTeam] = useState('Kansas');
-  const [bottomTeam, setBottomTeam] = useState('Michigan State');
+  const [topTeam, setTopTeam] = useState('Duke');
+  const [middleTeam, setMiddleTeam] = useState('North Carolina');
+  const [bottomTeam, setBottomTeam] = useState('Connecticut');
 
   const [topConference, setTopConference] = useState('Big Ten');
   const [middleConference, setMiddleConference] = useState('SEC');
@@ -210,7 +210,7 @@ export default function CFB() {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'cbb-oct19');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'cbb-oct20');
   
     try {
       // Fetch current data from the database
