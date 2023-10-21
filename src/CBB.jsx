@@ -6,6 +6,9 @@ import Footer from './components/Footer';
 
 // Import the functions you need from the SDKs you need
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
+import { getAnalytics } from "firebase/analytics";
+import { initializeApp } from "firebase/app";
+
 
 import { FaTrophy } from 'react-icons/fa';
 
@@ -36,6 +39,22 @@ export default function CFB() {
   const [finalizedCellPlayers, setFinalizedCellPlayers] = useState({});
   const [focused, setFocused] = useState(false);
   const [activeCell, setActiveCell] = useState('');
+  
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAdreRzDSZnBZqCZ21yyv80q8vQRv5dQb0",
+    authDomain: "cfb-grids.firebaseapp.com",
+    projectId: "cfb-grids",
+    storageBucket: "cfb-grids.appspot.com",
+    messagingSenderId: "1039307534466",
+    appId: "1:1039307534466:web:15d09918f2a3305646049b",
+    measurementId: "G-V6ZFJVRZGX"
+  };
+  
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+
 
   const [cellPercentages, setCellPercentages] = useState({
     topLeft: 0,
@@ -75,7 +94,7 @@ export default function CFB() {
 
   const postRarityScore = async (score) => {
     const db = getFirestore();
-    const leaderboardRef = doc(db, 'dailyLeaderboard', 'cbb-oct20leaders');
+    const leaderboardRef = doc(db, 'dailyLeaderboard', 'cbb-oct21leaders');
   
     try {
       // Fetch current scores data from the database
@@ -92,9 +111,9 @@ export default function CFB() {
     }
   };
 
-  const [topTeam, setTopTeam] = useState('Duke');
-  const [middleTeam, setMiddleTeam] = useState('North Carolina');
-  const [bottomTeam, setBottomTeam] = useState('Connecticut');
+  const [topTeam, setTopTeam] = useState('Virginia');
+  const [middleTeam, setMiddleTeam] = useState('Gonzaga');
+  const [bottomTeam, setBottomTeam] = useState('Texas');
 
   const [topConference, setTopConference] = useState('Big Ten');
   const [middleConference, setMiddleConference] = useState('SEC');
@@ -119,13 +138,18 @@ export default function CFB() {
     let filteredPlayers = [];
 
     for (const player of cbb) {
-        if (player.teamName === team) {
+        // Remove spaces and split by semicolons
+        const teamsPlayedFor = (player.teamName || '').replace(/\s+/g, '').split(';');
+
+        if (teamsPlayedFor.includes(team)) {
             filteredPlayers.push(player);
         }
     }
 
     return filteredPlayers;
 }
+
+
 
 
     
@@ -156,31 +180,47 @@ export default function CFB() {
     setCellPlayerInfo({});
   };
 
+    
+  
 
   const getTeamLogoURL = (teamName) => {
-
-    if(teamName === 'Louisiana State'){
-      teamName = 'LSU';
-    } else if(teamName === 'Texas AM'){
-      teamName = 'Texas A&M';
-    } else if(teamName === 'Mississippi'){
-      teamName = 'Ole Miss';
-    } else if(teamName === 'Texas Christian'){
-      teamName = 'TCU';
-    } else if(teamName === 'Southern California'){
-      teamName = 'USC';
+    // Define the team name conversions
+    const teamNameConversions = {
+      'Louisiana State': 'LSU',
+      'Texas AM': 'Texas A&M',
+      'Mississippi': 'Ole Miss',
+      'Texas Christian': 'TCU',
+      'Southern California': 'USC',
+    };
+  
+    // Check if the teamName needs to be converted
+    if (teamNameConversions.hasOwnProperty(teamName)) {
+      teamName = teamNameConversions[teamName];
+    } else if (teamName === 'Gonzaga') {
+      return 'https://upload.wikimedia.org/wikipedia/en/thumb/b/bd/Gonzaga_Bulldogs_logo.svg/1200px-Gonzaga_Bulldogs_logo.svg.png';
     }
-    // Find the team by name
-    let team = teams.find((t) => t.School === teamName);
-    
-    // Return the team's logo URL or null if not found
-    if(team) {
-      return team["Logos[1]"];
-    } else {
-      console.log(`No team found with name ${teamName}`);
-      return null;
+  
+    // Split the input teamName by semi-colons and remove spaces
+    const teamsArray = teamName.replace(/\s/g, '').split(';');
+  
+    // Check if any of the teams in the array match the state variables
+    for (const team of teamsArray) {
+      if (team === topTeam) {
+        return teams.find((t) => t.School === topTeam)["Logos[1]"];
+      } else if (team === middleTeam) {
+        return teams.find((t) => t.School === middleTeam)["Logos[1]"];
+      } else if (team === bottomTeam) {
+        return teams.find((t) => t.School === bottomTeam)["Logos[1]"];
+      }
     }
+  
+    // If no matching teams are found, log an error and return null
+    console.log(`No team found with any of the names: ${teamsArray.join(', ')}`);
+    return null;
   };
+  
+  
+  
   
 
 
@@ -210,7 +250,7 @@ export default function CFB() {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'cbb-oct20');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'cbb-oct21');
   
     try {
       // Fetch current data from the database
