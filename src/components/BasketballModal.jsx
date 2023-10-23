@@ -30,7 +30,7 @@ function BasketballModal() {
                 Server costs are increasing, so if you'd be willing to donate to continue to support CFB Grids, click the link above.
               </p>
               <p className="text-center text-2xl mb-4">
-                Welcome to the first edition of CBB Grids! Honestly not even sure how far back the players go, but it's at least into the 70s. Have fun with this one!
+                Welcome to CBB Grids! Honestly not even sure how far back the players go, but it's at least into the 70s. Have fun with this one!
               </p>
               <p className="text-center text-2xl mb-4">
                 IF YOU ARE WILLING TO HELP CFB GRIDS EXPAND AND HAVE CODING EXPERIENCE AND/OR ACCESS TO DATA, PLEASE EMAIL ME (EMAIL IN THE FOOTER).

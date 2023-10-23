@@ -86,7 +86,7 @@ export default function CFB() {
       postRarityScore(updatedRarityScore);
     }
   
-    setTweetText(`CBB Grids BLUE BLOODS EDITION\n\nRarity Score: ${updatedRarityScore.toFixed(2)}\n\n@CFBGrids / cfbgrids.com`);
+    setTweetText(`CBB Grids\n\nRarity Score: ${updatedRarityScore.toFixed(2)}\n\n@CFBGrids / cfbgrids.com`);
   
     // Update the rarity score in the state
     setRarityScore(updatedRarityScore.toFixed(2));
@@ -94,7 +94,7 @@ export default function CFB() {
 
   const postRarityScore = async (score) => {
     const db = getFirestore();
-    const leaderboardRef = doc(db, 'dailyLeaderboard', 'cbb-oct21leaders');
+    const leaderboardRef = doc(db, 'dailyLeaderboard', 'cbb-oct23leaders');
   
     try {
       // Fetch current scores data from the database
@@ -111,9 +111,9 @@ export default function CFB() {
     }
   };
 
-  const [topTeam, setTopTeam] = useState('Virginia');
-  const [middleTeam, setMiddleTeam] = useState('Gonzaga');
-  const [bottomTeam, setBottomTeam] = useState('Texas');
+  const [topTeam, setTopTeam] = useState('Michigan');
+  const [middleTeam, setMiddleTeam] = useState('Illinois');
+  const [bottomTeam, setBottomTeam] = useState('Indiana');
 
   const [topConference, setTopConference] = useState('Big Ten');
   const [middleConference, setMiddleConference] = useState('SEC');
@@ -250,7 +250,7 @@ export default function CFB() {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'cbb-oct21');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'cbb-oct23');
   
     try {
       // Fetch current data from the database
