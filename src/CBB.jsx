@@ -94,7 +94,7 @@ export default function CFB() {
 
   const postRarityScore = async (score) => {
     const db = getFirestore();
-    const leaderboardRef = doc(db, 'dailyLeaderboard', 'cbb-oct25leaders');
+    const leaderboardRef = doc(db, 'dailyLeaderboard', 'cbb-oct30leaders');
   
     try {
       // Fetch current scores data from the database
@@ -111,9 +111,9 @@ export default function CFB() {
     }
   };
 
-  const [topTeam, setTopTeam] = useState('Wisconsin');
-  const [middleTeam, setMiddleTeam] = useState('Tennessee');
-  const [bottomTeam, setBottomTeam] = useState('Georgia');
+  const [topTeam, setTopTeam] = useState('Florida');
+  const [middleTeam, setMiddleTeam] = useState('Alabama');
+  const [bottomTeam, setBottomTeam] = useState('Oklahoma');
 
   const [topConference, setTopConference] = useState('Big Ten');
   const [middleConference, setMiddleConference] = useState('SEC');
@@ -201,7 +201,7 @@ export default function CFB() {
     }
   
     // Split the input teamName by semi-colons and remove spaces
-    const teamsArray = teamName.replace(/\s/g, '').split(';');
+    const teamsArray = teamName.split(';');
   
     // Check if any of the teams in the array match the state variables
     for (const team of teamsArray) {
@@ -250,7 +250,7 @@ export default function CFB() {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'cbb-oct25');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'cbb-oct30');
   
     try {
       // Fetch current data from the database
