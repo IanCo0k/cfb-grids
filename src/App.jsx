@@ -24,9 +24,9 @@ export default function App() {
           className={`text-white font-bold py-2 px-4 rounded mx-2 ${
             selectedComponent === 'CBB' ? 'bg-blue-700' : ''
           }`}
-          onClick={() => setSelectedComponent('CBB')}
+          onClick={() => setSelectedComponent('CFB')}
         >
-          CBB
+          CBB NOT CURRENTLY WORKING
         </button>
       </nav>
       <div className="container mx-auto p-4">
