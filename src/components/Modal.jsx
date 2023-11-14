@@ -32,11 +32,7 @@ function Modal() {
               <p className="text-center text-2xl mb-4">
                 Players go back to 1957 and up to the end of the 2022-2023 season.
               </p>
-              <p className="text-center text-2xl mb-4">
-                <a href='https://www.youtube.com/watch?v=Hsr7GqBLU8w' target="_blank"
-                  rel="noopener noreferrer"
-                  className='text-blue-500'>THIS VIDEO</a> IS HOW I UPDATED TODAY'S GRID, AND ME PLAYING THROUGH IT.
-              </p>
+              
               <p className='text-center mb-4'>
                 To play, you have to click a cell and type a player that meets the team/conference criteria on the y-axis that intersects with the statistic on the x-axis.
               </p>

@@ -588,7 +588,19 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
   <Leaderboard  />
 </div>
 
+<div className="flex justify-center items-center p-5">
+      <div className="videoWrapper">
+        <h1 className="text-center text-white p-3 text-4xl">My Latest Video</h1>
+        <iframe
+          className="w-full h-full"
+          src="https://www.youtube.com/embed/Hsr7GqBLU8w"
+          title="YouTube video player"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        ></iframe>
       </div>
+    </div>
+    </div>
       <Footer />
     </div>
   );
