@@ -16,7 +16,7 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
     "react-router": "^6.17.0",
-    "react-router-dom": "^6.17.0",
+    "react-router-dom": "^6.20.1",
     "react-window": "^1.8.9"
   },
   "devDependencies": {
