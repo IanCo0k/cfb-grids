@@ -9,6 +9,10 @@
   font-family: 'Outfit', sans-serif;
 }
 
+body{
+  background-color: rgb(31 41 55);
+}
+
 .grid-container {
   width: 90vw;  /* Use viewport width for responsive sizing */
   max-width: 450px;  /* Maximum size for large screens */

@@ -1,15 +1,36 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import {HashRouter as Router, Routes, Route} from 'react-router-dom'
-import './index.css'
+import React, { useEffect } from 'react';
+import ReactDOM from 'react-dom';
+import App from './App.jsx';
+import HeroSection from './components/HeroSection.jsx';
+import About from './components/About.jsx';
+import Login from './components/Login.jsx';
+import Signup from './components/SignUp.jsx';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import './index.css';
+import ReactGA from 'react-ga';
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <Router>
-    <React.StrictMode>
-      <Routes>
-        <Route path="/" element={<App />} />
-      </Routes>
-    </React.StrictMode>,
-  </Router>
-  )
+// Initialize Google Analytics with your Measurement ID
+ReactGA.initialize('401598161');
+
+const Main = () => {
+  useEffect(() => {
+    // Track the page view when the component mounts
+    ReactGA.pageview(window.location.pathname);
+  }, []);
+
+  return (
+    <Router>
+      <React.StrictMode>
+        <Routes>
+          <Route path="/play" element={<App />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/" element={<HeroSection />} />
+        </Routes>
+      </React.StrictMode>
+    </Router>
+  );
+};
+
+ReactDOM.render(<Main />, document.getElementById('root'));

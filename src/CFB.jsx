@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Dropdown from './components/Dropdown';
 import Modal from './components/Modal';
 import Leaderboard from './components/Leaderboard';
+import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-
 // Import the functions you need from the SDKs you need
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 
 import { FaTrophy } from 'react-icons/fa';
 
@@ -51,7 +50,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 
   const [finalizedCellPlayers, setFinalizedCellPlayers] = useState({});
   const [focused, setFocused] = useState(false);
@@ -134,11 +132,6 @@ const analytics = getAnalytics(app);
     bottomRightPlayers: [],
   });
   const [cellPlayerInfo, setCellPlayerInfo] = useState({});
-
-  useEffect(() => {
-    setSelectedPlayer(null);
-    console.log(teams[4]);
-  }, [activeCell]);
 
 
 
@@ -514,8 +507,9 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
 
 
   return (
-    <div className="min-h-screen relative bg-gray-800 py-8">
-      <div className="max-w-4xl flex-col items-center mx-auto p-4">
+    <div className="min-h-screen relative bg-gray-800">
+      <Navbar />
+      <div className="max-w-4xl mt-6 flex-col items-center mx-auto p-4">
         <h1 className="text-6xl font-bold text-center text-gray-200 mb-4">CFB Grids</h1>
         {focused && (
           <div className="mb-4 text-black">
