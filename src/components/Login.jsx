@@ -1,9 +1,19 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import app from '../firebaseConfig';
+import { useLocation } from 'react-router-dom';
+import ReactGA from 'react-ga';
 import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
 const Login = () => {
+
+
+    const location = useLocation();
+
+    useEffect(() => {
+      ReactGA.pageview(location.pathname + location.search);
+    }, [location]);
+
     const auth = getAuth(app);
     const navigate = useNavigate();
     const [username, setUsername] = useState(''); // Change to username

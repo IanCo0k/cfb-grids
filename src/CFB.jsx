@@ -7,8 +7,8 @@ import Footer from './components/Footer';
 // Import the functions you need from the SDKs you need
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
-import {getAnalytics} from "firebase/analytics";
-
+import { useLocation } from 'react-router-dom';
+import ReactGA from 'react-ga';
 import { FaTrophy } from 'react-icons/fa';
 
 
@@ -33,6 +33,12 @@ import teams from './data/teams';
 import heisman from './data/heisman';
 
 export default function CFB() {
+
+  const location = useLocation();
+
+  useEffect(() => {
+    ReactGA.pageview(location.pathname + location.search);
+  }, [location]);
 
   
 const firebaseConfig = {

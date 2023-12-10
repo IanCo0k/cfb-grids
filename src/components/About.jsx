@@ -1,8 +1,18 @@
 import React from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import { useLocation } from 'react-router-dom';
+import ReactGA from 'react-ga';
 
 const AboutPage = () => {
+
+
+    const location = useLocation();
+
+    useEffect(() => {
+      ReactGA.pageview(location.pathname + location.search);
+    }, [location]);
+
   return (
     <div className="relative flex-col text-white min-h-screen py-16">
       <div className='absolute top-0'>

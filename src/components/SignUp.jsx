@@ -1,10 +1,20 @@
 import React, { useState } from 'react';
 import Footer from './Footer';
 import { useNavigate, Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import ReactGA from 'react-ga';
 import app from '../firebaseConfig';
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 const Signup = () => {
+
+
+    const location = useLocation();
+
+    useEffect(() => {
+      ReactGA.pageview(location.pathname + location.search);
+    }, [location]);
+
     const auth = getAuth(app);
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
