@@ -10,7 +10,7 @@ import './index.css';
 import ReactGA from 'react-ga';
 
 // Initialize Google Analytics with your Measurement ID
-ReactGA.initialize('401598161');
+ReactGA.initialize('G-V6ZFJVRZGX');
 
 const Main = () => {
   useEffect(() => {
