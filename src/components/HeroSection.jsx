@@ -21,10 +21,10 @@ const HeroSection = () => {
                 A sports trivia game testing your knowledge of the history of collegiate athletics.
             </p>
             <div className="space-x-4">
-                <Link to="/play" className="bg-blue-500 hover:bg-blue-600 text-white font-semibold md:text-2xl px-6 py-3 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
+                <Link to="/play" className="bg-blue-500 hover:bg-blue-600 text-white font-semibold text-sm sm:text-lg  px-6 py-3 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
                     Play Now
                 </Link>
-                <Link to="/about" className="bg-transparent border border-white hover:border-blue-500 md:text-2xl text-white font-semibold px-6 py-3 rounded-full transition duration-300 hover:bg-blue-500 hover:text-white">
+                <Link to="/about" className="bg-transparent border border-white hover:border-blue-500 text-sm sm:text-lg text-white font-semibold px-6 py-3 rounded-full transition duration-300 hover:bg-blue-500 hover:text-white">
                     About
                 </Link>
             </div>
