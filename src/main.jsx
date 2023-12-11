@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client'; // Correct import for createRoot
 import App from './App.jsx';
 import HeroSection from './components/HeroSection.jsx';
 import About from './components/About.jsx';
@@ -33,4 +33,7 @@ const Main = () => {
   );
 };
 
-ReactDOM.render(<Main />, document.getElementById('root'));
+// Correct way to use createRoot
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(<Main />);

@@ -274,15 +274,15 @@ const getTeam = (position, statType, threshold, team) => {
     
   useEffect(() => {
     setPlayerGrid({
-      topLeftPlayers: getTeam('qb', 'passesCompleted', 1, topTeam),
-      topMiddlePlayers: getTeam('rb', 'yds', 1, topTeam),
-      topRightPlayers: getTeam('wr', 'yds', 1, topTeam),
-      middleLeftPlayers: getTeam('qb', 'passesCompleted', 1, middleTeam),
-      middleMiddlePlayers: getTeam('rb', 'yds', 1, middleTeam),
-      middleRightPlayers: getTeam('wr', 'yds', 1, middleTeam),  
-      bottomLeftPlayers: getTeam('qb', 'passesCompleted', 1, bottomTeam),
-      bottomMiddlePlayers: getTeam('rb', 'yds', 1, bottomTeam),
-      bottomRightPlayers: getTeam('wr', 'yds', 1, bottomTeam),
+      topLeftPlayers: getConference('qb', 'passesCompleted', 1, topConference),
+      topMiddlePlayers: getConference('rb', 'yds', 1, topConference),
+      topRightPlayers: getConference('wr', 'yds', 1, topConference),
+      middleLeftPlayers: getConference('qb', 'passesCompleted', 1, middleConference),
+      middleMiddlePlayers: getConference('rb', 'yds', 1, middleConference),
+      middleRightPlayers: getConference('wr', 'yds', 1, middleConference),  
+      bottomLeftPlayers: getConference('qb', 'passesCompleted', 1, bottomConference),
+      bottomMiddlePlayers: getConference('rb', 'yds', 1, bottomConference),
+      bottomRightPlayers: getConference('wr', 'yds', 1, bottomConference),
     });
 
   }, []);
