@@ -7,6 +7,8 @@ import Footer from './components/Footer';
 // Import the functions you need from the SDKs you need
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getAnalytics } from "firebase/analytics";
 import { useLocation } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { FaTrophy } from 'react-icons/fa';
@@ -33,7 +35,6 @@ import teams from './data/teams';
 import heisman from './data/heisman';
 
 export default function CFB() {
-
   const location = useLocation();
 
   useEffect(() => {
@@ -53,10 +54,13 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
   const [finalizedCellPlayers, setFinalizedCellPlayers] = useState({});
   const [focused, setFocused] = useState(false);
   const [activeCell, setActiveCell] = useState('');
+
+  const [currentUser, setUser] = useState(null); // Store user information
 
   const [cellPercentages, setCellPercentages] = useState({
     topLeft: 0,
@@ -74,6 +78,26 @@ const app = initializeApp(firebaseConfig);
   const [tweetText, setTweetText] = useState();
 
   const [rarityScore, setRarityScore] = useState(0);
+
+  useEffect(() => {
+    const auth = getAuth();
+    
+    function userSet() {
+      // Listen for changes in the user's authentication state
+      const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        if (currentUser) {
+          // User is signed in
+          setUser(currentUser);
+        } else {
+          // User is signed out
+          setUser(null);
+        }
+      });
+    }
+
+    userSet();
+
+  }, []);
 
   useEffect(() => {
     // Calculate the rarity score based on cellPercentages
@@ -94,11 +118,31 @@ const app = initializeApp(firebaseConfig);
     setRarityScore(updatedRarityScore.toFixed(2));
   }, [cellPercentages]);
 
-  const postRarityScore = async (score) => {
+  const postRarityScore = async (score, user) => {
     const db = getFirestore();
-    const leaderboardRef = doc(db, 'dailyLeaderboard', 'nov14leaders');
   
     try {
+      // Reference to the current user's document in the 'users' collection
+      const userDocRef = doc(db, 'users', currentUser.displayName);
+  
+      // Fetch the current user's document
+      const userDocSnapshot = await getDoc(userDocRef);
+  
+      if (userDocSnapshot.exists()) {
+        // Extract the user's data
+        const userData = userDocSnapshot.data();
+  
+        // Initialize topRarities as an empty array if it doesn't exist
+        const topRarities = userData.topRarities || [];
+  
+        // Append the new score to the user's 'topRarities' array
+        const updatedTopRarities = [...topRarities, score];
+  
+        // Update the 'topRarities' field in the user's document
+        await updateDoc(userDocRef, { topRarities: updatedTopRarities });
+
+        const leaderboardRef = doc(db, 'dailyLeaderboard', 'dec29leaders');
+
       // Fetch current scores data from the database
       const docSnapshot = await getDoc(leaderboardRef);
       const currentScores = docSnapshot.data().scores || [];
@@ -108,18 +152,25 @@ const app = initializeApp(firebaseConfig);
       
       // Write the updated scores back to the database
       await updateDoc(leaderboardRef, { scores: updatedScores });
+  
+        console.log('Rarity score updated successfully.');
+      } else {
+        console.log('User document does not exist.');
+      }
     } catch (error) {
-      console.error("Error updating leaderboard:", error);
+      console.error('Error updating user data:', error);
     }
   };
+  
+  
 
   const [topTeam, setTopTeam] = useState('Alabama');
   const [middleTeam, setMiddleTeam] = useState('Florida');
   const [bottomTeam, setBottomTeam] = useState('Texas');
 
-  const [topConference, setTopConference] = useState('Pac-12');
-  const [middleConference, setMiddleConference] = useState('SEC');
-  const [bottomConference, setBottomConference] = useState('Big 12');
+  const [topConference, setTopConference] = useState('Big Ten');
+  const [middleConference, setMiddleConference] = useState('MAC');
+  const [bottomConference, setBottomConference] = useState('MWC');
 
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   
@@ -327,9 +378,20 @@ const getTeam = (position, statType, threshold, team) => {
   
 
 
-  const handleDropdownChange = (playerName) => {
+  const handleDropdownChange = async (playerName) => {
     const playerNameOnly = playerName.split(' (')[0]; // Extract the player's name part
     setSelectedPlayer(playerNameOnly);
+    const db = getFirestore();
+
+    const userDocRef = doc(db, 'users', currentUser.displayName);
+
+    const userDocSnapshot = await getDoc(userDocRef);
+
+    if(userDocSnapshot.exists()){
+      const userData = userDocSnapshot.data();
+      const updatedTotalGuesses = userData.totalGuesses + 1;
+      await updateDoc(userDocRef, { totalGuesses: updatedTotalGuesses });
+    }
     
     const playerList = playerGrid[`${activeCell}Players`];
     const selectedPlayerInfo = playerList.find((player) => player.player === playerNameOnly);
@@ -353,7 +415,7 @@ const getTeam = (position, statType, threshold, team) => {
 
   const updateDatabase = async (activeCell, selectedPlayerInfo) => {
     const db = getFirestore();
-    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'nov14');
+    const dailyThresholdsRef = doc(db, 'dailyThresholds', 'dec29');
   
     try {
       // Fetch current data from the database

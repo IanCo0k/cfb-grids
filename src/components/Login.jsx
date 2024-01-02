@@ -4,46 +4,70 @@ import app from '../firebaseConfig';
 import { useLocation } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore'; // Import Firestore related functions
+import { getFirestore } from 'firebase/firestore';
 
 const Login = () => {
+  const location = useLocation();
 
+  useEffect(() => {
+    ReactGA.pageview(location.pathname + location.search);
+  }, [location]);
 
-    const location = useLocation();
+  const auth = getAuth(app);
+  const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-    useEffect(() => {
-      ReactGA.pageview(location.pathname + location.search);
-    }, [location]);
+  const handleUsernameChange = (e) => setUsername(e.target.value);
+  const handlePasswordChange = (e) => setPassword(e.target.value);
 
-    const auth = getAuth(app);
-    const navigate = useNavigate();
-    const [username, setUsername] = useState(''); // Change to username
-    const [password, setPassword] = useState('');
+  const initializeUserData = async (displayName) => {
+    const db = getFirestore(app);
+    const userDocRef = doc(db, 'users', displayName);
 
-    const handleUsernameChange = (e) => setUsername(e.target.value); // Change to username
-    const handlePasswordChange = (e) => setPassword(e.target.value);
+    // Check if the user document exists
+    const userDocSnapshot = await getDoc(userDocRef);
 
-    const handleSignIn = async (e) => {
-        e.preventDefault();
-        try {
-            // Sign in with username and password
-            await signInWithEmailAndPassword(auth, username, password); // Change to username
-            console.log('User signed in with username and password');
-            navigate('/');
-        } catch (error) {
-            console.error(error.message);
-        }
-    };
+    if (!userDocSnapshot.exists()) {
+      // User document doesn't exist, create it with initial data
+      await setDoc(userDocRef, {
+        totalGuesses: 0,
+        topRarities: []
+      });
+    }
+  };
 
-    const handleSignInWithGoogle = async () => {
-        const provider = new GoogleAuthProvider();
-        try {
-            await signInWithPopup(auth, provider);
-            console.log('User signed in with Google');
-            navigate('/');
-        } catch (error) {
-            console.error(error.message);
-        }
-    };
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    try {
+      // Sign in with username and password
+      const userCredential = await signInWithEmailAndPassword(auth, username, password);
+      console.log('User signed in with username and password');
+      
+      // Initialize user data if it doesn't exist
+      initializeUserData(userCredential.user.displayName);
+      
+      navigate('/');
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  const handleSignInWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+      console.log('User signed in with Google');
+      
+      // Initialize user data if it doesn't exist
+      initializeUserData(auth.currentUser.displayName);
+      
+      navigate('/');
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">

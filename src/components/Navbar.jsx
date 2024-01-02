@@ -62,7 +62,7 @@ export default function Navbar() {
           <ul className='flex space-x-12'>
             <li>
               <Link
-                to='/play'
+                to='/'
                 className='text-white hover:bg-blue-600 hover:text-white px-3 py-2 rounded-lg text-xl'
               >
                 Play
@@ -90,7 +90,12 @@ export default function Navbar() {
                 // Display a default person icon if no profile image is available
                 <FaTh className='text-2xl text-white' />
               )}
-              <span className='text-white'>{user.displayName}</span>
+              <Link
+                to='/profile'
+                className='text-white hover:bg-blue-600 hover:text-white px-3 py-2 rounded-lg text-xl'
+              >
+                Profile
+              </Link>
               <button
                 onClick={handleLogout}
                 className='ml-4 text-white hover:underline'
@@ -122,7 +127,7 @@ export default function Navbar() {
             <ul className='flex flex-col items-center space-y-8'>
               <li className='animate-slide-in-right-1'>
                 <Link
-                  to='/play'
+                  to='/'
                   className='text-white hover:bg-blue-600 hover:text-white px-3 py-2 rounded-lg text-xl'
                 >
                   Play
@@ -134,6 +139,15 @@ export default function Navbar() {
                   className='text-white hover:bg-blue-600 hover:text-white px-3 py-2 rounded-lg text-xl'
                 >
                   About
+                </Link>
+                
+              </li>
+              <li className='animate-slide-in-right-2'>
+                <Link
+                  to='/profile'
+                  className='text-white hover:bg-blue-600 hover:text-white px-3 py-2 rounded-lg text-xl'
+                >
+                  Profile
                 </Link>
               </li>
               {user ? (

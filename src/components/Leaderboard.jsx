@@ -13,7 +13,7 @@ function Leaderboard({ imgSrc1, imgSrc2, imgSrc3 }) {
   useEffect(() => {
     const fetchTopScores = async () => {
       const db = getFirestore();
-      const leaderboardRef = doc(db, 'dailyLeaderboard', 'nov14leaders');
+      const leaderboardRef = doc(db, 'dailyLeaderboard', 'dec29leaders');
       
       try {
         const docSnapshot = await getDoc(leaderboardRef);

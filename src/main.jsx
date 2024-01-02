@@ -4,6 +4,7 @@ import App from './App.jsx';
 import HeroSection from './components/HeroSection.jsx';
 import About from './components/About.jsx';
 import Login from './components/Login.jsx';
+import Profile from './components/Profile.jsx';
 import Signup from './components/SignUp.jsx';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import './index.css';
@@ -22,11 +23,11 @@ const Main = () => {
     <Router>
       <React.StrictMode>
         <Routes>
-          <Route path="/play" element={<App />} />
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/" element={<HeroSection />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/" element={<App />} />
         </Routes>
       </React.StrictMode>
     </Router>
