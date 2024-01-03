@@ -54,24 +54,33 @@ export default function Navbar() {
     <div className='relative w-screen p-6 md:p-12'>
       <nav className='flex items-center justify-between'>
         <div className='flex items-center'>
-          <Link to='/' className='text-white'>
-            <FaTh className='text-4xl' />
+          <Link to='/' className='text-gray-200'>
+            <FaTh className='text-2xl' />
           </Link>
+          <span className='text-gray-200 ml-4 hidden md:block text-2xl'>CFB Grids</span>
         </div>
         <div className='hidden md:flex items-center'>
           <ul className='flex space-x-12'>
             <li>
               <Link
                 to='/'
-                className='text-white hover:bg-blue-600 hover:text-white px-3 py-2 rounded-lg text-xl'
+                className='text-gray-200 hover:bg-blue-600 hover:text-gray-200 px-3 py-2 rounded-lg text-xl'
               >
-                Play
+                Grid
+              </Link>
+            </li>
+            <li>
+              <Link
+                to='/guess'
+                className='text-gray-200 hover:bg-blue-600 hover:text-gray-200 px-3 py-2 rounded-lg text-xl'
+              >
+                College Guesser
               </Link>
             </li>
             <li>
               <Link
                 to='/about'
-                className='text-white hover:bg-blue-600 hover:text-white px-3 py-2 rounded-lg text-xl'
+                className='text-gray-200 hover:bg-blue-600 hover:text-gray-200 px-3 py-2 rounded-lg text-xl'
               >
                 About
               </Link>
@@ -88,17 +97,17 @@ export default function Navbar() {
                 />
               ) : (
                 // Display a default person icon if no profile image is available
-                <FaTh className='text-2xl text-white' />
+                <FaTh className='text-2xl text-gray-200' />
               )}
               <Link
                 to='/profile'
-                className='text-white hover:bg-blue-600 hover:text-white px-3 py-2 rounded-lg text-xl'
+                className='text-gray-200 hover:bg-blue-600 hover:text-gray-200 px-3 py-2 rounded-lg text-xl'
               >
                 Profile
               </Link>
               <button
                 onClick={handleLogout}
-                className='ml-4 text-white hover:underline'
+                className='ml-4 text-gray-200 hover:underline'
               >
                 Logout
               </button>
@@ -106,7 +115,7 @@ export default function Navbar() {
           ) : (
             // Display the Login button if the user is not signed in
             <Link to='/login'>
-              <button className='ml-8 bg-blue-600 text-white px-4 py-2 rounded-lg text-xl'>
+              <button className='ml-8 bg-blue-600 text-gray-200 px-4 py-2 rounded-lg text-xl'>
                 Login
               </button>
             </Link>
@@ -114,13 +123,13 @@ export default function Navbar() {
         </div>
         <div className='md:hidden'>
           <button onClick={() => setIsOpen(!isOpen)}>
-            <FaBars className='text-white text-4xl' />
+            <FaBars className='text-gray-200 text-2xl' />
           </button>
         </div>
       </nav>
       {isOpen && (
         <div className='fixed top-0 left-0 w-full h-screen bg-blue-600 animate-slide-in-top overflow-hidden z-10'>
-          <button className='absolute top-6 right-6 text-white text-4xl' onClick={closeDropdown}>
+          <button className='absolute top-6 right-6 text-gray-200 text-4xl' onClick={closeDropdown}>
             <FaTimes />
           </button>
           <div className='flex h-full justify-center items-center'>
@@ -128,15 +137,23 @@ export default function Navbar() {
               <li className='animate-slide-in-right-1'>
                 <Link
                   to='/'
-                  className='text-white hover:bg-blue-600 hover:text-white px-3 py-2 rounded-lg text-xl'
+                  className='text-gray-200 hover:bg-blue-600 hover:text-gray-200 px-3 py-2 rounded-lg text-xl'
                 >
-                  Play
+                  Grid
+                </Link>
+              </li>
+              <li className='animate-slide-in-right-1'>
+                <Link
+                  to='/guess'
+                  className='text-gray-200 hover:bg-blue-600 hover:text-gray-200 px-3 py-2 rounded-lg text-xl'
+                >
+                  College Guesser
                 </Link>
               </li>
               <li className='animate-slide-in-right-2'>
                 <Link
                   to='/about'
-                  className='text-white hover:bg-blue-600 hover:text-white px-3 py-2 rounded-lg text-xl'
+                  className='text-gray-200 hover:bg-blue-600 hover:text-gray-200 px-3 py-2 rounded-lg text-xl'
                 >
                   About
                 </Link>
@@ -145,7 +162,7 @@ export default function Navbar() {
               <li className='animate-slide-in-right-2'>
                 <Link
                   to='/profile'
-                  className='text-white hover:bg-blue-600 hover:text-white px-3 py-2 rounded-lg text-xl'
+                  className='text-gray-200 hover:bg-blue-600 hover:text-gray-200 px-3 py-2 rounded-lg text-xl'
                 >
                   Profile
                 </Link>
@@ -154,7 +171,7 @@ export default function Navbar() {
                 <li className='animate-slide-in-right-2'>
                   <button
                     onClick={handleLogout}
-                    className='text-white bg-orange-600 hover:bg-orange-800 hover:text-white px-3 py-2 rounded-lg text-xl'
+                    className='text-gray-200 bg-orange-600 hover:bg-orange-800 hover:text-gray-200 px-3 py-2 rounded-lg text-xl'
                   >
                     Logout
                   </button>
@@ -163,7 +180,7 @@ export default function Navbar() {
                 <li className='animate-slide-in-right-2'>
                   <Link
                     to='/login'
-                    className='text-white bg-orange-600 hover:bg-orange-800 hover:text-white px-3 py-2 rounded-lg text-xl'
+                    className='text-gray-200 bg-orange-600 hover:bg-orange-800 hover:text-gray-200 px-3 py-2 rounded-lg text-xl'
                   >
                     Login
                   </Link>

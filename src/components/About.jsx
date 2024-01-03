@@ -14,7 +14,7 @@ const AboutPage = () => {
     }, [location]);
 
   return (
-    <div className="relative flex-col text-white min-h-screen py-16">
+    <div className="relative flex-col text-gray-200 min-h-screen py-16">
       <div className='absolute top-0'>
         <Navbar />
       </div>

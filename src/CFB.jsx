@@ -537,10 +537,10 @@ const getTeam = (position, statType, threshold, team) => {
     if (finalizedPlayer) {
       return (
         <div className="text-center relative" style={{backgroundImage: `url(${getTeamLogoURL(finalizedPlayer.team)})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'center'}}>
-          <span className="text-white bg-black p-1 rounded text-xs absolute top-0 right-0" style={{ display: 'flex', alignItems: 'center' }}>
+          <span className="text-gray-200 bg-black p-1 rounded text-xs absolute top-0 right-0" style={{ display: 'flex', alignItems: 'center' }}>
           {getTrophyOrStyling(displayedPercentage)}  {displayedPercentage.toFixed(2)}%
           </span>
-          <p className="mobile text-white mt-1 w-full bg-black">{finalizedPlayer.player}</p>
+          <p className="mobile text-gray-200 mt-1 w-full bg-black">{finalizedPlayer.player}</p>
         </div>
       );
     }
@@ -594,7 +594,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
           <div className="flex w-100 pb-100 wrap items-center justify-center title-square bg-blue-500 text-gray-200" onClick={handleClick}>
             1 receiving yard
           </div>
-          <div className="flex items-center justify-center square text-white" onClick={handleClick}>
+          <div className="flex items-center justify-center square text-gray-200" onClick={handleClick}>
             <img src={logoUrl(topConference)} alt="West Virginia Team Logo" />            
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='topLeft' onClick={handleClick}>
@@ -606,7 +606,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
           <div className=" border-2 guess border-white flex items-center justify-center square" id='topRight' onClick={handleClick}>
             {getPlayerDisplayInfo('topRight')}
           </div>
-          <div className="flex items-center justify-center square text-white" onClick={handleClick}>
+          <div className="flex items-center justify-center square text-gray-200" onClick={handleClick}>
             <img src={logoUrl(middleConference)} alt="West Virginia Team Logo" />
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='middleLeft' onClick={handleClick}>
@@ -618,7 +618,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
           <div className=" border-2 guess border-white flex items-center justify-center square" id='middleRight' onClick={handleClick}>
             {getPlayerDisplayInfo('middleRight')}
           </div>
-          <div className="flex items-center justify-center square text-white" onClick={handleClick}>
+          <div className="flex items-center justify-center square text-gray-200" onClick={handleClick}>
             <img src={logoUrl(bottomConference)} alt="West Virginia Team Logo" />          
           </div>
           <div className=" border-2 guess border-white flex items-center justify-center square" id='bottomLeft' onClick={handleClick}>
@@ -640,7 +640,7 @@ const uniquePlayers = [...new Set([...allPlayerNames])];
       target="_blank"
       rel="noopener noreferrer"
     >
-      <button className="rounded bg-blue-500 text-white py-2 px-4">Tweet Score</button>
+      <button className="rounded bg-blue-500 text-gray-200 py-2 px-4">Tweet Score</button>
     </a>
   )}
   <Modal />   
