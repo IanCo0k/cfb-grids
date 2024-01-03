@@ -16,6 +16,37 @@ const Guess = () => {
   const [isCorrectGuess, setIsCorrectGuess] = useState(false);
   const [consecutiveCorrectGuesses, setConsecutiveCorrectGuesses] = useState(0);
 
+
+  useEffect(() => {
+    // Function to update 'views' value in 'guessGame' document
+    const updateViews = async () => {
+      try {
+        const db = getFirestore();
+        const gameDocRef = doc(db, 'views', 'guessGame'); // Replace with your actual document ID
+        
+        const docSnapshot = await getDoc(gameDocRef);
+        
+        if (docSnapshot.exists()) {
+          const currentViews = docSnapshot.data().views;
+          // Ensure currentViews is a number, if not, initialize to 0
+          const validViews = typeof currentViews === 'number' ? currentViews : 0;
+          const updatedData = { views: validViews + 1 };
+          await updateDoc(gameDocRef, updatedData);
+        } else {
+          // Create the document if it doesn't exist
+          const initialData = { views: 1 };
+          await setDoc(gameDocRef, initialData);
+        }
+      } catch (error) {
+        console.error('Error updating views:', error);
+      }
+    };
+
+    // Call the updateViews function when the component mounts
+    updateViews();
+  }, []);
+
+
   useEffect(() => {
     fetchRandomPlayer();
   }, [isCorrectGuess]); // Trigger a new player fetch when isCorrectGuess changes
