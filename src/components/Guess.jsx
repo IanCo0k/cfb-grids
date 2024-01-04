@@ -4,6 +4,7 @@ import Footer from './Footer';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 import { TwitterShareButton } from 'react-share'; // Import TwitterShareButton
+import teams from '../data/teams.js';
 
 
 
@@ -23,6 +24,7 @@ const Guess = () => {
   const [user, setUser] = useState(null);
 
   const [team, setTeam] = useState(null);
+  const [collegeTeam, setCollegeTeam] = useState('');
 
   useEffect(() => {
     const auth = getAuth();
@@ -74,6 +76,7 @@ const Guess = () => {
           if (userDataSnapshot.exists()) {
             console.log(userDataSnapshot.data().favoriteTeam);
             setTeam(userDataSnapshot.data().favoriteTeam);
+            setCollegeTeam(userDataSnapshot.data().collegeTeam);
           } else {
             console.log("User document does not exist. Creating user fields...");
           }
@@ -232,6 +235,7 @@ function getRandomTeamNumber(min, max) {
       const userData = {
         streak: consecutiveCorrectGuesses,
         favoriteTeam: team || `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/${getRandomTeamNumber(1, 30)}.png&h=400&w=400`,
+        collegeTeam: collegeTeam || teams[getRandomTeamNumber(0, teams.length)]['Logos[0]']
       };
 
       console.log(team + " this is the team")
@@ -334,6 +338,7 @@ function getRandomTeamNumber(min, max) {
                   <div className="flex w-full justify-center items-center space-x-2">
                     <span className='font-bold text-3xl'>{entry.streak}</span>
                     <img src={entry.favoriteTeam} alt={`Team ${index + 1}`} className="w-12 h-12" />
+                    <img src={entry.collegeTeam} alt={`Team ${index + 1}`} className="w-12 h-12" />
                   </div>
                 </li>
               ))}

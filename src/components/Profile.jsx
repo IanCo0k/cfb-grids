@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import TeamSelection from './TeamSelection';
+import CollegeSelection from './CollegeSelection';
 import { getFirestore, doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
@@ -10,6 +11,7 @@ export default function Profile() {
   const [userData, setUserData] = useState(null);
   const [user, setUser] = useState(null);
   const [favoriteTeam, setFavoriteTeam] = useState('');
+const [collegeTeam, setCollegeTeam] = useState('');
 
   const auth = getAuth();
   const db = getFirestore();
@@ -33,9 +35,13 @@ export default function Profile() {
               setUserData(userData);
 
               setFavoriteTeam(userData.favoriteTeam || '');
+              setCollegeTeam(userData.collegeTeam || '');
 
               if (!userData.favoriteTeam) {
                 await updateDoc(userDocRef, { favoriteTeam: '' });
+                console.log("Favorite team field created.");
+              } else if (!userData.collegeTeam) {
+                await updateDoc(userDocRef, { collegeTeam: '' });
                 console.log("Favorite team field created.");
               }
             } else {
@@ -79,6 +85,23 @@ export default function Profile() {
       console.error("Error setting favorite team field to empty string:", error);
     }
   };
+
+  const collegeEditClick = async () => {
+    const db = getFirestore();
+    const userDocRef = doc(db, 'users', auth.currentUser.displayName);
+    
+    try {
+      // Set the favoriteTeam field to an empty string
+      await updateDoc(userDocRef, {
+        collegeTeam: ''
+      });
+      console.log("Favorite team field set to empty string.");
+      // Reload the page to reveal the grid again
+      window.location.reload();
+    } catch (error) {
+      console.error("Error setting favorite team field to empty string:", error);
+    }
+  }
   
   
 
@@ -105,6 +128,24 @@ export default function Profile() {
               </div>
             ) : (
               <TeamSelection />
+            )}
+
+            {collegeTeam ? (
+                <div className="text-center mb-4">
+                <img
+                  src={collegeTeam}
+                  alt="Favorite Team"
+                  className="w-40 h-40 mx-auto mb-2"
+                />
+                <button
+                  className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-md"
+                  onClick={collegeEditClick}
+                >
+                  Edit
+                </button>
+              </div>
+            ) : (
+              <CollegeSelection />
             )}
 
             <div className="flex gap-2">
