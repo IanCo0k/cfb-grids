@@ -17,6 +17,8 @@ const Guess = () => {
   const [isCorrectGuess, setIsCorrectGuess] = useState(false);
   const [consecutiveCorrectGuesses, setConsecutiveCorrectGuesses] = useState(0);
 
+  const [revealCollege, setRevealCollege] = useState(false); // State for revealing the college
+
   const [leaderboard, setLeaderboard] = useState([]);
   const [user, setUser] = useState(null);
 
@@ -212,6 +214,7 @@ function getRandomTeamNumber(min, max) {
 
   const resetGame = async () => {
     // Fetch the current streaks data
+    setRevealCollege(false);
     const db = getFirestore();
     const streaksDocRef = doc(db, 'streakLeaderboard', 'streaks');
   
@@ -274,7 +277,21 @@ function getRandomTeamNumber(min, max) {
               <p>Number</p>
               <p className="font-semibold text-2xl">{jersey}</p>
             </div>
+            {/* Add a button to reveal the college */}
+            <button
+              onClick={() => setRevealCollege(true)}
+              className="bg-blue-500 hover:bg-blue-600 text-gray-200 px-4 py-2 rounded-lg focus:outline-none"
+            >
+              Reveal College
+            </button>
           </div>
+          {/* Conditionally render the college if revealed */}
+          {revealCollege && (
+            <div className="mt-4">
+              <p className="text-gray-200 text-lg font-semibold">College</p>
+              <p className="text-gray-400">{college.join(', ')}</p>
+            </div>
+          )}
           <input
             type="text"
             placeholder="Enter your guess"
@@ -282,45 +299,35 @@ function getRandomTeamNumber(min, max) {
             onChange={(e) => setUserGuess(e.target.value)}
             className="mt-4 text-black px-4 py-2 rounded border border-gray-600 focus:outline-none focus:border-blue-400 w-full"
           />
+          {/* Hide the "Guess" button when college is revealed */}
           {isCorrectGuess ? (
             <div>
               <p className="mt-4 text-green-400">Your guess is correct! Loading a new player...</p>
             </div>
           ) : (
             <div className="flex justify-center mt-4 space-x-4">
-              <button onClick={handleGuess} className="bg-blue-500 hover:bg-blue-600 text-gray-200 px-4 py-2 rounded-lg focus:outline-none">
-                Guess
-              </button>
-              <button className="bg-red-500 hover:bg-red-600 text-gray-200 px-4 py-2 rounded-lg focus:outline-none" onClick={resetGame}>
+              {!revealCollege && (
+                <button onClick={handleGuess} className="bg-blue-500 hover:bg-blue-600 text-gray-200 px-4 py-2 rounded-lg focus:outline-none">
+                  Guess
+                </button>
+              )}
+              <button className="bg-red-500 hover.bg-red-600 text-gray-200 px-4 py-2 rounded-lg focus:outline-none" onClick={resetGame}>
                 Give Up
               </button>
               <TwitterShareButton
-              url="https://cfbgrids.com/#/guess"
-              title={`I just got a streak of ${consecutiveCorrectGuesses} on @CFBGrids NFL College Guesser. \n\nCan you beat it?\n\n`}
-            >
-              <button className="bg-blue-400 hover:bg-blue-500 text-gray-200 px-4 py-2 rounded-lg focus:outline-none">
-                Tweet Score
-              </button>
-            </TwitterShareButton>
+                url="https://cfbgrids.com/#/guess"
+                title={`I just got a streak of ${consecutiveCorrectGuesses} on @CFBGrids NFL College Guesser. \n\nCan you beat it?\n\n`}
+              >
+                <button className="bg-blue-400 hover:bg-blue-500 text-gray-200 px-4 py-2 rounded-lg focus:outline-none">
+                  Tweet Score
+                </button>
+              </TwitterShareButton>
             </div>
           )}
           <p className='mt-3 font-semibold'>Your Streak</p>
           <p className="mt-2 font-bold text-5xl">{consecutiveCorrectGuesses}</p>
-          <div className="mt-4">
-            <h2 className="text-2xl font-semibold mb-2">Leaderboard</h2>
-            <ul>
-              {leaderboard.map((entry, index) => (
-                <li key={index} className="flex mx-auto items-center justify-between py-2">
-                  <div className="flex w-full justify-center items-center space-x-2">
-                    <span className='font-bold text-3xl'>{entry.streak}</span>
-                    <img src={entry.favoriteTeam} alt={`Team ${index + 1}`} className="w-12 h-12" />
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* ... (other code) */}
         </div>
-        
       </div>
       <Footer />
     </div>
