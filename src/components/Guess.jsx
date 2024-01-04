@@ -18,12 +18,31 @@ const Guess = () => {
   const [consecutiveCorrectGuesses, setConsecutiveCorrectGuesses] = useState(0);
 
   const [leaderboard, setLeaderboard] = useState([]);
-
-
-  const auth = getAuth();
-  const user = auth.currentUser;
+  const [user, setUser] = useState(null);
 
   const [team, setTeam] = useState(null);
+
+  useEffect(() => {
+    // Initialize Firebase Authentication
+    const auth = getAuth();
+
+    // Listen for changes in the user's authentication state
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        // User is signed in
+        setUser(currentUser);
+        console.log(currentUser.displayName);
+      } else {
+        // User is signed out
+        setUser(null);
+      }
+    });
+
+    // Clean up the subscription when the component unmounts
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
 
   useEffect(() => {
@@ -207,6 +226,8 @@ const Guess = () => {
         streak: consecutiveCorrectGuesses,
         favoriteTeam: team,
       };
+
+      console.log(team + " this is the team")
   
       // Add the user's data to the streaks data
       streaksData.push(userData);
