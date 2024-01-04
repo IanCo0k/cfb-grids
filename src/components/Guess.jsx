@@ -23,23 +23,15 @@ const Guess = () => {
   const [team, setTeam] = useState(null);
 
   useEffect(() => {
-    // Initialize Firebase Authentication
     const auth = getAuth();
 
-    // Listen for changes in the user's authentication state
+    // Use onAuthStateChanged to listen for authentication changes
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        // User is signed in
-        setUser(currentUser);
-        console.log(currentUser.displayName);
-      } else {
-        // User is signed out
-        setUser(null);
-      }
+      setUser(currentUser);
     });
 
-    // Clean up the subscription when the component unmounts
     return () => {
+      // Unsubscribe from the listener when the component unmounts
       unsubscribe();
     };
   }, []);
@@ -49,35 +41,33 @@ const Guess = () => {
     // Function to update 'views' value in 'guessGame' document
     const updateViews = async () => {
       try {
-        const db = getFirestore();
-        const gameDocRef = doc(db, 'views', 'guessGame'); // Replace with your actual document ID
-        const userDataRef = doc(db, 'users', user.displayName);
+        if (user) {
+          const db = getFirestore();
+          const gameDocRef = doc(db, 'views', 'guessGame'); // Replace with your actual document ID
+          const userDataRef = doc(db, 'users', user.displayName);
 
-        const userDataSnapshot = await getDoc(userDataRef);
+          const userDataSnapshot = await getDoc(userDataRef);
 
-        if (userDataSnapshot.exists()) {
-          console.log(userDataSnapshot.data().favoriteTeam);
-          setTeam(userDataSnapshot.data().favoriteTeam);
-          
-        } else {
-          console.log("User document does not exist. Creating user fields...");
+          if (userDataSnapshot.exists()) {
+            console.log(userDataSnapshot.data().favoriteTeam);
+            setTeam(userDataSnapshot.data().favoriteTeam);
+          } else {
+            console.log("User document does not exist. Creating user fields...");
+          }
 
-        }
+          const docSnapshot = await getDoc(gameDocRef);
 
-
-        
-        const docSnapshot = await getDoc(gameDocRef);
-        
-        if (docSnapshot.exists()) {
-          const currentViews = docSnapshot.data().views;
-          // Ensure currentViews is a number, if not, initialize to 0
-          const validViews = typeof currentViews === 'number' ? currentViews : 0;
-          const updatedData = { views: validViews + 1 };
-          await updateDoc(gameDocRef, updatedData);
-        } else {
-          // Create the document if it doesn't exist
-          const initialData = { views: 1 };
-          await setDoc(gameDocRef, initialData);
+          if (docSnapshot.exists()) {
+            const currentViews = docSnapshot.data().views;
+            // Ensure currentViews is a number, if not, initialize to 0
+            const validViews = typeof currentViews === 'number' ? currentViews : 0;
+            const updatedData = { views: validViews + 1 };
+            await updateDoc(gameDocRef, updatedData);
+          } else {
+            // Create the document if it doesn't exist
+            const initialData = { views: 1 };
+            await setDoc(gameDocRef, initialData);
+          }
         }
       } catch (error) {
         console.error('Error updating views:', error);
@@ -89,26 +79,28 @@ const Guess = () => {
 
     const fetchLeaderboard = async () => {
       try {
-        const db = getFirestore();
-        const streaksDocRef = doc(db, 'streakLeaderboard', 'streaks');
-        const streaksDocSnapshot = await getDoc(streaksDocRef);
-        const streaksData = streaksDocSnapshot.exists() ? streaksDocSnapshot.data().streaks : [];
+        if (user) {
+          const db = getFirestore();
+          const streaksDocRef = doc(db, 'streakLeaderboard', 'streaks');
+          const streaksDocSnapshot = await getDoc(streaksDocRef);
+          const streaksData = streaksDocSnapshot.exists() ? streaksDocSnapshot.data().streaks : [];
 
-        // Sort the streaks data in descending order based on the streak value
-        streaksData.sort((a, b) => b.streak - a.streak);
+          // Sort the streaks data in descending order based on the streak value
+          streaksData.sort((a, b) => b.streak - a.streak);
 
-        // Limit to top 5 scores
-        const top5 = streaksData.slice(0, 5);
+          // Limit to top 5 scores
+          const top5 = streaksData.slice(0, 5);
 
-        // Set the leaderboard state
-        setLeaderboard(top5);
+          // Set the leaderboard state
+          setLeaderboard(top5);
+        }
       } catch (error) {
         console.error('Error fetching leaderboard:', error);
       }
     };
 
     fetchLeaderboard();
-  }, []);
+  }, [user]);
 
 
   useEffect(() => {
