@@ -3,6 +3,7 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
+import { TwitterShareButton } from 'react-share'; // Import TwitterShareButton
 
 
 
@@ -185,6 +186,14 @@ const Guess = () => {
               <button className="bg-red-500 hover:bg-red-600 text-gray-200 px-4 py-2 rounded-lg focus:outline-none" onClick={resetGame}>
                 Give Up
               </button>
+              <TwitterShareButton
+              url="https://cfbgrids.com/#/guess"
+              title={`I just got a streak of ${consecutiveCorrectGuesses} on @CFBGrids NFL College Guesser. \n\nCan you beat it?\n\n`}
+            >
+              <button className="bg-blue-400 hover:bg-blue-500 text-gray-200 px-4 py-2 rounded-lg focus:outline-none">
+                Tweet Score
+              </button>
+            </TwitterShareButton>
             </div>
           )}
           <p className="mt-4 font-bold text-5xl">{consecutiveCorrectGuesses}</p>
