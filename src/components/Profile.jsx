@@ -11,6 +11,9 @@ export default function Profile() {
   const [user, setUser] = useState(null);
   const [favoriteTeam, setFavoriteTeam] = useState('');
 
+  const auth = getAuth();
+  const db = getFirestore();
+
   useEffect(() => {
     const auth = getAuth();
     const db = getFirestore();
@@ -62,7 +65,7 @@ export default function Profile() {
 
   const handleEditClick = async () => {
     const db = getFirestore();
-    const userDocRef = doc(db, 'users', userData.displayName);
+    const userDocRef = doc(db, 'users', auth.currentUser.displayName);
     
     try {
       // Set the favoriteTeam field to an empty string
