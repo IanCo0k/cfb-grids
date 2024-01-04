@@ -13,11 +13,6 @@ export default function Navbar() {
     setIsOpen(false);
   };
 
-  // Function to check if a user has a profile image URL
-  const hasProfileImage = () => {
-    return user && user.photoURL;
-  };
-
   useEffect(() => {
     // Initialize Firebase Authentication
     const auth = getAuth();
@@ -89,16 +84,6 @@ export default function Navbar() {
           {user ? (
             // Display user profile image if available
             <div className='flex items-center ml-8'>
-              {hasProfileImage() ? (
-                <img
-                  src={user.photoURL}
-                  alt='Profile'
-                  className='w-8 h-8 rounded-full mr-2'
-                />
-              ) : (
-                // Display a default person icon if no profile image is available
-                <FaTh className='text-2xl text-gray-200' />
-              )}
               <Link
                 to='/profile'
                 className='text-gray-200 hover:bg-blue-600 hover:text-gray-200 px-3 py-2 rounded-lg text-xl'

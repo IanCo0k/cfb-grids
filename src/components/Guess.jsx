@@ -17,6 +17,14 @@ const Guess = () => {
   const [isCorrectGuess, setIsCorrectGuess] = useState(false);
   const [consecutiveCorrectGuesses, setConsecutiveCorrectGuesses] = useState(0);
 
+  const [leaderboard, setLeaderboard] = useState([]);
+
+
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  const [team, setTeam] = useState(null);
+
 
   useEffect(() => {
     // Function to update 'views' value in 'guessGame' document
@@ -24,6 +32,20 @@ const Guess = () => {
       try {
         const db = getFirestore();
         const gameDocRef = doc(db, 'views', 'guessGame'); // Replace with your actual document ID
+        const userDataRef = doc(db, 'users', user.displayName);
+
+        const userDataSnapshot = await getDoc(userDataRef);
+
+        if (userDataSnapshot.exists()) {
+          console.log(userDataSnapshot.data().favoriteTeam);
+          setTeam(userDataSnapshot.data().favoriteTeam);
+          
+        } else {
+          console.log("User document does not exist. Creating user fields...");
+
+        }
+
+
         
         const docSnapshot = await getDoc(gameDocRef);
         
@@ -45,6 +67,28 @@ const Guess = () => {
 
     // Call the updateViews function when the component mounts
     updateViews();
+
+    const fetchLeaderboard = async () => {
+      try {
+        const db = getFirestore();
+        const streaksDocRef = doc(db, 'streakLeaderboard', 'streaks');
+        const streaksDocSnapshot = await getDoc(streaksDocRef);
+        const streaksData = streaksDocSnapshot.exists() ? streaksDocSnapshot.data().streaks : [];
+
+        // Sort the streaks data in descending order based on the streak value
+        streaksData.sort((a, b) => b.streak - a.streak);
+
+        // Limit to top 5 scores
+        const top5 = streaksData.slice(0, 5);
+
+        // Set the leaderboard state
+        setLeaderboard(top5);
+      } catch (error) {
+        console.error('Error fetching leaderboard:', error);
+      }
+    };
+
+    fetchLeaderboard();
   }, []);
 
 
@@ -52,7 +96,6 @@ const Guess = () => {
     fetchRandomPlayer();
   }, [isCorrectGuess]); // Trigger a new player fetch when isCorrectGuess changes
 
-  // Function to fetch a random player
   const fetchRandomPlayer = async () => {
     try {
       // Generate a random number to determine the position group
@@ -75,28 +118,32 @@ const Guess = () => {
   
       // Extract player information
       const itemsArray = data.athletes[positionGroupIndex]['items'];
-      const randomIndex = Math.floor(Math.random() * itemsArray.length);
+      
+      // Filter out players that don't have displayName or fullName
+      const filteredPlayers = itemsArray.filter(player => player.displayName || player.fullName);
   
-      const randomPlayer = itemsArray[randomIndex];
-
-      console.log(randomPlayer)
+      if (filteredPlayers.length > 0) {
+        const randomIndex = Math.floor(Math.random() * filteredPlayers.length);
+        const randomPlayer = filteredPlayers[randomIndex];
   
-      if (randomPlayer.displayName || randomPlayer.fullName) {
-        // If fullName is defined, set the player information
-        setPlayer(randomPlayer.displayName);
+        console.log(randomPlayer);
+  
+        // Set the player information
+        setPlayer(randomPlayer.displayName || randomPlayer.fullName);
         setCollege([randomPlayer.college.name, randomPlayer.college.shortName, randomPlayer.college.abbrev]);
         setPosition(randomPlayer.position.abbreviation);
         setJersey(randomPlayer.jersey);
         setPlayerImg(randomPlayer.headshot['href']);
         setIsCorrectGuess(false); // Reset the guess status
       } else {
-        // If fullName is undefined, call fetchRandomPlayer again to load a different player
+        // If no valid players are found, call fetchRandomPlayer again to load a different player
         fetchRandomPlayer();
       }
     } catch (error) {
       console.error('Error fetching player data:', error);
     }
   };
+  
 
   const handleGuess = () => {
     const userGuessLowerCase = userGuess.toLowerCase();
@@ -142,12 +189,48 @@ const Guess = () => {
   
   
 
-  // Function to reset the game
-  const resetGame = () => {
-    fetchRandomPlayer();
-    setIsCorrectGuess(false);
-    setConsecutiveCorrectGuesses(0);
+  const resetGame = async () => {
+    // Fetch the current streaks data
+    const db = getFirestore();
+    const streaksDocRef = doc(db, 'streakLeaderboard', 'streaks');
+  
+    try {
+      const streaksDocSnapshot = await getDoc(streaksDocRef);
+      let streaksData = [];
+  
+      if (streaksDocSnapshot.exists()) {
+        streaksData = streaksDocSnapshot.data().streaks || [];
+      }
+  
+      // Create an object to represent the user's data
+      const userData = {
+        streak: consecutiveCorrectGuesses,
+        favoriteTeam: team,
+      };
+  
+      // Add the user's data to the streaks data
+      streaksData.push(userData);
+  
+      // Sort the streaks data in descending order based on the streak value
+      streaksData.sort((a, b) => b.streak - a.streak);
+  
+      // Limit the streaks data to a certain number of top scores (e.g., 10)
+      const maxTopScores = 10;
+      streaksData = streaksData.slice(0, maxTopScores);
+  
+      // Update the streaks field in the streakLeaderboard document
+      await updateDoc(streaksDocRef, {
+        streaks: streaksData,
+      });
+  
+      // Fetch a new random player and reset game-related state
+      fetchRandomPlayer();
+      setConsecutiveCorrectGuesses(0);
+    } catch (error) {
+      console.error('Error updating streakLeaderboard:', error);
+    }
   };
+  
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -196,8 +279,23 @@ const Guess = () => {
             </TwitterShareButton>
             </div>
           )}
-          <p className="mt-4 font-bold text-5xl">{consecutiveCorrectGuesses}</p>
+          <p className='mt-3 font-semibold'>Your Streak</p>
+          <p className="mt-2 font-bold text-5xl">{consecutiveCorrectGuesses}</p>
+          <div className="mt-4">
+            <h2 className="text-2xl font-semibold mb-2">Leaderboard</h2>
+            <ul>
+              {leaderboard.map((entry, index) => (
+                <li key={index} className="flex mx-auto items-center justify-between py-2">
+                  <div className="flex w-full justify-center items-center space-x-2">
+                    <span className='font-bold text-3xl'>{entry.streak}</span>
+                    <img src={entry.favoriteTeam} alt={`Team ${index + 1}`} className="w-12 h-12" />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
+        
       </div>
       <Footer />
     </div>
