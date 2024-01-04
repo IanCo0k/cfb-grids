@@ -197,7 +197,10 @@ const Guess = () => {
   };
   
   
-  
+  // Function to generate a random team number between 1 and 30
+function getRandomTeamNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
   
 
   const resetGame = async () => {
@@ -212,11 +215,13 @@ const Guess = () => {
       if (streaksDocSnapshot.exists()) {
         streaksData = streaksDocSnapshot.data().streaks || [];
       }
+
+
   
       // Create an object to represent the user's data
       const userData = {
         streak: consecutiveCorrectGuesses,
-        favoriteTeam: team,
+        favoriteTeam: team || `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/${getRandomTeamNumber(1, 30)}.png&h=400&w=400`,
       };
 
       console.log(team + " this is the team")
