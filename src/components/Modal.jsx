@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FaTrophy } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 function Modal() {
   const [isOpen, setIsOpen] = useState(true);
@@ -26,9 +27,8 @@ function Modal() {
                 HERE
                 </a>
               </h1>
-              <p className="text-center mb-4">
-                Server costs are increasing, so if you'd be willing to donate to continue to support CFB Grids, click the link above.
-              </p>
+              <h1 className='text-5xl mb-3'>PLEASE MAKE AN ACCOUNT <Link to='/login' className='text-blue-800 font-bold' >HERE</Link></h1>
+          
               <p className="text-center text-2xl mb-4">
                 Players go back to 1957 and up to the end of the 2022-2023 season.
               </p>

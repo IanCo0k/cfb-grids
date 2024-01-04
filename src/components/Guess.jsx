@@ -41,66 +41,73 @@ const Guess = () => {
     // Function to update 'views' value in 'guessGame' document
     const updateViews = async () => {
       try {
+        const db = getFirestore();
+        const gameDocRef = doc(db, 'views', 'guessGame'); // Replace with your actual document ID
+        const docSnapshot = await getDoc(gameDocRef);
+  
+        if (docSnapshot.exists()) {
+          const currentViews = docSnapshot.data().views;
+          // Ensure currentViews is a number, if not, initialize to 0
+          const validViews = typeof currentViews === 'number' ? currentViews : 0;
+          const updatedData = { views: validViews + 1 };
+          await updateDoc(gameDocRef, updatedData);
+        } else {
+          // Create the document if it doesn't exist
+          const initialData = { views: 1 };
+          await setDoc(gameDocRef, initialData);
+        }
+      } catch (error) {
+        console.error('Error updating views:', error);
+      }
+    };
+  
+    // Function to fetch user data
+    const fetchUserData = async () => {
+      try {
         if (user) {
           const db = getFirestore();
-          const gameDocRef = doc(db, 'views', 'guessGame'); // Replace with your actual document ID
           const userDataRef = doc(db, 'users', user.displayName);
-
           const userDataSnapshot = await getDoc(userDataRef);
-
+  
           if (userDataSnapshot.exists()) {
             console.log(userDataSnapshot.data().favoriteTeam);
             setTeam(userDataSnapshot.data().favoriteTeam);
           } else {
             console.log("User document does not exist. Creating user fields...");
           }
-
-          const docSnapshot = await getDoc(gameDocRef);
-
-          if (docSnapshot.exists()) {
-            const currentViews = docSnapshot.data().views;
-            // Ensure currentViews is a number, if not, initialize to 0
-            const validViews = typeof currentViews === 'number' ? currentViews : 0;
-            const updatedData = { views: validViews + 1 };
-            await updateDoc(gameDocRef, updatedData);
-          } else {
-            // Create the document if it doesn't exist
-            const initialData = { views: 1 };
-            await setDoc(gameDocRef, initialData);
-          }
         }
       } catch (error) {
-        console.error('Error updating views:', error);
+        console.error('Error fetching user data:', error);
       }
     };
-
-    // Call the updateViews function when the component mounts
-    updateViews();
-
+  
+    // Function to fetch leaderboard data
     const fetchLeaderboard = async () => {
       try {
-        if (user) {
-          const db = getFirestore();
-          const streaksDocRef = doc(db, 'streakLeaderboard', 'streaks');
-          const streaksDocSnapshot = await getDoc(streaksDocRef);
-          const streaksData = streaksDocSnapshot.exists() ? streaksDocSnapshot.data().streaks : [];
-
-          // Sort the streaks data in descending order based on the streak value
-          streaksData.sort((a, b) => b.streak - a.streak);
-
-          // Limit to top 5 scores
-          const top5 = streaksData.slice(0, 5);
-
-          // Set the leaderboard state
-          setLeaderboard(top5);
-        }
+        const db = getFirestore();
+        const streaksDocRef = doc(db, 'streakLeaderboard', 'streaks');
+        const streaksDocSnapshot = await getDoc(streaksDocRef);
+        const streaksData = streaksDocSnapshot.exists() ? streaksDocSnapshot.data().streaks : [];
+  
+        // Sort the streaks data in descending order based on the streak value
+        streaksData.sort((a, b) => b.streak - a.streak);
+  
+        // Limit to top 5 scores
+        const top5 = streaksData.slice(0, 5);
+  
+        // Set the leaderboard state
+        setLeaderboard(top5);
       } catch (error) {
         console.error('Error fetching leaderboard:', error);
       }
     };
-
+  
+    // Call the functions when the component mounts
+    updateViews();
+    fetchUserData();
     fetchLeaderboard();
   }, [user]);
+  
 
 
   useEffect(() => {
