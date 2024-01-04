@@ -326,7 +326,19 @@ function getRandomTeamNumber(min, max) {
           )}
           <p className='mt-3 font-semibold'>Your Streak</p>
           <p className="mt-2 font-bold text-5xl">{consecutiveCorrectGuesses}</p>
-          {/* ... (other code) */}
+          <div className="mt-4">
+            <h2 className="text-2xl font-semibold mb-2">Leaderboard</h2>
+            <ul>
+              {leaderboard.map((entry, index) => (
+                <li key={index} className="flex mx-auto items-center justify-between py-2">
+                  <div className="flex w-full justify-center items-center space-x-2">
+                    <span className='font-bold text-3xl'>{entry.streak}</span>
+                    <img src={entry.favoriteTeam} alt={`Team ${index + 1}`} className="w-12 h-12" />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
       <Footer />
