@@ -121,17 +121,7 @@ const Guess = () => {
 
   const fetchRandomPlayer = async () => {
     try {
-      // Generate a random number to determine the position group
-      const positionGroupRandom = Math.random();
-      let positionGroupIndex = 0; // Default to offensive players
-  
-      if (positionGroupRandom < 0.45) {
-        positionGroupIndex = 0; // 45% chance for offensive players
-      } else if (positionGroupRandom < 0.9) {
-        positionGroupIndex = 1; // 45% chance for defensive players
-      } else {
-        positionGroupIndex = 2; // 10% chance for special teams
-      }
+
   
       let randomTeam = Math.floor(Math.random() * 32) + 1; // Generate a random number between 1 and 32
   
@@ -140,10 +130,14 @@ const Guess = () => {
       const data = await response.json();
   
       // Extract player information
-      const itemsArray = data.athletes[positionGroupIndex]['items'];
+      const itemsArray = data.athletes[0]['items'];
       
-      // Filter out players that don't have displayName or fullName
-      const filteredPlayers = itemsArray.filter(player => player.displayName || player.fullName);
+      const filteredPlayers = itemsArray.filter(player => 
+        (player.displayName || player.fullName) && ['TE', 'QB', 'RB', 'WR'].includes(player.position.abbreviation)
+      );
+
+      console.log(filteredPlayers)
+      
   
       if (filteredPlayers.length > 0) {
         const randomIndex = Math.floor(Math.random() * filteredPlayers.length);
