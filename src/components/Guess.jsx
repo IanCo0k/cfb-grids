@@ -211,54 +211,49 @@ function getRandomTeamNumber(min, max) {
 }
   
 
-  const resetGame = async () => {
-    // Fetch the current streaks data
-    setRevealCollege(false);
-    const db = getFirestore();
-    const streaksDocRef = doc(db, 'streakLeaderboard', 'streaks');
-  
-    try {
-      const streaksDocSnapshot = await getDoc(streaksDocRef);
-      let streaksData = [];
-  
-      if (streaksDocSnapshot.exists()) {
-        streaksData = streaksDocSnapshot.data().streaks || [];
-      }
+const resetGame = async () => {
+  // Fetch the current streaks data
+  setRevealCollege(false);
+  const db = getFirestore();
+  const streaksDocRef = doc(db, 'streakLeaderboard', 'streaks');
 
+  try {
+    const streaksDocSnapshot = await getDoc(streaksDocRef);
+    let streaksData = [];
 
-  
-      // Create an object to represent the user's data
-      const userData = {
-        streak: consecutiveCorrectGuesses,
-        favoriteTeam: team || `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/${getRandomTeamNumber(1, 30)}.png&h=400&w=400`,
-        collegeTeam: collegeTeam || teams[getRandomTeamNumber(0, teams.length)]['Logos[0]'],
-        twitter: twitterHandle || '',
-      };
-
-      console.log(team + " this is the team")
-  
-      // Add the user's data to the streaks data
-      streaksData.push(userData);
-  
-      // Sort the streaks data in descending order based on the streak value
-      streaksData.sort((a, b) => b.streak - a.streak);
-  
-      // Limit the streaks data to a certain number of top scores (e.g., 10)
-      const maxTopScores = 10;
-      streaksData = streaksData.slice(0, maxTopScores);
-  
-      // Update the streaks field in the streakLeaderboard document
-      await updateDoc(streaksDocRef, {
-        streaks: streaksData,
-      });
-  
-      // Fetch a new random player and reset game-related state
-      fetchRandomPlayer();
-      setConsecutiveCorrectGuesses(0);
-    } catch (error) {
-      console.error('Error updating streakLeaderboard:', error);
+    if (streaksDocSnapshot.exists()) {
+      streaksData = streaksDocSnapshot.data().streaks || [];
     }
-  };
+
+    // Create an object to represent the user's data
+    const userData = {
+      streak: consecutiveCorrectGuesses,
+      favoriteTeam: team || `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/${getRandomTeamNumber(1, 30)}.png&h=400&w=400`,
+      collegeTeam: collegeTeam || teams[getRandomTeamNumber(0, teams.length)]['Logos[0]'],
+      twitter: twitterHandle || '',
+    };
+
+    console.log(team + " this is the team")
+
+    // Add the user's data to the streaks data
+    streaksData.push(userData);
+
+    // Sort the streaks data in descending order based on the streak value
+    streaksData.sort((a, b) => b.streak - a.streak);
+
+    // Update the streaks field in the streakLeaderboard document
+    await updateDoc(streaksDocRef, {
+      streaks: streaksData,
+    });
+
+    // Fetch a new random player and reset game-related state
+    fetchRandomPlayer();
+    setConsecutiveCorrectGuesses(0);
+  } catch (error) {
+    console.error('Error updating streakLeaderboard:', error);
+  }
+};
+
   
 
   return (
