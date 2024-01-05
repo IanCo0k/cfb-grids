@@ -98,10 +98,10 @@ const Guess = () => {
         streaksData.sort((a, b) => b.streak - a.streak);
   
         // Limit to top 5 scores
-        const top5 = streaksData.slice(0, 5);
+        const top10 = streaksData.slice(0, 10);
   
         // Set the leaderboard state
-        setLeaderboard(top5);
+        setLeaderboard(top10);
       } catch (error) {
         console.error('Error fetching leaderboard:', error);
       }
