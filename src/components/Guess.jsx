@@ -25,6 +25,7 @@ const Guess = () => {
 
   const [team, setTeam] = useState(null);
   const [collegeTeam, setCollegeTeam] = useState('');
+  const [twitterHandle, setTwitterHandle] = useState('');
 
   useEffect(() => {
     const auth = getAuth();
@@ -77,6 +78,7 @@ const Guess = () => {
             console.log(userDataSnapshot.data().favoriteTeam);
             setTeam(userDataSnapshot.data().favoriteTeam);
             setCollegeTeam(userDataSnapshot.data().collegeTeam);
+            setTwitterHandle(userDataSnapshot.data().twitter);
           } else {
             console.log("User document does not exist. Creating user fields...");
           }
@@ -229,7 +231,8 @@ function getRandomTeamNumber(min, max) {
       const userData = {
         streak: consecutiveCorrectGuesses,
         favoriteTeam: team || `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/${getRandomTeamNumber(1, 30)}.png&h=400&w=400`,
-        collegeTeam: collegeTeam || teams[getRandomTeamNumber(0, teams.length)]['Logos[0]']
+        collegeTeam: collegeTeam || teams[getRandomTeamNumber(0, teams.length)]['Logos[0]'],
+        twitter: twitterHandle || '',
       };
 
       console.log(team + " this is the team")
@@ -330,10 +333,20 @@ function getRandomTeamNumber(min, max) {
               {leaderboard.map((entry, index) => (
                 <li key={index} className="flex mx-auto items-center justify-between py-2">
                   <div className="flex w-full justify-center items-center space-x-2">
-                    <span className='font-bold text-3xl'>{entry.streak}</span>
+                  <span className='font-bold text-3xl'>{entry.streak}</span>
                     <img src={entry.favoriteTeam} alt={`Team ${index + 1}`} className="w-12 h-12" />
                     <img src={entry.collegeTeam} alt={`Team ${index + 1}`} className="w-12 h-12" />
-                  </div>
+                    {entry.twitter && (
+                      <a
+                        href={`https://twitter.com/${entry.twitter}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-500"
+                      >
+                        @{entry.twitter}
+                      </a>
+                    )}
+                </div>
                 </li>
               ))}
             </ul>

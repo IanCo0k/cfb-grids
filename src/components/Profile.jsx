@@ -12,6 +12,9 @@ export default function Profile() {
   const [user, setUser] = useState(null);
   const [favoriteTeam, setFavoriteTeam] = useState('');
 const [collegeTeam, setCollegeTeam] = useState('');
+const [twitterHandle, setTwitterHandle] = useState('');
+const [successMessage, setSuccessMessage] = useState('');
+
 
   const auth = getAuth();
   const db = getFirestore();
@@ -36,6 +39,8 @@ const [collegeTeam, setCollegeTeam] = useState('');
 
               setFavoriteTeam(userData.favoriteTeam || '');
               setCollegeTeam(userData.collegeTeam || '');
+              setTwitterHandle(userData.twitter || ''); // Set Twitter handle if it exists
+
 
               if (!userData.favoriteTeam) {
                 await updateDoc(userDocRef, { favoriteTeam: '' });
@@ -102,6 +107,20 @@ const [collegeTeam, setCollegeTeam] = useState('');
       console.error("Error setting favorite team field to empty string:", error);
     }
   }
+
+  const saveTwitterHandle = async () => {
+    const userDocRef = doc(db, 'users', auth.currentUser.displayName);
+
+    try {
+      await updateDoc(userDocRef, {
+        twitter: twitterHandle,
+      });
+      setSuccessMessage("Twitter handle saved successfully!");
+    } catch (error) {
+      console.error("Error saving Twitter handle:", error);
+      setSuccessMessage("Error saving Twitter handle. Please try again.");
+    }
+  };
   
   
 
@@ -147,6 +166,32 @@ const [collegeTeam, setCollegeTeam] = useState('');
             ) : (
               <CollegeSelection />
             )}
+
+<div className="text-center mb-4">
+          <label htmlFor="twitterHandle" className="text-lg block mb-2">
+            Enter your Twitter handle:
+          </label>
+          <div className="flex items-center justify-center">
+            <input
+              type="text"
+              id="twitterHandle"
+              placeholder="E.g., @yourhandle"
+              className="border-2 border-gray-300 text-black p-2 rounded-md w-40 mr-2"
+              value={twitterHandle}
+              onChange={(e) => setTwitterHandle(e.target.value)}
+            />
+            <button
+              className="bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-md"
+              onClick={saveTwitterHandle}
+            >
+              Save
+            </button>
+          </div>
+          {successMessage && (
+            <p className="text-green-500 mt-2">{successMessage}</p>
+          )}
+        </div>
+
 
             <div className="flex gap-2">
               <div className="rounded p-4 bg-gray-700">
