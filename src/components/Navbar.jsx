@@ -1,45 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { FaBars, FaTimes, FaTh } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate from React Router
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'; // Import Firebase Authentication functions
+import { Link, useNavigate } from 'react-router-dom';
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import '../css/navbar.css';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [user, setUser] = useState(null); // Store user information
-  const navigate = useNavigate(); // Access the navigate function
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   const closeDropdown = () => {
     setIsOpen(false);
   };
 
   useEffect(() => {
-    // Initialize Firebase Authentication
     const auth = getAuth();
 
-    // Listen for changes in the user's authentication state
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-        // User is signed in
         setUser(currentUser);
       } else {
-        // User is signed out
         setUser(null);
       }
     });
 
-    // Clean up the subscription when the component unmounts
     return () => {
       unsubscribe();
     };
   }, []);
 
-  // Function to handle user logout
   const handleLogout = async () => {
     const auth = getAuth();
     try {
-      await signOut(auth); // Sign the user out
-      navigate('/login'); // Redirect to the login page after logout
+      await signOut(auth);
+      navigate('/login');
     } catch (error) {
       console.error('Error during logout:', error);
     }
@@ -80,9 +74,19 @@ export default function Navbar() {
                 About
               </Link>
             </li>
+            {/* Conditionally display the "Dashboard" link */}
+            {user && user.displayName === 'Ian Cook' && (
+              <li>
+                <Link
+                  to='/dashboard'
+                  className='text-gray-200 hover:bg-blue-600 hover:text-gray-200 px-3 py-2 rounded-lg text-xl'
+                >
+                  Dashboard
+                </Link>
+              </li>
+            )}
           </ul>
           {user ? (
-            // Display user profile image if available
             <div className='flex items-center ml-8'>
               <Link
                 to='/profile'
@@ -98,7 +102,6 @@ export default function Navbar() {
               </button>
             </div>
           ) : (
-            // Display the Login button if the user is not signed in
             <Link to='/login'>
               <button className='ml-8 bg-blue-600 text-gray-200 px-4 py-2 rounded-lg text-xl'>
                 Login
@@ -142,7 +145,6 @@ export default function Navbar() {
                 >
                   About
                 </Link>
-                
               </li>
               <li className='animate-slide-in-right-2'>
                 <Link
@@ -152,6 +154,16 @@ export default function Navbar() {
                   Profile
                 </Link>
               </li>
+              {user && user.displayName === 'Ian Cook' && (
+                <li className='animate-slide-in-right-2'>
+                  <Link
+                    to='/dashboard'
+                    className='text-gray-200 hover:bg-blue-600 hover:text-gray-200 px-3 py-2 rounded-lg text-xl'
+                  >
+                    Dashboard
+                  </Link>
+                </li>
+              )}
               {user ? (
                 <li className='animate-slide-in-right-2'>
                   <button
