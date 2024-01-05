@@ -343,7 +343,7 @@ function getRandomTeamNumber(min, max) {
                         rel="noopener noreferrer"
                         className="text-blue-500"
                       >
-                        @{entry.twitter}
+                        {entry.twitter}
                       </a>
                     )}
                 </div>
