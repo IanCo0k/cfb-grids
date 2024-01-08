@@ -48,7 +48,7 @@ export default function Navbar() {
           </Link>
           <span className='text-gray-200 ml-4 hidden md:block text-2xl'>CFB Grids</span>
         </div>
-        <div className='hidden md:flex items-center'>
+        <div className='hidden lg:flex items-center'>
           <ul className='flex space-x-12'>
             <li>
               <Link
@@ -109,7 +109,7 @@ export default function Navbar() {
             </Link>
           )}
         </div>
-        <div className='md:hidden'>
+        <div className='lg:hidden'>
           <button onClick={() => setIsOpen(!isOpen)}>
             <FaBars className='text-gray-200 text-2xl' />
           </button>

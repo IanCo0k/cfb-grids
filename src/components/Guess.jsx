@@ -4,6 +4,7 @@ import Footer from './Footer';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 import { TwitterShareButton } from 'react-share'; // Import TwitterShareButton
+import GuessModal from './GuessModal.jsx';
 import teams from '../data/teams.js';
 
 
@@ -280,6 +281,7 @@ const resetGame = async () => {
     <div className="min-h-screen bg-gray-900 text-white">
       <Navbar />
       <div className="container mx-auto py-8">
+        <GuessModal />
         <h1 className="text-center text-3xl font-semibold mb-8">Guess the College</h1>
         <div className="bg-gray-800 p-4 mx-auto rounded-lg max-w-md shadow-md text-center">
           <img src={playerImg} alt="Player" className="w-64 mx-auto mb-4" />
