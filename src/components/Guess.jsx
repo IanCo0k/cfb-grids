@@ -27,6 +27,8 @@ const Guess = () => {
   const [collegeTeam, setCollegeTeam] = useState('');
   const [twitterHandle, setTwitterHandle] = useState('');
 
+  const [dailyLeader, setDailyLeader] = useState(null);
+
   useEffect(() => {
     const auth = getAuth();
 
@@ -114,6 +116,24 @@ const Guess = () => {
     fetchUserData();
     fetchLeaderboard();
   }, [user]);
+
+  useEffect(() => {
+    const fetchDailyLeader = async () => {
+      try {
+        const db = getFirestore();
+        const dailyLeaderDocRef = doc(db, 'dailyLeader', 'leader');
+        const dailyLeaderDocSnapshot = await getDoc(dailyLeaderDocRef);
+        const dailyLeaderData = dailyLeaderDocSnapshot.exists() ? dailyLeaderDocSnapshot.data().leader : [];
+
+        setDailyLeader(dailyLeaderData);
+      } catch (error) {
+        console.error('Error fetching daily leader:', error);
+      }
+    };
+
+    fetchDailyLeader();
+  }, []);
+
   
 
 
@@ -324,6 +344,9 @@ const resetGame = async () => {
           <p className="mt-2 font-bold text-5xl">{consecutiveCorrectGuesses}</p>
           <div className="mt-4">
             <h2 className="text-2xl font-semibold mb-2">Leaderboard</h2>
+            <div className='bg-gray-900 p-2 rounded'>
+            <h1 className='text-3xl font-bold '>Yesterday's champion: <a href={`https://twitter.com/${dailyLeader}`} target='_blank' rel='noopener noreferrer' className='text-blue-500'>{dailyLeader}</a></h1>
+            </div>
             <ul>
               {leaderboard.map((entry, index) => (
                 <li key={index} className="flex mx-auto items-center justify-between py-2">
