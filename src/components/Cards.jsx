@@ -95,10 +95,10 @@ export default function Cards() {
       <Navbar />
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-800 text-white">
         <h1 className="text-5xl">Draft Your Team</h1>
-        <div className="flex space-x-4 mt-8">
-          {renderCard('QB')}
-          {renderCard('RB')}
-          {renderCard('WR')}
+        <div className="flex flex-col md:flex-row space-x-4 mt-8">
+            {renderCard('QB')}
+            {renderCard('RB')}
+            {renderCard('WR')}
         </div>
       </div>
     </div>
