@@ -7,6 +7,7 @@ import Profile from './components/Profile.jsx';
 import Guess from './components/Guess.jsx';
 import Signup from './components/SignUp.jsx';
 import Dashboard from './components/Dashboard.jsx';
+import Cards from './components/Cards.jsx';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import './index.css';
 import ReactGA from 'react-ga';
@@ -28,6 +29,7 @@ const Main = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/guess" element={<Guess />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/cards" element={<Cards />} />
           <Route path="/" element={<App />} />
         </Routes>
     </Router>
