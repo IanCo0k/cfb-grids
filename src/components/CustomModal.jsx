@@ -25,6 +25,7 @@ function CustomModal() {
               </a>
             </h1>
             <p className="text-center text-2xl mb-4">Players for all columns go back to 1957</p>
+            
             <p className='text-center mb-4'>
               Follow my{' '}
               <a

@@ -27,11 +27,18 @@ function Modal() {
                 HERE
                 </a>
               </h1>
+              <div className='h-[3px] my-2 w-full bg-blue-500'></div>
               <h1 className='text-5xl mb-3'>PLEASE MAKE AN ACCOUNT <Link to='/login' className='text-blue-800 font-bold' >HERE</Link></h1>
+              <div className='h-[3px] my-2 w-full bg-blue-500'></div>
+              <p className="text-center text-2xl mb-4">
+              For college football news and discussion, visit <a className='text-blue-500 underline' href="https://cfbselect.com/">CFBSelect.com</a>
+              </p>
+              <div className='h-[3px] my-2 w-full bg-blue-500'></div>
           
               <p className="text-center text-2xl mb-4">
                 Players go back to 1957 and up to the end of the 2022-2023 season.
               </p>
+              <div className='h-[3px] my-2 w-full bg-blue-500'></div>
               
               <p className='text-center mb-4'>
                 To play, you have to click a cell and type a player that meets the team/conference criteria on the y-axis that intersects with the statistic on the x-axis.

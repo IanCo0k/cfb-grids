@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
 
 export default function Cards() {
@@ -17,6 +17,15 @@ export default function Cards() {
       return 'Bronze';
     }
   };
+
+  useEffect(() => {
+    // fetch from this url and log the data: http://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/2023/types/2/athletes/4241479/statistics?lang=en&region=us
+
+    fetch('http://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/2023/types/2/athletes/4241479/statistics?lang=en&region=us')
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.log(error));
+  }, []);
 
   const fetchPlayer = async (position) => {
     try {
@@ -38,6 +47,8 @@ export default function Cards() {
 
       const leadersResponse = await fetch('https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/2023/types/2/leaders');
       const leadersData = await leadersResponse.json();
+
+      console.log(leadersData);
 
       // Extract leader IDs for each category
       const passingLeaderIds = leadersData.categories[0].leaders.map((leader) => leader.athlete.$ref.split('/').pop().split('?')[0]);
@@ -72,9 +83,9 @@ export default function Cards() {
     const tier = playerTiers[position];
     const cardStyle = {
       backgroundColor: tier === 'Legend' ? 'purple' :
-                       tier === 'Gold' ? 'gold' :
+                       tier === 'Gold' ? 'red' :
                        tier === 'Silver' ? 'silver' :
-                       tier === 'Bronze' ? 'brown' : 'black',
+                       tier === 'Bronze' ? 'green' : 'black',
     };
 
     return (
@@ -93,7 +104,7 @@ export default function Cards() {
   return (
     <div>
       <Navbar />
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-800 text-white">
+      <div className="flex mt-8 flex-col items-center justify-center bg-gray-800 text-white">
         <h1 className="text-5xl">Draft Your Team</h1>
         <div className="flex flex-col md:flex-row space-x-4 mt-8">
             {renderCard('QB')}

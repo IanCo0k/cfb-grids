@@ -27,6 +27,10 @@ function Modal() {
               Accounts will enhance your experience, allowing progress tracking and customization.
             </p>
 
+            <p className="text-center text-2xl mb-4">
+              For college football news and discussion, visit <a className='text-blue-500 underline' href="https://cfbselect.com/">CFBSelect.com</a>
+            </p>
+
             <button
               className="mt-4 m-auto bg-blue-500 hover:bg-blue-700 text-gray-200 font-bold py-2 px-4 rounded"
               onClick={toggleModal}
